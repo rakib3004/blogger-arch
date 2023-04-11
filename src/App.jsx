@@ -33,32 +33,29 @@ function App() {
     if (!values.email) {
       errors.email = "Email is required!";
     } else if (!regex.test(values.email)) {
-      errors.email = "This is not a valid email format!";
+      errors.email = "Email is not valid!";
     }
     if (!values.password) {
       errors.password = "Password is required";
-    } else if (values.password.length < 4) {
+    } else if (values.password.length < 6) {
       errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
     }
     return errors;
   };
 
   return (
-    <div className="container">
+    <div>
       {Object.keys(formErrors).length === 0 && isSubmit ? (
-        <div className="ui message success">Signed in successfully</div>
+        <div >Signed in successfully</div>
       ) : (
         <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
       )}
 
       <form onSubmit={handleSubmit}>
-        <h1>Login Form</h1>
-        <div className="ui divider"></div>
-        <div className="ui form">
-          <div className="field">
-            <label>Username</label>
+        <h2>Sign Up Form</h2>
+        <div>
+          <div>
+            <label>Username: </label>
             <input
               type="text"
               name="username"
@@ -68,8 +65,8 @@ function App() {
             />
           </div>
           <p>{formErrors.username}</p>
-          <div className="field">
-            <label>Email</label>
+          <div>
+            <label>Email: </label>
             <input
               type="text"
               name="email"
@@ -79,8 +76,8 @@ function App() {
             />
           </div>
           <p>{formErrors.email}</p>
-          <div className="field">
-            <label>Password</label>
+          <div>
+            <label>Password: </label>
             <input
               type="password"
               name="password"
@@ -90,7 +87,7 @@ function App() {
             />
           </div>
           <p>{formErrors.password}</p>
-          <button className="fluid ui button blue">Submit</button>
+          <button>Submit</button>
         </div>
       </form>
     </div>
