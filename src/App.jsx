@@ -1,17 +1,13 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { AuthProvider } from "../contexts/AuthContext";
 import "./App.css";
-import Layout from "./Layout";
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
 
 function App() {
   return (
     <Router>
-      <AuthProvider>
         <Layout>
           <Switch>
             <Route exact path="/" component={Home} />
@@ -19,7 +15,6 @@ function App() {
             <PublicRoute exact path="/login" component={Login} />
           </Switch>
         </Layout>
-      </AuthProvider>
     </Router>
   );
 }
