@@ -43,5 +43,10 @@
         }
       ]
     },
-    "plugins": ["prettier", "react", "react-hooks"]
+    "plugins": ["prettier", "react", "react-hooks"],
+    "parserOptions": {
+      "sourceType": "module",
+      "allowImportExportEverywhere": false,
+      "codeFrame": true
+    }
   }

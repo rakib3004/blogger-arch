@@ -1,11 +1,10 @@
 import "./App.css";
+import SignupForm from "./components/SignupForm";
 
 
 function App() {
   return (
-    <div>
-  <h1>Learn More, Code Less - : Software Engineering</h1>
-    </div>
+   <SignupForm/>
   );
 }
 
