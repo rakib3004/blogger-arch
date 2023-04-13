@@ -27,3 +27,15 @@
     cursor: pointer;
   }
   
+  .login-form button {
+    margin-top: 20px;
+  }
+  
+  .login-form .MuiTextField-root {
+    margin-right: 10px;
+  }
+  
+  .login-form .login-button {
+    width: 150px;
+  }
+  

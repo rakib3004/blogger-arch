@@ -13,7 +13,8 @@ function LoginForm() {
     console.log('Submitted');
     console.log(`Username: ${username}`);
     console.log(`Password: ${password}`);
-    setRedirectToSignup(true);  
+    setRedirectToSignup(true);
+  
   };
 
   if (redirectToSignup) {

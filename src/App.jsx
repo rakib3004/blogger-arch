@@ -10,7 +10,7 @@ return(
   <BrowserRouter>
   <Routes>
     <Route path="/login" Component={LoginForm} />
-      <Route  path="/signup" Component={SignupForm} />
+    <Route  path="/signup" Component={SignupForm} />
   </Routes>
       
 </BrowserRouter>
