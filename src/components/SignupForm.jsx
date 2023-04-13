@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { Link, TextField, Button, Typography } from "@mui/material";
 import "../styles/SignupForm.css";
 import * as yup from 'yup';
-
+import HomePage from "./HomePage";
+const baseUrl = 'http://localhost:8000/api/v1/auth/register'
 
 function SignupForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const [redirectHomePage, setRedirectHomePage] = useState(false);
 
   const signupSchema = yup.object().shape({
     username: yup
@@ -28,19 +30,36 @@ confirmPassword: yup
 email: yup.string().email('Must be a valid email').max(255).required('Email is required!'),
 });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitted");
     console.log(`Username: ${username}`);
     console.log(`Email: ${email}`);
+  
     console.log(`Password: ${password}`);
     console.log(`Confirm Password: ${confirmPassword}`);
-    setRedirectToLogin(true);
+    
+  const response =  await axios.post(baseUrl, {
+      username,
+      email,
+      password,
+    });
+
+    console.log(response);
+
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+
+
+    setRedirectHomePage(true);
   };
 
-  if (redirectToLogin) {
-    return <LoginForm />;
+  if(redirectHomePage){
+    <HomePage/>
   }
+
 
   return (
     <div>

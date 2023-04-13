@@ -2,18 +2,36 @@ import React, { useState } from 'react';
 import { Link, TextField, Button, Typography } from '@mui/material';
 import '../styles/LoginForm.css';
 import SignupForm from './SignupForm';
+import axios from 'axios';
+const baseUrl = 'http://localhost:8000/api/v1/auth/login';
+
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [redirectToSignup, setRedirectToSignup] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Submitted');
     console.log(`Username: ${username}`);
     console.log(`Password: ${password}`);
-    setRedirectToSignup(true);
+
+
+      
+  const response =  await axios.post(baseUrl, {
+    username,
+    password,
+  });
+
+  console.log(response);
+
+  setUsername("");
+  setPassword("");
+
+
+  setRedirectToSignup(true);
+
   
   };
 
