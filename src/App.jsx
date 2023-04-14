@@ -1,8 +1,8 @@
-import  React from 'react';
-import { BrowserRouter,Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import HomePage from './components/HomePage';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
-import HomePage from './components/HomePage';
 
 
 

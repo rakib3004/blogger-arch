@@ -16,8 +16,6 @@ function LoginForm() {
     console.log('Submitted');
     console.log(`Username: ${username}`);
     console.log(`Password: ${password}`);
-
-
       
   const response =  await axios.post(baseUrl, {
     username,
@@ -28,10 +26,7 @@ function LoginForm() {
 
   setUsername("");
   setPassword("");
-
-
   setRedirectToSignup(true);
-
   
   };
 
