@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { Button, Link, TextField, Typography } from "@mui/material";
 import axios from 'axios';
-import { Link, TextField, Button, Typography } from "@mui/material";
-import "../styles/SignupForm.css";
+import React, { useState } from "react";
 import * as yup from 'yup';
+import "../styles/SignupForm.css";
 import HomePage from "./HomePage";
-const baseUrl = 'http://localhost:8000/api/v1/auth/register'
+const baseUrl = 'http://localshost:8000/api/v1/auth/register'
 
 function SignupForm() {
   const [username, setUsername] = useState("");
