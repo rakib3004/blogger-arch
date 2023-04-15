@@ -2,14 +2,18 @@ import { Button, Link, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
 import '../styles/LoginForm.css';
-import SignupForm from './SignupForm';
+import HomePage from './HomePage';
 const baseUrl = 'http://localhost:8000/api/v1/auth/login';
+import {useNavigate} from 'react-router-dom';
+
 
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [redirectToSignup, setRedirectToSignup] = useState(false);
+  const [redirectToHomePage, setRedirectToHomePage] = useState(false);
+  const history = useNavigate();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,13 +30,12 @@ function LoginForm() {
 
   setUsername("");
   setPassword("");
-  setRedirectToSignup(true);
-  
+  setRedirectToHomePage(true);
+  nevigate('/');
+
   };
 
-  if (redirectToSignup) {
-    return <SignupForm />;
-  }
+ 
 
   return (
     <div>

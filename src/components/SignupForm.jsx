@@ -3,6 +3,9 @@ import axios from 'axios';
 import React, { useState } from "react";
 import * as yup from 'yup';
 import "../styles/SignupForm.css";
+import HomePage from './HomePage';
+import { useNavigate } from 'react-router-dom';
+
 const baseUrl = 'http://localhost:8000/api/v1/auth/register'
 
 function SignupForm() {
@@ -10,8 +13,9 @@ function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [redirectToHomePage, setRedirectToHomePage] = useState(false);
+  const history = useNavigate();
 
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,13 +38,12 @@ function SignupForm() {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
+    setRedirectToHomePage(true);
+    nevigate('/');
 
-
-   
   };
 
   
-
   return (
     <div>
       <Typography variant="h4" component="h2" align="center">

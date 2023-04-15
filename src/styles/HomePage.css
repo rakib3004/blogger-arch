@@ -1,0 +1,18 @@
+.display{
+    margin: 2px;
+    padding: 2px;
+}
+
+.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .link {
+    margin-left: 5px;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
