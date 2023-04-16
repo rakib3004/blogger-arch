@@ -11,7 +11,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  CircularProgress
+  CircularProgress,
+  Avatar
 } from '@mui/material';
 const baseUrl = 'http://localhost:8000/api/v1';
 const userRoute = '/users';
@@ -88,11 +89,11 @@ fetchData();
       <CardHeader
         title={user?.username}
       />
-      <CardMedia
+       <CardMedia
         component="img"
-        src="/users/h.png" height={1} width={1}
+         src="/users/h.png" height={2} width={2}
         alt="Profile"
-      />
+      /> 
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           Email : {user?.email}

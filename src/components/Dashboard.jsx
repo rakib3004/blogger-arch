@@ -18,7 +18,7 @@ import StoryBoard from './StoryBoard';
 import UserBoard from './UserBoard';
 
 
-const pages = ['Blogs', 'Friends', 'About'];
+const pages = ['Blogs', 'Users'];
 const settings = ['Account', 'Logout'];
 
 function Dashboard() {
@@ -47,7 +47,7 @@ function Dashboard() {
       setShowAccount(false);
 
   }
-  else if(page==='Friends'){
+  else if(page==='Users'){
     setShowUsers(true);
     setShowBlogs(false);
     setShowAccount(false);
