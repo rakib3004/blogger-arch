@@ -1,25 +1,25 @@
-import { useState}  from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import Account from './Account';
 import LoginForm from './LoginForm';
-import {useNavigate} from 'react-router-dom';
 import StoryBoard from './StoryBoard';
 import UserBoard from './UserBoard';
 
 
 const pages = ['Blogs', 'Friends', 'About'];
-const settings = ['Profile', 'Logout'];
+const settings = ['Account', 'Logout'];
 
 function Dashboard() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -27,6 +27,7 @@ function Dashboard() {
   const [isLogout, setIsLogout] = useState(false);
   const [showBlogs, setShowBlogs] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
 
 
 
@@ -41,10 +42,15 @@ function Dashboard() {
   const handleCloseNavMenu = (event, page) => {
     console.log(page);
     if(page==='Blogs'){
-      setShowBlogs(true)
+      setShowBlogs(true);
+      setShowUsers(false);
+      setShowAccount(false);
+
   }
-  else   if(page==='Friends'){
-    setShowUsers(true)
+  else if(page==='Friends'){
+    setShowUsers(true);
+    setShowBlogs(false);
+    setShowAccount(false);
 }
     setAnchorElNav(event.event);
   };
@@ -55,21 +61,27 @@ function Dashboard() {
     if(setting==='Logout'){
         setIsLogout(true)
     }
-    // const nevigate = useNavigate();
-    // nevigate("/login");
+    else if(setting==='Account'){
+      setShowUsers(false);
+      setShowBlogs(false);
+      setShowAccount(true);
+    }
   };
 
   if(isLogout){
     return <LoginForm/>
   }
-
-  if(showBlogs){
-    return <StoryBoard/>
+  let content;
+  if (showBlogs) {
+    content = <StoryBoard />;
+  } else  if (showUsers) {
+    content = <UserBoard />;
+  } else if(showAccount){
+    content = <Account />;
   }
-  if(showUsers){
-    return <UserBoard/>
-  }
+  
   return (
+    <div>
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -191,6 +203,10 @@ function Dashboard() {
         </Toolbar>
       </Container>
     </AppBar>
+    <div>
+      {content}
+    </div>
+        </div>
   );
 }
 export default Dashboard;

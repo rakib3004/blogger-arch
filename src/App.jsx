@@ -5,6 +5,8 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import Dashboard from './components/Dashboard';
 import StoryBoard from './components/StoryBoard';
+import UserBoard from './components/UserBoard';
+import Account from './components/Account';
 
 
 
@@ -20,6 +22,11 @@ return(
     <Route exact path="/login" Component={LoginForm} />
     <Route exact path="/signup" Component={SignupForm} />
     <Route exact path="/blogs" Component={StoryBoard} />    
+    <Route exact path="/users" Component={UserBoard} />    
+    <Route exact path="/account" Component={Account} />    
+
+
+
   </Routes>
       
 </BrowserRouter>
