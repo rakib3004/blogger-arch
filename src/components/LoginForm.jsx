@@ -1,6 +1,6 @@
 import { Button, Link, TextField, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../styles/LoginForm.css';
 import HomePage from './HomePage';
 const baseUrl = 'http://localhost:8000/api/v1/auth/login';
@@ -12,7 +12,6 @@ function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [redirectToHomePage, setRedirectToHomePage] = useState(false);
-  const history = useNavigate();
 
 
   const handleSubmit = async (event) => {
@@ -31,7 +30,8 @@ function LoginForm() {
   setUsername("");
   setPassword("");
   setRedirectToHomePage(true);
-  nevigate('/');
+  const nevigate = useNavigate();
+  nevigate("/");
 
   };
 

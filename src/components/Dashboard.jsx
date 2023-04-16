@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState}  from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,15 +14,21 @@ import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import LoginForm from './LoginForm';
 import {useNavigate} from 'react-router-dom';
+import StoryBoard from './StoryBoard';
+import UserBoard from './UserBoard';
 
 
 const pages = ['Blogs', 'Friends', 'About'];
 const settings = ['Profile', 'Logout'];
 
 function Dashboard() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [isLogout, setIsLogout] = React.useState(false);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [isLogout, setIsLogout] = useState(false);
+  const [showBlogs, setShowBlogs] = useState(false);
+  const [showUsers, setShowUsers] = useState(false);
+
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +40,12 @@ function Dashboard() {
 
   const handleCloseNavMenu = (event, page) => {
     console.log(page);
+    if(page==='Blogs'){
+      setShowBlogs(true)
+  }
+  else   if(page==='Friends'){
+    setShowUsers(true)
+}
     setAnchorElNav(event.event);
   };
 
@@ -43,11 +55,19 @@ function Dashboard() {
     if(setting==='Logout'){
         setIsLogout(true)
     }
-
+    // const nevigate = useNavigate();
+    // nevigate("/login");
   };
 
   if(isLogout){
     return <LoginForm/>
+  }
+
+  if(showBlogs){
+    return <StoryBoard/>
+  }
+  if(showUsers){
+    return <UserBoard/>
   }
   return (
     <AppBar position="static">
@@ -142,7 +162,7 @@ function Dashboard() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="../../public/Profile.jpg" />
+                <Avatar alt="User" src="/Profile.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
