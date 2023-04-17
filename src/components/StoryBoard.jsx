@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import { styled } from "@mui/system"; 
-import {
-  Card,
-  CardContent,
-  Typography,
-  Divider,
-  Grid,
-} from "@mui/material";
-const baseUrl = 'http://localhost:8000/api/v1';
-const userRoute = '/users';
-const blogRoute = '/blogs';
+// import { styled } from "@mui/system";
+import { Card, CardContent, Typography, Divider, Grid } from "@mui/material";
+const baseUrl = "http://localhost:8000/api/v1";
+const userRoute = "/users";
+const blogRoute = "/blogs";
 
 /*
 const useStyles = styled((theme) => ({
@@ -36,34 +30,28 @@ const useStyles = styled((theme) => ({
   },
 }));*/
 
-
 const StoryBoard = () => {
   const [blogs, setBlogs] = useState([]);
 
-  useEffect( () => {
-
-    async function fetchData(){
-        const response =  await axios.get(baseUrl+blogRoute);
-        console.log(response.data);
-        setBlogs(response.data);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(baseUrl + blogRoute);
+      console.log(response.data);
+      setBlogs(response.data);
     }
-fetchData();
+    fetchData();
   }, []);
 
   return (
     <>
       {blogs.map((blog) => (
-        <Card key={blog.id} >
+        <Card key={blog.id}>
           <CardContent>
-            <Typography >{blog.title}</Typography>
+            <Typography>{blog.title}</Typography>
             <Typography>{blog.user.username}</Typography>
             <Divider />
-            <Typography >
-              {blog.description}
-            </Typography>
-            <Typography >
-              {new Date(blog.createdAt).toLocaleString()}
-            </Typography>
+            <Typography>{blog.description}</Typography>
+            <Typography>{new Date(blog.createdAt).toLocaleString()}</Typography>
           </CardContent>
         </Card>
       ))}

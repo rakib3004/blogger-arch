@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 // import { styled } from "@mui/system"; 
 import {
   Card,
   CardContent,
-  Typography,
   Divider,
-  Grid,
+  Typography
 } from "@mui/material";
 const baseUrl = 'http://localhost:8000/api/v1';
 const userRoute = '/users';
