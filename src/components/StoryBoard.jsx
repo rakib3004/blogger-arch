@@ -1,36 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { styled } from "@mui/system";
 import { Card, CardContent, Typography, Divider, Grid } from "@mui/material";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
 import "../styles/StoryBoard.css";
 
-
-
-const useStyles = styled((theme) => ({
-  card: {
-    marginBottom: theme.spacing(3),
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: "1.2rem",
-  },
-  author: {
-    color: theme.palette.text.secondary,
-    fontSize: "0.9rem",
-    marginBottom: theme.spacing(1),
-  },
-  description: {
-    fontSize: "1rem",
-  },
-  createdTime: {
-    color: theme.palette.text.secondary,
-    fontSize: "0.9rem",
-    marginTop: theme.spacing(1),
-  },
-}));
 
 const StoryBoard = () => {
   const [blogs, setBlogs] = useState([]);

@@ -1,0 +1,16 @@
+.card{
+    margin-bottom:3px;
+    }
+    
+    .user{
+    font-weight: bold;
+    font-size: 2.7rem;
+    }
+   
+   
+    
+    .user-time{
+        color: rgba(0, 0, 0, 0.54) ;
+        font-size: 1.4rem;
+        margin-bottom: 0.4px;
+    }

@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-// import { styled } from "@mui/system"; 
 import {
   Card,
   CardContent,
   Divider,
-  Typography
+  Typography,
+  Button,
 } from "@mui/material";
 const baseUrl = 'http://localhost:8000/api/v1';
 const userRoute = '/users';
 const blogRoute = '/blogs';
+import "../styles/UserBoard.css";
+
 
 
 
@@ -25,21 +27,32 @@ const UserBoard = () => {
       }
   fetchData();
     }, []);
+
+    const showBlogsOpen = (event) =>[
+    ]
   
     return (
       <>
         {users.map((user) => (
-          <Card key={user.user.id} >
+          <Card key={user.user.id} className="card" >
             <CardContent>
-              <Typography >Username: {user.user.username}</Typography>
-              <Typography>Email: {user.user.email}</Typography>
               <Divider />
-              <Typography >
+              <Typography className="user">@{user.user.username}</Typography>
+
+              <Typography>Email: {user.user.email}</Typography>
+              <Typography className="user-time" >
                 Created At: {new Date(user.user.createdAt).toLocaleString()}
               </Typography>
-              <Typography >
+              <Typography className="user-time" >
                 Last Updated: {new Date(user.user.updatedAt).toLocaleString()}
               </Typography>
+              <Button
+          variant="contained"
+          color="primary"
+          onClick={showBlogsOpen}
+        >
+          Show Blogs
+        </Button>
             </CardContent>
           </Card>
         ))}
