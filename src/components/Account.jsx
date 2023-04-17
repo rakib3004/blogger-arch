@@ -62,14 +62,22 @@ function Account() {
 
   async function handleUpdatePassword() {
     event.preventDefault();
-    setIsUpdatingPassword(true);
-    console.log(user.username, newPassword);
+    setIsUpdatingPassword(false);
+    console.log(user.username, password);
     console.log(baseUrl + userRoute + `/${user.username}`);
-    const response = await axios.put(
-      baseUrl + userRoute + `/${user.username}`,
-      { password: newPassword }
-    );
-    console.log(response);
+    console.log(currentPassword,newPassword,confirmNewPassword,password);
+    try{
+      const response = await axios.put(
+        baseUrl + userRoute + `/${user.username}`,
+        { password: currentPassword },
+        { withCredentials: true }
+      );
+      console.log(response);
+    }
+    catch(error){
+      console.error(error);
+    }
+   
     setIsUpdatingPassword(false);
     handleUpdatePasswordDialogClose();
   }
@@ -88,7 +96,9 @@ function Account() {
       return;
     }
 
-    onConfirm();
+    setPassword(newPassword);
+
+    handleUpdatePassword();
   }
 
   function handleCurrentPasswordChange(event) {
@@ -105,7 +115,8 @@ function Account() {
 
   async function handleDeleteAccount() {
     setIsDeletingAccount(true);
-    const response = axios.delete(baseUrl + userRoute + `/${user.username}`);
+    const response = axios.delete(baseUrl + userRoute + `/${user.username}`,
+    { withCredentials: true });
 
     console.log(response);
     setIsDeletingAccount(false);
@@ -185,7 +196,7 @@ function Account() {
             />
             <DialogActions>
               <Button onClick={handleUpdatePasswordDialogClose}>Cancel</Button>
-              <Button type="submit" disabled={isUpdatingPassword}>
+              <Button type="submit" /*disabled={isUpdatingPassword}*/>
                 Update password
               </Button>
             </DialogActions>

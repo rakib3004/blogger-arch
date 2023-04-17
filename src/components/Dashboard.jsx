@@ -16,6 +16,8 @@ import Account from "./Account";
 import LoginForm from "./LoginForm";
 import StoryBoard from "./StoryBoard";
 import UserBoard from "./UserBoard";
+import { useNavigate } from "react-router-dom";
+
 
 const pages = ["Blogs", "Users"];
 const settings = ["Account", "Logout"];
@@ -27,6 +29,8 @@ function Dashboard() {
   const [showBlogs, setShowBlogs] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
+  const nevigateTo = useNavigate();
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -53,7 +57,7 @@ function Dashboard() {
     console.log(setting);
     setAnchorElUser(event.currentTarget);
     if (setting === "Logout") {
-      setIsLogout(true);
+        nevigateTo("/login");
     } else if (setting === "Account") {
       setShowUsers(false);
       setShowBlogs(false);
@@ -62,9 +66,7 @@ function Dashboard() {
     setAnchorElUser(null);
   };
 
-  if (isLogout) {
-    return <LoginForm />;
-  }
+  
   let content;
   if (showBlogs) {
     content = <StoryBoard />;

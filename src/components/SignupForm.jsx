@@ -13,8 +13,7 @@ function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [redirectToHomePage, setRedirectToHomePage] = useState(false);
-  const history = useNavigate();
+  const nevigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,8 +40,7 @@ function SignupForm() {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
-    setRedirectToHomePage(true);
-    nevigate("/");
+    nevigateTo("/");
   };
 
   return (

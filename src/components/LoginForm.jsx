@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [redirectToHomePage, setRedirectToHomePage] = useState(false);
+  const nevigateTo = useNavigate();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,17 +29,14 @@ function LoginForm() {
         { withCredentials: true }
       );
       console.log(response);
-
       setUsername("");
       setPassword("");
-      setRedirectToHomePage(true);
+      nevigateTo("/");
     } catch (error) {
       console.log(error);
     }
   };
-  if (redirectToHomePage) {
-    return <HomePage />;
-  }
+ 
 
   return (
     <div>
