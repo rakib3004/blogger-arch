@@ -4,14 +4,14 @@ import { Card, CardContent, Typography, Divider, Grid } from "@mui/material";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
-import "../styles/StoryBoard.css";
+import "../styles/BlogBoard.css";
 
 
-const StoryBoard = () => {
+const BlogBoard = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async ()=> {
       const response = await axios.get(baseUrl + blogRoute);
       console.log(response.data);
       setBlogs(response.data);
@@ -38,4 +38,4 @@ const StoryBoard = () => {
   );
 };
 
-export default StoryBoard;
+export default BlogBoard;

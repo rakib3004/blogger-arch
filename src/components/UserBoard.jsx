@@ -20,7 +20,7 @@ const UserBoard = () => {
   
     useEffect( () => {
   
-      async function fetchData(){
+      const fetchData = async ()=> {
           const response =  await axios.get(baseUrl+userRoute);
           console.log(response.data);
           setUsers(response.data);
@@ -29,6 +29,7 @@ const UserBoard = () => {
     }, []);
 
     const showBlogsOpen = (event) =>[
+
     ]
   
     return (

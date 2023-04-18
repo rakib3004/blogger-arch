@@ -9,16 +9,15 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
-
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -34,7 +33,7 @@ function Account() {
   const [passwordError, setPasswordError] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const token = Cookies.get("jwt");
       console.log(token);
 
@@ -45,78 +44,76 @@ function Account() {
       const response = await axios.get(baseUrl + userRoute + `/${username}`);
       console.log(response);
       setUser(response.data.user);
-    }
+    };
     fetchData();
   }, []);
 
-  function handleUpdatePasswordDialogOpen() {
+  const handleUpdatePasswordDialogOpen = () => {
     setUpdatePasswordDialogOpen(true);
-  }
+  };
 
-  function handleUpdatePasswordDialogClose() {
+  const handleUpdatePasswordDialogClose = () => {
     setUpdatePasswordDialogOpen(false);
     setCurrentPassword("");
     setNewPassword("");
     setConfirmNewPassword("");
-  }
+  };
 
-  async function handleUpdatePassword() {
+  const handleUpdatePassword = async () => {
     event.preventDefault();
     setIsUpdatingPassword(false);
+    handleConfirm();
     console.log(user.username, password);
     console.log(baseUrl + userRoute + `/${user.username}`);
-    console.log(currentPassword,newPassword,confirmNewPassword,password);
-    try{
+    console.log(currentPassword, newPassword, confirmNewPassword, password);
+    try {
       const response = await axios.put(
         baseUrl + userRoute + `/${user.username}`,
-        { password: currentPassword },
+        { password: newPassword },
         { withCredentials: true }
       );
       console.log(response);
-    }
-    catch(error){
+    } catch (error) {
       console.error(error);
     }
-   
+
     setIsUpdatingPassword(false);
     handleUpdatePasswordDialogClose();
-  }
+  };
 
-  function handleDeleteAccountDialogOpen() {
+  const handleDeleteAccountDialogOpen = () => {
     setDeleteAccountDialogOpen(true);
   }
 
-  function handleDeleteAccountDialogClose() {
+  const handleDeleteAccountDialogClose = () => {
     setDeleteAccountDialogOpen(false);
   }
 
-  function handleConfirm() {
+  const handleConfirm = () => {
     if (newPassword !== confirmNewPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
-
     setPassword(newPassword);
-
-    handleUpdatePassword();
   }
 
-  function handleCurrentPasswordChange(event) {
+  const handleCurrentPasswordChange = () => {
     setCurrentPassword(event.target.value);
   }
 
-  function handleNewPasswordChange(event) {
+  const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
   }
 
-  function handleConfirmNewPasswordChange(event) {
+  const handleConfirmNewPasswordChange= (event) => {
     setConfirmNewPassword(event.target.value);
   }
 
-  async function handleDeleteAccount() {
+  const handleDeleteAccount= async () => {
     setIsDeletingAccount(true);
-    const response = axios.delete(baseUrl + userRoute + `/${user.username}`,
-    { withCredentials: true });
+    const response = axios.delete(baseUrl + userRoute + `/${user.username}`, {
+      withCredentials: true,
+    });
 
     console.log(response);
     setIsDeletingAccount(false);

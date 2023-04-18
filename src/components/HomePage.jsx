@@ -2,7 +2,7 @@ import axios from "axios";
 import * as React from "react";
 import "../styles/HomePage.css";
 import Dashboard from "./Dashboard";
-import StoryBoard from "./StoryBoard";
+import BlogBoard from "./BlogBoard";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";

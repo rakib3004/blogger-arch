@@ -14,9 +14,10 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import Account from "./Account";
 import LoginForm from "./LoginForm";
-import StoryBoard from "./StoryBoard";
+import BlogBoard from "./BlogBoard";
 import UserBoard from "./UserBoard";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 
 const pages = ["Blogs", "Users"];
@@ -57,6 +58,7 @@ function Dashboard() {
     console.log(setting);
     setAnchorElUser(event.currentTarget);
     if (setting === "Logout") {
+        Cookies.remove("jwt");
         nevigateTo("/login");
     } else if (setting === "Account") {
       setShowUsers(false);
@@ -69,7 +71,7 @@ function Dashboard() {
   
   let content;
   if (showBlogs) {
-    content = <StoryBoard />;
+    content = <BlogBoard />;
   } else if (showUsers) {
     content = <UserBoard />;
   } else if (showAccount) {
