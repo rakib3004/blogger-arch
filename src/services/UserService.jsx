@@ -1,4 +1,3 @@
-import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";

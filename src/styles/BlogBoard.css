@@ -1,3 +1,8 @@
+
+.button{
+    margin:20px;
+ }
+
 .card{
 margin-bottom:3px;
 }
@@ -20,8 +25,4 @@ margin-bottom: 1px;
     color: rgba(0, 0, 0, 0.54) ;
     font-size: 0.9rem;
     margin-bottom: 1px;
-}
-
-.createButton{
-   padding:10px;
 }
