@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardContent, Typography, Divider, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Divider, Grid, IconButton, Button } from "@mui/material";
+import {Add} from "@mui/icons-material"
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
@@ -21,6 +22,15 @@ const BlogBoard = () => {
 
   return (
     <>
+    
+    <Button
+          variant="contained"
+          color="success"
+         // onClick={handleDeleteAccount}
+         className="createButton"
+        >
+         <Add /> Create Blog
+        </Button>
       {blogs.map((blog) => (
         <Card key={blog.id} className="card">
           <CardContent>

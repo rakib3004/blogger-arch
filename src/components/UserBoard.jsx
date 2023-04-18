@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {getAllUsers} from "../services/UserService";
 import {
   Card,
   CardContent,
@@ -10,27 +11,27 @@ import {
 const baseUrl = 'http://localhost:8000/api/v1';
 const userRoute = '/users';
 const blogRoute = '/blogs';
+const authorRoute = '/author';
 import "../styles/UserBoard.css";
 
 
-
-
 const UserBoard = () => {
-    const [users, setUsers] = useState([]);
-  
+
+  const [users, setUsers] = useState([]);
     useEffect( () => {
   
       const fetchData = async ()=> {
-          const response =  await axios.get(baseUrl+userRoute);
-          console.log(response.data);
-          setUsers(response.data);
+        const response = await getAllUsers();
+        setUsers(response);
       }
   fetchData();
     }, []);
 
-    const showBlogsOpen = (event) =>[
-
-    ]
+    const showBlogsOpen = async (event, authorId) =>{
+      console.log(authorId);
+      const response = await axios.get(baseUrl+blogRoute+authorRoute+`/${authorId}`);
+      console.log(response);
+    }
   
     return (
       <>
@@ -50,7 +51,7 @@ const UserBoard = () => {
               <Button
           variant="contained"
           color="primary"
-          onClick={showBlogsOpen}
+          onClick={(event)=>showBlogsOpen(event,user.user.id)}
         >
           Show Blogs
         </Button>

@@ -18,6 +18,10 @@ import { useEffect, useState } from "react";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
+const authorRoute = '/author';
+
+import {updateUserPassword, deleteUser} from "../services/UserService";
+
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -35,14 +39,9 @@ function Account() {
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
-      console.log(token);
-
       const decodedToken = jwt_decode(token);
-      console.log(decodedToken);
       const username = decodedToken.username;
-      console.log(username);
       const response = await axios.get(baseUrl + userRoute + `/${username}`);
-      console.log(response);
       setUser(response.data.user);
     };
     fetchData();
@@ -63,19 +62,10 @@ function Account() {
     event.preventDefault();
     setIsUpdatingPassword(false);
     handleConfirm();
-    console.log(user.username, password);
-    console.log(baseUrl + userRoute + `/${user.username}`);
-    console.log(currentPassword, newPassword, confirmNewPassword, password);
-    try {
-      const response = await axios.put(
-        baseUrl + userRoute + `/${user.username}`,
-        { password: newPassword },
-        { withCredentials: true }
-      );
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+  
+    const username = user.username;
+    const password = newPassword;
+    const response = await updateUserPassword(username,password);
 
     setIsUpdatingPassword(false);
     handleUpdatePasswordDialogClose();
@@ -111,13 +101,17 @@ function Account() {
 
   const handleDeleteAccount= async () => {
     setIsDeletingAccount(true);
-    const response = axios.delete(baseUrl + userRoute + `/${user.username}`, {
-      withCredentials: true,
-    });
 
-    console.log(response);
+    const username = user.username;
+    const response = await deleteUser(username);
     setIsDeletingAccount(false);
     handleDeleteAccountDialogClose();
+  }
+
+  const showBlogsOpen = async (event, authorId) =>{
+    console.log(authorId);
+    const response = await axios.get(baseUrl+blogRoute+authorRoute+`/${authorId}`);
+    console.log(response);
   }
   return (
     <Card>
@@ -139,6 +133,13 @@ function Account() {
         <Typography variant="body2" color="textSecondary" component="p">
           Updated At: {user ? new Date(user.updatedAt).toLocaleString() : "-"}
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(event)=>showBlogsOpen(event,user.id)}
+        >
+          Show Blogs
+        </Button>
       </CardContent>
       <CardContent>
         <Button
