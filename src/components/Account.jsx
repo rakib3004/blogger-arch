@@ -105,7 +105,6 @@ function Account() {
 
   const handleDeleteAccount = async () => {
     setIsDeletingAccount(true);
-
     const username = user.username;
     const response = await deleteUser(username);
     setIsDeletingAccount(false);

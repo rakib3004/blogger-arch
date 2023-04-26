@@ -12,14 +12,17 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
-import {createBlog, getAllBlogs, updateBlogById, deleteBlogById} from "../services/BlogService";
+import {
+  createBlog,
+  getAllBlogs,
+  updateBlogById,
+  deleteBlogById,
+} from "../services/BlogService";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-
 
 const BlogBoard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -29,7 +32,6 @@ const BlogBoard = () => {
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
-
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
@@ -45,8 +47,6 @@ const BlogBoard = () => {
     fetchData();
   }, []);
 
- 
-
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
@@ -57,48 +57,47 @@ const BlogBoard = () => {
 
   const submitNewBlog = async () => {
     event.preventDefault();
-    const response = await createBlog(blogTitle,blogDescription);
+    const response = await createBlog(blogTitle, blogDescription);
     setBlogs(response);
-   setCreateBlogDialogClose(false);
-    handleCreateBlogDialogClose();   
+    setCreateBlogDialogClose(false);
+    handleCreateBlogDialogClose();
   };
 
-  const handleCreateBlogDialogClose = ()=>{
+  const handleCreateBlogDialogClose = () => {
     setCreateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
-  }
+  };
 
   const submitUpdatedBlog = async () => {
     event.preventDefault();
-    const response = await updateBlogById(blogId,blogTitle,blogDescription);
+    const response = await updateBlogById(blogId, blogTitle, blogDescription);
     setBlogs(response);
-   setUpdateBlogDialogClose(false);
-   handleUpdateBlogDialogClose();   
+    setUpdateBlogDialogClose(false);
+    handleUpdateBlogDialogClose();
   };
 
-  const handleUpdateBlogDialogClose = ()=>{
+  const handleUpdateBlogDialogClose = () => {
     setUpdateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
-  }
+  };
 
   const creatingBlogPost = () => {
     setCreateBlogDialogOpen(true);
-
   };
 
-  const updatingBlogPost = (blog)=>{
+  const updatingBlogPost = (blog) => {
     setBlogTitle(blog.title);
     setBlogDescription(blog.description);
     setBlogId(blog.id);
     setUpdateBlogDialogOpen(true);
-   }
- 
-   const deletingBlogPost = ()=>{
-    setDeleteBlogDialogOpen(true);
-   }
+  };
 
+  const deletingBlogPost = async (blogId) => {
+    const response = await deleteBlogById(blogId);
+    setBlogs(response);
+  };
 
   return (
     <>
@@ -110,23 +109,26 @@ const BlogBoard = () => {
       >
         <Add /> Create Blog
       </Button>
-      {blogs && blogs.map((blog) => (
-        <Card key={blog.id} className="card">
-          <CardContent>
-            <Typography className="title">{blog.title}</Typography>
-            <Typography className="author">@{blog.user.username}</Typography>
-            <Divider />
-            <Typography className="description">{blog.description}</Typography>
-            <Typography className="time">
-              Created at: {new Date(blog.createdAt).toLocaleString()}
-            </Typography>
-            <Typography className="time">
-              Updated at: {new Date(blog.updatedAt).toLocaleString()}
-            </Typography>
-            <Button
+      {blogs &&
+        blogs.map((blog) => (
+          <Card key={blog.id} className="card">
+            <CardContent>
+              <Typography className="title">{blog.title}</Typography>
+              <Typography className="author">@{blog.user.username}</Typography>
+              <Divider />
+              <Typography className="description">
+                {blog.description}
+              </Typography>
+              <Typography className="time">
+                Created at: {new Date(blog.createdAt).toLocaleString()}
+              </Typography>
+              <Typography className="time">
+                Updated at: {new Date(blog.updatedAt).toLocaleString()}
+              </Typography>
+              <Button
                 variant="contained"
                 color="primary"
-                onClick={()=>updatingBlogPost(blog)}
+                onClick={() => updatingBlogPost(blog)}
                 disabled={username !== blog.user.username}
               >
                 Update Blog
@@ -134,15 +136,14 @@ const BlogBoard = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={deletingBlogPost}
+                onClick={() => deletingBlogPost(blog.id)}
                 disabled={username !== blog.user.username}
               >
                 Delete Blog
               </Button>
-          </CardContent>
-        </Card>
-      ))}
-
+            </CardContent>
+          </Card>
+        ))}
 
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
@@ -169,17 +170,13 @@ const BlogBoard = () => {
 
             <DialogActions>
               <Button onClick={handleCreateBlogDialogClose}>Cancel</Button>
-              <Button type="submit">
-                Create Blog
-              </Button>
+              <Button type="submit">Create Blog</Button>
             </DialogActions>
           </form>
         </DialogContent>
       </Dialog>
 
-
-
-  <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
+      <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitUpdatedBlog}>
@@ -204,14 +201,13 @@ const BlogBoard = () => {
 
             <DialogActions>
               <Button onClick={handleUpdateBlogDialogClose}>Cancel</Button>
-              <Button type="submit">
-                Update Blog
-              </Button>
+              <Button type="submit">Update Blog</Button>
             </DialogActions>
           </form>
         </DialogContent>
       </Dialog>
 
+      
     </>
   );
 };

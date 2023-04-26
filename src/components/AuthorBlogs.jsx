@@ -15,7 +15,13 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
-import { createBlog, getBlogByAuthorId } from "../services/BlogService";
+import {
+  createBlog,
+  getAllBlogs,
+  updateBlogById,
+  deleteBlogById,
+  getBlogByAuthorId,
+} from "../services/BlogService";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
@@ -23,12 +29,12 @@ import jwt_decode from "jwt-decode";
 const AuthorBlogs = () => {
   const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
+  const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
-
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
@@ -44,8 +50,6 @@ const AuthorBlogs = () => {
     fetchData();
   }, []);
 
- 
-
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
@@ -57,7 +61,6 @@ const AuthorBlogs = () => {
     event.preventDefault();
     const response = await createBlog(blogTitle, blogDescription);
     setBlogs(response);
-    setCreateBlogDialogOpen(false);
     setCreateBlogDialogClose(false);
     handleCreateBlogDialogClose();
   };
@@ -67,18 +70,35 @@ const AuthorBlogs = () => {
     setBlogTitle("");
     setBlogDescription("");
   };
+ const submitUpdatedBlog = async () => {
+    event.preventDefault();
+    const response = await updateBlogById(blogId, blogTitle, blogDescription);
+    setBlogs(response);
+    setUpdateBlogDialogClose(false);
+    handleUpdateBlogDialogClose();
+  };
+
+  const handleUpdateBlogDialogClose = () => {
+    setUpdateBlogDialogOpen(false);
+    setBlogTitle("");
+    setBlogDescription("");
+  };
 
   const creatingBlogPost = () => {
     setCreateBlogDialogOpen(true);
   };
 
-  const updatingBlogPost = ()=>{
+  const updatingBlogPost = (blog) => {
+    setBlogTitle(blog.title);
+    setBlogDescription(blog.description);
+    setBlogId(blog.id);
     setUpdateBlogDialogOpen(true);
-   }
- 
-   const deletingBlogPost = ()=>{
-    setDeleteBlogDialogOpen(true);
-   }
+  };
+
+  const deletingBlogPost = async (blogId) => {
+    const response = await deleteBlogById(blogId);
+    setBlogs(response);
+  };
 
   return (
     <>
@@ -106,10 +126,10 @@ const AuthorBlogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-              <Button
+            <Button
                 variant="contained"
                 color="primary"
-                onClick={updatingBlogPost}
+                onClick={() => updatingBlogPost(blog)}
                 disabled={username !== blog.user.username}
               >
                 Update Blog
@@ -117,7 +137,7 @@ const AuthorBlogs = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={deletingBlogPost}
+                onClick={() => deletingBlogPost(blog.id)}
                 disabled={username !== blog.user.username}
               >
                 Delete Blog
@@ -153,6 +173,39 @@ const AuthorBlogs = () => {
             <DialogActions>
               <Button onClick={handleCreateBlogDialogClose}>Cancel</Button>
               <Button type="submit">Create Blog</Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
+
+         <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
+        <DialogTitle>Update Blog</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitUpdatedBlog}>
+            <TextField
+              label="Title"
+              type="text"
+              value={blogTitle}
+              onChange={handleBlogTitleChange}
+              margin="normal"
+              required
+              fullWidth
+            />
+            <TextField
+              label="Description"
+              type="text"
+              value={blogDescription}
+              onChange={handleBlogDescriptionChange}
+              margin="normal"
+              required
+              fullWidth
+            />
+
+            <DialogActions>
+              <Button onClick={handleUpdateBlogDialogClose}>Cancel</Button>
+              <Button type="submit">Update Blog</Button>
             </DialogActions>
           </form>
         </DialogContent>
