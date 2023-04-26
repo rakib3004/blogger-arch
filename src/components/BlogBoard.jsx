@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Card,
   CardContent,
@@ -13,7 +12,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  TextAreaAutosize,
 
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
@@ -21,7 +19,7 @@ const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
 const blogRoute = "/blogs";
 import "../styles/BlogBoard.css";
-import {createBlog} from "../services/BlogService";
+import {createBlog, getAllBlogs} from "../services/BlogService";
 
 
 
@@ -35,9 +33,8 @@ const BlogBoard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(baseUrl + blogRoute);
-      console.log(response.data);
-      setBlogs(response.data);
+      const allBlogs = await getAllBlogs();
+      setBlogs(allBlogs);
     };
     fetchData();
   }, []);
@@ -53,7 +50,7 @@ const BlogBoard = () => {
   const handleBlogDescriptionChange = (event) => {
     setBlogDescription(event.target.value);
   };
-  const createBlog = async () => {
+  const submitNewBlog = async () => {
     event.preventDefault();
     const response = await createBlog(blogTitle,blogDescription);
     setBlogs(response);
@@ -78,7 +75,7 @@ const BlogBoard = () => {
       >
         <Add /> Create Blog
       </Button>
-      {blogs.map((blog) => (
+      {blogs && blogs.map((blog) => (
         <Card key={blog.id} className="card">
           <CardContent>
             <Typography className="title">{blog.title}</Typography>
@@ -98,7 +95,7 @@ const BlogBoard = () => {
       <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
-          <form onSubmit={createBlog}>
+          <form onSubmit={submitNewBlog}>
             <TextField
               label="Title"
               type="text"
@@ -108,7 +105,7 @@ const BlogBoard = () => {
               required
               fullWidth
             />
-            <TextAreaAutosize
+            <TextField
               label="Description"
               type="text"
               value={blogDescription}

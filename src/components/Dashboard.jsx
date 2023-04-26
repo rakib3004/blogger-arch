@@ -19,7 +19,6 @@ import UserBoard from "./UserBoard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-
 const pages = ["Blogs", "Users"];
 const settings = ["Account", "Logout"];
 
@@ -31,7 +30,6 @@ function Dashboard() {
   const [showUsers, setShowUsers] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const nevigateTo = useNavigate();
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,8 +56,8 @@ function Dashboard() {
     console.log(setting);
     setAnchorElUser(event.currentTarget);
     if (setting === "Logout") {
-        Cookies.remove("jwt");
-        nevigateTo("/login");
+      Cookies.remove("jwt");
+      nevigateTo("/login");
     } else if (setting === "Account") {
       setShowUsers(false);
       setShowBlogs(false);
@@ -68,7 +66,6 @@ function Dashboard() {
     setAnchorElUser(null);
   };
 
-  
   let content;
   if (showBlogs) {
     content = <BlogBoard />;

@@ -1,12 +1,10 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
 import * as yup from "yup";
 import "../styles/SignupForm.css";
 import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
-
-const baseUrl = "http://localhost:8000/api/v1/auth/register";
+import { registerUser } from "../services/AuthService";
 
 function SignupForm() {
   const [username, setUsername] = useState("");
@@ -24,17 +22,8 @@ function SignupForm() {
     console.log(`Password: ${password}`);
     console.log(`Confirm Password: ${confirmPassword}`);
 
-    const response = await axios.post(
-      baseUrl,
-      {
-        username,
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
+    const response = await registerUser(username, email, password);
 
-    console.log(response);
 
     setUsername("");
     setEmail("");

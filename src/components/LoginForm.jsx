@@ -1,17 +1,14 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import "../styles/LoginForm.css";
 import HomePage from "./HomePage";
-const baseUrl = "http://localhost:8000/api/v1/auth/login";
 import { useNavigate } from "react-router-dom";
-
+import { loginUser } from "../services/AuthService";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const nevigateTo = useNavigate();
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,16 +16,7 @@ function LoginForm() {
     console.log(`Username: ${username}`);
     console.log(`Password: ${password}`);
     try {
-      console.log(baseUrl);
-     const response = await axios.post(
-        baseUrl,
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
-      console.log(response);
+      const response = await loginUser(username, password);
       setUsername("");
       setPassword("");
       nevigateTo("/");
@@ -36,7 +24,6 @@ function LoginForm() {
       console.log(error);
     }
   };
- 
 
   return (
     <div>

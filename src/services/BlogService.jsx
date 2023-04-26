@@ -27,8 +27,9 @@ export const getAllBlogs = async () => {
       );
           console.log(newBlog);
 
-      const response = await getAllBlogs();
-      return response.data;
+      const allBlogs = await getAllBlogs();
+      console.log('after create blog: ',allBlogs);
+      return allBlogs;
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import {getAllUsers} from "../services/UserService";
+import { getBlogByAuthorId } from "../services/BlogService";
 import {
   Card,
   CardContent,
@@ -28,8 +28,7 @@ const UserBoard = () => {
     }, []);
 
     const showBlogsOpen = async (event, authorId) =>{
-      console.log(authorId);
-      const response = await axios.get(baseUrl+blogRoute+authorRoute+`/${authorId}`);
+      const response = await getBlogByAuthorId(authorId);
       console.log(response);
     }
   
