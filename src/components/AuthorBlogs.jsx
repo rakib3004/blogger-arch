@@ -16,11 +16,13 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
-import {createBlog, getAllBlogs} from "../services/BlogService";
+import {createBlog, getBlogByAuthorId} from "../services/BlogService";
 
 
 
-const BlogBoard = () => {
+const AuthorBlogs = (props) => {
+    const {authorId} = props.match.params;
+    console.log(authorId);
   const [blogs, setBlogs] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
@@ -30,7 +32,8 @@ const BlogBoard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const allBlogs = await getAllBlogs();
+      const allBlogs = await getBlogByAuthorId(authorId);.
+      console.log(blogs);
       setBlogs(allBlogs);
     };
     fetchData();
@@ -126,4 +129,4 @@ const BlogBoard = () => {
   );
 };
 
-export default BlogBoard;
+export default AuthorBlogs;

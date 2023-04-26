@@ -22,7 +22,7 @@ import Cookies from "js-cookie";
 const pages = ["Blogs", "Users"];
 const settings = ["Account", "Logout"];
 
-function Dashboard() {
+const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLogout, setIsLogout] = useState(false);
@@ -211,5 +211,5 @@ function Dashboard() {
       <div>{content}</div>
     </div>
   );
-}
+};
 export default Dashboard;

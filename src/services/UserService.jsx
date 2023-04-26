@@ -9,8 +9,10 @@ export const getAllUsers = async () => {
     return response.data;
   };
 
-  export const getUserByUsername = async (id) => {
-    const response = await axios.put(`/api/Users/${id}`);
+  export const getUserByUsername = async (username) => {
+    const response = await axios.get(baseUrl + userRoute + `/${username}`, {
+      withCredentials: true,
+    });
     return response.data;
   };
 

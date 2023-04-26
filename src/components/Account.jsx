@@ -15,12 +15,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-const baseUrl = "http://localhost:8000/api/v1";
-const userRoute = "/users";
-const blogRoute = "/blogs";
-const authorRoute = '/author';
-
-import {updateUserPassword, deleteUser} from "../services/UserService";
+import { getBlogByAuthorId } from "../services/BlogService"; 
+import {getUserByUsername, updateUserPassword, deleteUser} from "../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 
 function Account() {
@@ -35,14 +32,16 @@ function Account() {
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [passwordError, setPasswordError] = useState(null);
+  const nevigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
       const decodedToken = jwt_decode(token);
       const username = decodedToken.username;
-      const response = await axios.get(baseUrl + userRoute + `/${username}`);
-      setUser(response.data.user);
+      const response = await getUserByUsername(username);
+      console.log(response);
+      setUser(response.user);
     };
     fetchData();
   }, []);
@@ -94,7 +93,10 @@ function Account() {
   const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
   }
-
+const showAuthorAllBlog = () =>{
+  console.log('click to show author all blogs')
+  nevigateTo(`/blogs/author/${user.id}`);
+}
   const handleConfirmNewPasswordChange= (event) => {
     setConfirmNewPassword(event.target.value);
   }
@@ -108,11 +110,10 @@ function Account() {
     handleDeleteAccountDialogClose();
   }
 
-  const showBlogsOpen = async (event, authorId) =>{
-    console.log(authorId);
-    const response = await axios.get(baseUrl+blogRoute+authorRoute+`/${authorId}`);
+ /* const showBlogsOpen = async (event, authorId) =>{
+    const response = await getBlogByAuthorId(authorId);
     console.log(response);
-  }
+  }*/
   return (
     <Card>
       <CardHeader title={user?.username} />
@@ -136,7 +137,8 @@ function Account() {
         <Button
           variant="contained"
           color="primary"
-          onClick={(event)=>showBlogsOpen(event,user.id)}
+          // onClick={() => nevigateTo(`/blogs/author/${user.id}`)}
+          onClick={showAuthorAllBlog}
         >
           Show Blogs
         </Button>

@@ -8,10 +8,6 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-const baseUrl = 'http://localhost:8000/api/v1';
-const userRoute = '/users';
-const blogRoute = '/blogs';
-const authorRoute = '/author';
 import "../styles/UserBoard.css";
 
 
@@ -19,7 +15,6 @@ const UserBoard = () => {
 
   const [users, setUsers] = useState([]);
     useEffect( () => {
-  
       const fetchData = async ()=> {
         const response = await getAllUsers();
         setUsers(response);

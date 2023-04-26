@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import BlogBoard from './components/BlogBoard';
 import UserBoard from './components/UserBoard';
 import Account from './components/Account';
+import NavBar from './components/NavBar';
 
 
 
@@ -15,13 +16,13 @@ function App() {
 
 return(
   <BrowserRouter>
+  <NavBar/>
   <Routes>
-  <Route exact path="/" Component={Dashboard} />
 
-    <Route exact path="/home" Component={HomePage} />
     <Route exact path="/login" Component={LoginForm} />
     <Route exact path="/signup" Component={SignupForm} />
-    <Route exact path="/blogs" Component={BlogBoard} />    
+    <Route exact path="/blogs" Component={BlogBoard} /> 
+    <Route exact path="/blogs/author/:id" Component={BlogBoard} />    
     <Route exact path="/users" Component={UserBoard} />    
     <Route exact path="/account" Component={Account} />    
 
