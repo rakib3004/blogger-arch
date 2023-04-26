@@ -16,16 +16,20 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
-import {createBlog, getAllBlogs} from "../services/BlogService";
+import {createBlog, getAllBlogs, updateBlogById, deleteBlogById} from "../services/BlogService";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
 
 const BlogBoard = () => {
   const [blogs, setBlogs] = useState([]);
+  const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
+  const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
+  const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
+
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
@@ -41,9 +45,7 @@ const BlogBoard = () => {
     fetchData();
   }, []);
 
-  const createBlogPost = () => {
-    setCreateBlogDialogOpen(true);
-  };
+ 
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
@@ -52,11 +54,11 @@ const BlogBoard = () => {
   const handleBlogDescriptionChange = (event) => {
     setBlogDescription(event.target.value);
   };
+
   const submitNewBlog = async () => {
     event.preventDefault();
     const response = await createBlog(blogTitle,blogDescription);
     setBlogs(response);
-   setCreateBlogDialogOpen(false);
    setCreateBlogDialogClose(false);
     handleCreateBlogDialogClose();   
   };
@@ -67,12 +69,34 @@ const BlogBoard = () => {
     setBlogDescription("");
   }
 
-  const handleUpdateBlogDialogOpen = ()=>{
-    console.log('update......... ............ ...........');
+  const submitUpdatedBlog = async () => {
+    event.preventDefault();
+    const response = await updateBlogById(blogId,blogTitle,blogDescription);
+    setBlogs(response);
+   setUpdateBlogDialogClose(false);
+   handleUpdateBlogDialogClose();   
+  };
+
+  const handleUpdateBlogDialogClose = ()=>{
+    setUpdateBlogDialogOpen(false);
+    setBlogTitle("");
+    setBlogDescription("");
+  }
+
+  const creatingBlogPost = () => {
+    setCreateBlogDialogOpen(true);
+
+  };
+
+  const updatingBlogPost = (blog)=>{
+    setBlogTitle(blog.title);
+    setBlogDescription(blog.description);
+    setBlogId(blog.id);
+    setUpdateBlogDialogOpen(true);
    }
  
-   const handleDeleteBlogDialogOpen = ()=>{
-     console.log('delete............ ............. ...........');
+   const deletingBlogPost = ()=>{
+    setDeleteBlogDialogOpen(true);
    }
 
 
@@ -81,7 +105,7 @@ const BlogBoard = () => {
       <Button
         variant="contained"
         color="success"
-        onClick={createBlogPost}
+        onClick={creatingBlogPost}
         className="button"
       >
         <Add /> Create Blog
@@ -102,7 +126,7 @@ const BlogBoard = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={handleUpdateBlogDialogOpen}
+                onClick={()=>updatingBlogPost(blog)}
                 disabled={username !== blog.user.username}
               >
                 Update Blog
@@ -110,7 +134,7 @@ const BlogBoard = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleDeleteBlogDialogOpen}
+                onClick={deletingBlogPost}
                 disabled={username !== blog.user.username}
               >
                 Delete Blog
@@ -119,7 +143,8 @@ const BlogBoard = () => {
         </Card>
       ))}
 
-      <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
+
+      <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitNewBlog}>
@@ -138,7 +163,6 @@ const BlogBoard = () => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
-              rowsMin={9} 
               required
               fullWidth
             />
@@ -152,6 +176,42 @@ const BlogBoard = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+
+
+  <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
+        <DialogTitle>Update Blog</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitUpdatedBlog}>
+            <TextField
+              label="Title"
+              type="text"
+              value={blogTitle}
+              onChange={handleBlogTitleChange}
+              margin="normal"
+              required
+              fullWidth
+            />
+            <TextField
+              label="Description"
+              type="text"
+              value={blogDescription}
+              onChange={handleBlogDescriptionChange}
+              margin="normal"
+              required
+              fullWidth
+            />
+
+            <DialogActions>
+              <Button onClick={handleUpdateBlogDialogClose}>Cancel</Button>
+              <Button type="submit">
+                Update Blog
+              </Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 };

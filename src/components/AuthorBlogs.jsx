@@ -26,6 +26,10 @@ const AuthorBlogs = () => {
   const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
+  const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
+  const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
+
+
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
 
@@ -40,9 +44,7 @@ const AuthorBlogs = () => {
     fetchData();
   }, []);
 
-  const createBlogPost = () => {
-    setCreateBlogDialogOpen(true);
-  };
+ 
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
@@ -66,20 +68,24 @@ const AuthorBlogs = () => {
     setBlogDescription("");
   };
 
-  const handleUpdateBlogDialogOpen = () => {
-    console.log("update......... ............ ...........");
+  const creatingBlogPost = () => {
+    setCreateBlogDialogOpen(true);
   };
 
-  const handleDeleteBlogDialogOpen = () => {
-    console.log("delete............ ............. ...........");
-  };
+  const updatingBlogPost = ()=>{
+    setUpdateBlogDialogOpen(true);
+   }
+ 
+   const deletingBlogPost = ()=>{
+    setDeleteBlogDialogOpen(true);
+   }
 
   return (
     <>
       <Button
         variant="contained"
         color="success"
-        onClick={createBlogPost}
+        onClick={creatingBlogPost}
         className="button"
       >
         <Add /> Create Blog
@@ -103,7 +109,7 @@ const AuthorBlogs = () => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleUpdateBlogDialogOpen}
+                onClick={updatingBlogPost}
                 disabled={username !== blog.user.username}
               >
                 Update Blog
@@ -111,7 +117,7 @@ const AuthorBlogs = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleDeleteBlogDialogOpen}
+                onClick={deletingBlogPost}
                 disabled={username !== blog.user.username}
               >
                 Delete Blog
@@ -120,7 +126,7 @@ const AuthorBlogs = () => {
           </Card>
         ))}
 
-      <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
+      <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitNewBlog}>

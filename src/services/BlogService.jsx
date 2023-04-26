@@ -25,33 +25,33 @@ export const getAllBlogs = async () => {
         { title,description },
         { withCredentials: true }
       );
-          console.log(newBlog);
 
       const allBlogs = await getAllBlogs();
-      console.log('after create blog: ',allBlogs);
       return allBlogs;
     } catch (error) {
       console.error(error);
     }
   };
-  export const updateBlogById = async (username, title,description) => {
+  export const updateBlogById = async (blogId, title,description) => {
     try {
       const response = await axios.put(
         baseUrl + blogRoute + `/${blogId}`,
         { title,description },
         { withCredentials: true }
       );
-      return response;
+      const allBlogs = await getAllBlogs();
+      return allBlogs;
     } catch (error) {
       console.error(error);
     }
   };
 
-  export const deleteBlogById = async (username) => {
+  export const deleteBlogById = async (blogId) => {
     const response = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
       withCredentials: true,
     });
-    return response;
+    const allBlogs = await getAllBlogs();
+    return allBlogs;
 
   };
 
