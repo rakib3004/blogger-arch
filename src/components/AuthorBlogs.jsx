@@ -12,28 +12,29 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
-import {createBlog, getBlogByAuthorId} from "../services/BlogService";
+import { createBlog, getBlogByAuthorId } from "../services/BlogService";
+import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
-
-
-const AuthorBlogs = (props) => {
-    const {authorId} = props.match.params;
-    console.log(authorId);
+const AuthorBlogs = () => {
+  const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
+  const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
-
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const allBlogs = await getBlogByAuthorId(authorId);.
-      console.log(blogs);
+      const token = Cookies.get("jwt");
+      const decodedToken = jwt_decode(token);
+      setUsername(decodedToken.username);
+      const allBlogs = await getBlogByAuthorId(authorId);
       setBlogs(allBlogs);
     };
     fetchData();
@@ -52,18 +53,26 @@ const AuthorBlogs = (props) => {
   };
   const submitNewBlog = async () => {
     event.preventDefault();
-    const response = await createBlog(blogTitle,blogDescription);
+    const response = await createBlog(blogTitle, blogDescription);
     setBlogs(response);
-   setCreateBlogDialogOpen(false);
-   setCreateBlogDialogClose(false);
-    handleCreateBlogDialogClose();   
+    setCreateBlogDialogOpen(false);
+    setCreateBlogDialogClose(false);
+    handleCreateBlogDialogClose();
   };
 
-  const handleCreateBlogDialogClose = ()=>{
+  const handleCreateBlogDialogClose = () => {
     setCreateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
-  }
+  };
+
+  const handleUpdateBlogDialogOpen = () => {
+    console.log("update......... ............ ...........");
+  };
+
+  const handleDeleteBlogDialogOpen = () => {
+    console.log("delete............ ............. ...........");
+  };
 
   return (
     <>
@@ -75,22 +84,41 @@ const AuthorBlogs = (props) => {
       >
         <Add /> Create Blog
       </Button>
-      {blogs && blogs.map((blog) => (
-        <Card key={blog.id} className="card">
-          <CardContent>
-            <Typography className="title">{blog.title}</Typography>
-            <Typography className="author">@{blog.user.username}</Typography>
-            <Divider />
-            <Typography className="description">{blog.description}</Typography>
-            <Typography className="time">
-              Created at: {new Date(blog.createdAt).toLocaleString()}
-            </Typography>
-            <Typography className="time">
-              Updated at: {new Date(blog.updatedAt).toLocaleString()}
-            </Typography>
-          </CardContent>
-        </Card>
-      ))}
+      {blogs &&
+        blogs.map((blog) => (
+          <Card key={blog.id} className="card">
+            <CardContent>
+              <Typography className="title">{blog.title}</Typography>
+              <Typography className="author">@{blog.user.username}</Typography>
+              <Divider />
+              <Typography className="description">
+                {blog.description}
+              </Typography>
+              <Typography className="time">
+                Created at: {new Date(blog.createdAt).toLocaleString()}
+              </Typography>
+              <Typography className="time">
+                Updated at: {new Date(blog.updatedAt).toLocaleString()}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdateBlogDialogOpen}
+                disabled={username !== blog.user.username}
+              >
+                Update Blog
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteBlogDialogOpen}
+                disabled={username !== blog.user.username}
+              >
+                Delete Blog
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
 
       <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
@@ -111,16 +139,14 @@ const AuthorBlogs = (props) => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
-              rowsMin={9} 
+              rowsMin={9}
               required
               fullWidth
             />
 
             <DialogActions>
               <Button onClick={handleCreateBlogDialogClose}>Cancel</Button>
-              <Button type="submit">
-                Create Blog
-              </Button>
+              <Button type="submit">Create Blog</Button>
             </DialogActions>
           </form>
         </DialogContent>

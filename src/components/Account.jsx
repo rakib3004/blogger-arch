@@ -94,8 +94,11 @@ function Account() {
     setNewPassword(event.target.value);
   }
 const showAuthorAllBlog = () =>{
-  console.log('click to show author all blogs')
+  console.log('click to show author all blogs');
   nevigateTo(`/blogs/author/${user.id}`);
+
+  console.log('failed to display');
+
 }
   const handleConfirmNewPasswordChange= (event) => {
     setConfirmNewPassword(event.target.value);

@@ -17,11 +17,13 @@ import {
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
 import {createBlog, getAllBlogs} from "../services/BlogService";
-
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
 
 const BlogBoard = () => {
   const [blogs, setBlogs] = useState([]);
+  const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
 
@@ -30,6 +32,9 @@ const BlogBoard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = Cookies.get("jwt");
+      const decodedToken = jwt_decode(token);
+      setUsername(decodedToken.username);
       const allBlogs = await getAllBlogs();
       setBlogs(allBlogs);
     };
@@ -62,6 +67,15 @@ const BlogBoard = () => {
     setBlogDescription("");
   }
 
+  const handleUpdateBlogDialogOpen = ()=>{
+    console.log('update......... ............ ...........');
+   }
+ 
+   const handleDeleteBlogDialogOpen = ()=>{
+     console.log('delete............ ............. ...........');
+   }
+
+
   return (
     <>
       <Button
@@ -85,6 +99,22 @@ const BlogBoard = () => {
             <Typography className="time">
               Updated at: {new Date(blog.updatedAt).toLocaleString()}
             </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUpdateBlogDialogOpen}
+                disabled={username !== blog.user.username}
+              >
+                Update Blog
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteBlogDialogOpen}
+                disabled={username !== blog.user.username}
+              >
+                Delete Blog
+              </Button>
           </CardContent>
         </Card>
       ))}

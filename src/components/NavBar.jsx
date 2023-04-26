@@ -38,14 +38,25 @@ const NavBar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (event, page) => {
+  const handleCloseNavMenu = (event) => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event, setting) => {
+  const handleCloseUserMenu = (event,action) => {
     setAnchorElUser(null);
+
+    (action==='Account')?redirectToAccountPage():redirectToLoginPage();
   };
 
+  const redirectToAccountPage = () =>{
+    setAnchorElNav(null);
+    nevigateTo('/account');
+  }
+const redirectToLoginPage = () =>{
+  setAnchorElNav(null);
+  Cookies.remove("jwt");
+  nevigateTo('/login');
+  }
   return (
     <div>
       <AppBar position="static">
@@ -169,10 +180,10 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key={account} onClick={() => nevigateTo('/account')}>
+                <MenuItem key={account} onClick={(event)=>handleCloseUserMenu(event,account)}>
                   <Typography textAlign="center">{account}</Typography>
                 </MenuItem>
-                <MenuItem key={logout} onClick={() => nevigateTo('/login')}>
+                <MenuItem key={logout} onClick={(event)=>handleCloseUserMenu(event,logout)}>
                   <Typography textAlign="center">{logout}</Typography>
                 </MenuItem>
               </Menu>
