@@ -10,15 +10,19 @@ import {
   DialogTitle,
   TextField,
   Typography,
+  Avatar,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { getBlogByAuthorId } from "../services/BlogService"; 
-import {getUserByUsername, updateUserPassword, deleteUser} from "../services/UserService";
+import { getBlogByAuthorId } from "../services/BlogService";
+import {
+  getUserByUsername,
+  updateUserPassword,
+  deleteUser,
+} from "../services/UserService";
 import { useNavigate } from "react-router-dom";
-
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -40,7 +44,6 @@ function Account() {
       const decodedToken = jwt_decode(token);
       const username = decodedToken.username;
       const response = await getUserByUsername(username);
-      console.log(response);
       setUser(response.user);
     };
     fetchData();
@@ -61,10 +64,10 @@ function Account() {
     event.preventDefault();
     setIsUpdatingPassword(false);
     handleConfirm();
-  
+
     const username = user.username;
     const password = newPassword;
-    const response = await updateUserPassword(username,password);
+    const response = await updateUserPassword(username, password);
 
     setIsUpdatingPassword(false);
     handleUpdatePasswordDialogClose();
@@ -72,11 +75,11 @@ function Account() {
 
   const handleDeleteAccountDialogOpen = () => {
     setDeleteAccountDialogOpen(true);
-  }
+  };
 
   const handleDeleteAccountDialogClose = () => {
     setDeleteAccountDialogOpen(false);
-  }
+  };
 
   const handleConfirm = () => {
     if (newPassword !== confirmNewPassword) {
@@ -84,50 +87,38 @@ function Account() {
       return;
     }
     setPassword(newPassword);
-  }
+  };
 
   const handleCurrentPasswordChange = () => {
     setCurrentPassword(event.target.value);
-  }
+  };
 
   const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
-  }
-const showAuthorAllBlog = () =>{
-  console.log('click to show author all blogs');
-  nevigateTo(`/blogs/author/${user.id}`);
-
-  console.log('failed to display');
-
-}
-  const handleConfirmNewPasswordChange= (event) => {
+  };
+  const showAuthorAllBlog = () => {
+    nevigateTo(`/blogs/author/${user.id}`);
+  };
+  const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
-  }
+  };
 
-  const handleDeleteAccount= async () => {
+  const handleDeleteAccount = async () => {
     setIsDeletingAccount(true);
 
     const username = user.username;
     const response = await deleteUser(username);
     setIsDeletingAccount(false);
     handleDeleteAccountDialogClose();
-  }
+  };
 
- /* const showBlogsOpen = async (event, authorId) =>{
-    const response = await getBlogByAuthorId(authorId);
-    console.log(response);
-  }*/
   return (
     <Card>
-      <CardHeader title={user?.username} />
-      <CardMedia
-        component="img"
-        src="/users/h.png"
-        height={2}
-        width={2}
-        alt="Profile"
-      />
       <CardContent>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Avatar alt="User" src="/man.png" />
+          <CardHeader title={user?.username} />
+        </div>
         <Typography variant="body2" color="textSecondary" component="p">
           Email : {user?.email}
         </Typography>
@@ -137,12 +128,7 @@ const showAuthorAllBlog = () =>{
         <Typography variant="body2" color="textSecondary" component="p">
           Updated At: {user ? new Date(user.updatedAt).toLocaleString() : "-"}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          // onClick={() => nevigateTo(`/blogs/author/${user.id}`)}
-          onClick={showAuthorAllBlog}
-        >
+        <Button variant="contained" color="primary" onClick={showAuthorAllBlog}>
           Show Blogs
         </Button>
       </CardContent>

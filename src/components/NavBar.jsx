@@ -11,26 +11,35 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Account from "./Account";
 import LoginForm from "./LoginForm";
 import BlogBoard from "./BlogBoard";
 import UserBoard from "./UserBoard";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
 const blogs = "Blogs";
 const users = "Users";
 const account = "Account";
-const logout = "Logout"
+const logout = "Logout";
 const routes = ["/blogs", "/users", "/account", "/login"];
 
 const NavBar = () => {
+  const [username, setUsername] = useState(null);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-
   const nevigateTo = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookies.get("jwt");
+      const decodedToken = jwt_decode(token);
+      setUsername(decodedToken.username);
+    };
+    fetchData();
+  }, []);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -42,24 +51,25 @@ const NavBar = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (event,action) => {
+  const handleCloseUserMenu = (event, action) => {
     setAnchorElUser(null);
 
-    (action==='Account')?redirectToAccountPage():redirectToLoginPage();
+    action === "Account" ? redirectToAccountPage() : redirectToLoginPage();
   };
 
-  const redirectToAccountPage = () =>{
+  const redirectToAccountPage = () => {
     setAnchorElNav(null);
-    nevigateTo('/account');
-  }
-const redirectToLoginPage = () =>{
-  setAnchorElNav(null);
-  Cookies.remove("jwt");
-  nevigateTo('/login');
-  }
+    nevigateTo("/account");
+  };
+  const redirectToLoginPage = () => {
+    setAnchorElNav(null);
+    Cookies.remove("jwt");
+    setUsername("");
+    nevigateTo("/login");
+  };
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AutoStoriesIcon
@@ -112,10 +122,10 @@ const redirectToLoginPage = () =>{
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <MenuItem key={blogs} onClick={() => nevigateTo('/blogs')}>
+                <MenuItem key={blogs} onClick={() => nevigateTo("/blogs")}>
                   <Typography textAlign="center">{blogs}</Typography>
                 </MenuItem>
-                <MenuItem key={users} onClick={() => nevigateTo('/users')}>
+                <MenuItem key={users} onClick={() => nevigateTo("/users")}>
                   <Typography textAlign="center">{users}</Typography>
                 </MenuItem>
               </Menu>
@@ -144,14 +154,14 @@ const redirectToLoginPage = () =>{
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 key={blogs}
-                onClick={() => nevigateTo('/blogs')}
+                onClick={() => nevigateTo("/blogs")}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {blogs}
               </Button>
               <Button
                 key={users}
-                onClick={() => nevigateTo('/users')}
+                onClick={() => nevigateTo("/users")}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {users}
@@ -159,9 +169,12 @@ const redirectToLoginPage = () =>{
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title={username}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User" src="/Profile.jpg" />
+                  <Avatar
+                    alt="User"
+                    src="/man.png"
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -180,10 +193,16 @@ const redirectToLoginPage = () =>{
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem key={account} onClick={(event)=>handleCloseUserMenu(event,account)}>
+                <MenuItem
+                  key={account}
+                  onClick={(event) => handleCloseUserMenu(event, account)}
+                >
                   <Typography textAlign="center">{account}</Typography>
                 </MenuItem>
-                <MenuItem key={logout} onClick={(event)=>handleCloseUserMenu(event,logout)}>
+                <MenuItem
+                  key={logout}
+                  onClick={(event) => handleCloseUserMenu(event, logout)}
+                >
                   <Typography textAlign="center">{logout}</Typography>
                 </MenuItem>
               </Menu>

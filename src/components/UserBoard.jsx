@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState } from "react";
-import {getAllUsers} from "../services/UserService";
-import { getBlogByAuthorId } from "../services/BlogService";
 import {
   Card,
   CardContent,
+  CardHeader,
   Divider,
   Typography,
   Button,
+  Avatar,
 } from "@mui/material";
 import "../styles/UserBoard.css";
+import { useNavigate } from "react-router-dom";
+import { getBlogByAuthorId } from "../services/BlogService"; 
+import {getAllUsers} from "../services/UserService";
 
 
 const UserBoard = () => {
-
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
+
+  const nevigateTo = useNavigate();
+
     useEffect( () => {
       const fetchData = async ()=> {
         const response = await getAllUsers();
@@ -22,18 +28,21 @@ const UserBoard = () => {
   fetchData();
     }, []);
 
-    const showBlogsOpen = async (event, authorId) =>{
-      const response = await getBlogByAuthorId(authorId);
-      console.log(response);
+   
+    const showAuthorAllBlog = (userId) =>{
+
+      nevigateTo(`/blogs/author/${userId}`);
     }
-  
     return (
       <>
         {users.map((user) => (
           <Card key={user.user.id} className="card" >
             <CardContent>
               <Divider />
-              <Typography className="user">@{user.user.username}</Typography>
+              <div style={{ display: "flex", alignItems: "center" }}>
+          <Avatar alt="User" src="/man.png" />
+          <CardHeader title={user.user.username} />
+        </div>
 
               <Typography>Email: {user.user.email}</Typography>
               <Typography className="user-time" >
@@ -45,7 +54,7 @@ const UserBoard = () => {
               <Button
           variant="contained"
           color="primary"
-          onClick={(event)=>showBlogsOpen(event,user.user.id)}
+          onClick={()=>showAuthorAllBlog(user.user.id)}
         >
           Show Blogs
         </Button>
