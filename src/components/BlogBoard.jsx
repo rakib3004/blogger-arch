@@ -32,6 +32,8 @@ const BlogBoard = () => {
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
+  const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
+  const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
@@ -55,7 +57,8 @@ const BlogBoard = () => {
     setBlogDescription(event.target.value);
   };
 
-  const submitNewBlog = async () => {
+
+  const submitFormToCreateBlog = async () => {
     event.preventDefault();
     const response = await createBlog(blogTitle, blogDescription);
     setBlogs(response);
@@ -63,13 +66,7 @@ const BlogBoard = () => {
     handleCreateBlogDialogClose();
   };
 
-  const handleCreateBlogDialogClose = () => {
-    setCreateBlogDialogOpen(false);
-    setBlogTitle("");
-    setBlogDescription("");
-  };
-
-  const submitUpdatedBlog = async () => {
+  const submitFormToUpdateBlog = async () => {
     event.preventDefault();
     const response = await updateBlogById(blogId, blogTitle, blogDescription);
     setBlogs(response);
@@ -77,11 +74,33 @@ const BlogBoard = () => {
     handleUpdateBlogDialogClose();
   };
 
+
+  const submitFormToDeleteBlog = async () => {
+    event.preventDefault();
+    const response = await deleteBlogById(blogId);
+    setBlogs(response);
+    setDeleteBlogDialogClose(false);
+    handleDeleteBlogDialogClose();
+  };
+
+
+  const handleCreateBlogDialogClose = () => {
+    setCreateBlogDialogOpen(false);
+    setBlogTitle("");
+    setBlogDescription("");
+  };
+
   const handleUpdateBlogDialogClose = () => {
     setUpdateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
   };
+
+  const handleDeleteBlogDialogClose = () => {
+    setDeleteBlogDialogOpen(false);
+  };
+
+
 
   const creatingBlogPost = () => {
     setCreateBlogDialogOpen(true);
@@ -95,8 +114,8 @@ const BlogBoard = () => {
   };
 
   const deletingBlogPost = async (blogId) => {
-    const response = await deleteBlogById(blogId);
-    setBlogs(response);
+    setBlogId(blogId);
+    setDeleteBlogDialogOpen(true);
   };
 
   return (
@@ -148,7 +167,7 @@ const BlogBoard = () => {
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
-          <form onSubmit={submitNewBlog}>
+          <form onSubmit={submitFormToCreateBlog}>
             <TextField
               label="Title"
               type="text"
@@ -179,7 +198,7 @@ const BlogBoard = () => {
       <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
-          <form onSubmit={submitUpdatedBlog}>
+          <form onSubmit={submitFormToUpdateBlog}>
             <TextField
               label="Title"
               type="text"
@@ -207,7 +226,22 @@ const BlogBoard = () => {
         </DialogContent>
       </Dialog>
 
-      
+
+
+      <Dialog open={deleteBlogDialogOpen} onClose={deleteBlogDialogClose}>
+        <DialogTitle>Are you sure to delete this blog?</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitFormToDeleteBlog}>
+                      <DialogActions>
+              <Button variant="contained"
+                color="secondary" onClick={handleDeleteBlogDialogClose}>Cancel</Button>
+              <Button variant="contained"
+                color="primary" type="submit">Delete Blog</Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 };

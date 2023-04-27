@@ -28,14 +28,15 @@ function Account() {
   const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
-  const [deleteAccountDialogOpen, setDeleteAccountDialogOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
-  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [passwordError, setPasswordError] = useState(null);
+  const [deleteUserDialogOpen, setDeleteUserDialogOpen] = useState(false);
+  const [deleteUserDialogClose, setDeleteUserDialogClose] = useState(false);
+
   const nevigateTo = useNavigate();
 
   useEffect(() => {
@@ -48,17 +49,6 @@ function Account() {
     };
     fetchData();
   }, []);
-
-  const handleUpdatePasswordDialogOpen = () => {
-    setUpdatePasswordDialogOpen(true);
-  };
-
-  const handleUpdatePasswordDialogClose = () => {
-    setUpdatePasswordDialogOpen(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmNewPassword("");
-  };
 
   const handleUpdatePassword = async () => {
     event.preventDefault();
@@ -73,12 +63,15 @@ function Account() {
     handleUpdatePasswordDialogClose();
   };
 
-  const handleDeleteAccountDialogOpen = () => {
-    setDeleteAccountDialogOpen(true);
+  const handleUpdatePasswordDialogOpen = () => {
+    setUpdatePasswordDialogOpen(true);
   };
 
-  const handleDeleteAccountDialogClose = () => {
-    setDeleteAccountDialogOpen(false);
+  const handleUpdatePasswordDialogClose = () => {
+    setUpdatePasswordDialogOpen(false);
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
   };
 
   const handleConfirm = () => {
@@ -96,57 +89,80 @@ function Account() {
   const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
   };
+
   const showAuthorAllBlog = () => {
     nevigateTo(`/blogs/author/${user.id}`);
   };
   const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
   };
-
-  const handleDeleteAccount = async () => {
-    setIsDeletingAccount(true);
+/*  const handleDeleteAccount = async () => {
     const username = user.username;
     const response = await deleteUser(username);
-    setIsDeletingAccount(false);
-    handleDeleteAccountDialogClose();
+    nevigateTo(`/login`);
+  };*/
+
+  const submitFormToDeleteUser = async () => {
+    event.preventDefault();
+    const username = user.username;
+    const response = await deleteUser(username);
+    setDeleteUserDialogClose(false);
+    handleDeleteUserDialogClose();
+    nevigateTo(`/login`);
   };
 
+  const handleDeleteUserDialogClose = () => {
+    setDeleteUserDialogOpen(false);
+  };
+
+  const deletingUser = async (UserId) => {
+    setDeleteUserDialogOpen(true);
+  };
+
+
+
   return (
-    <Card>
-      <CardContent>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Avatar alt="User" src="/man.png" />
-          <CardHeader title={user?.username} />
-        </div>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Email : {user?.email}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Created At: {user ? new Date(user.createdAt).toLocaleString() : "-"}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Updated At: {user ? new Date(user.updatedAt).toLocaleString() : "-"}
-        </Typography>
-        <Button variant="contained" color="primary" onClick={showAuthorAllBlog}>
-          Show Blogs
-        </Button>
-      </CardContent>
-      <CardContent>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleUpdatePasswordDialogOpen}
-        >
-          Update Password
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleDeleteAccount}
-        >
-          Delete Account
-        </Button>
-      </CardContent>
+    <>
+      <Card>
+        <CardContent>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar alt="User" src="/man.png" />
+            <CardHeader title={user?.username} />
+          </div>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Email : {user?.email}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Created At: {user ? new Date(user.createdAt).toLocaleString() : "-"}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Updated At: {user ? new Date(user.updatedAt).toLocaleString() : "-"}
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={showAuthorAllBlog}
+          >
+            Show Blogs
+          </Button>
+        </CardContent>
+        <CardContent>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpdatePasswordDialogOpen}
+          >
+            Update Password
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={deletingUser}
+          >
+            Delete Account
+          </Button>
+        </CardContent>
+      </Card>
 
       <Dialog
         open={updatePasswordDialogOpen}
@@ -191,7 +207,27 @@ function Account() {
           </form>
         </DialogContent>
       </Dialog>
-    </Card>
+
+      <Dialog open={deleteUserDialogOpen} onClose={deleteUserDialogClose}>
+        <DialogTitle>Are you sure to delete this Account?</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitFormToDeleteUser}>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteUserDialogClose}
+              >
+                Cancel
+              </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Delete Account
+              </Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 

@@ -29,7 +29,7 @@ function SignupForm() {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
-    nevigateTo("/");
+    nevigateTo("/blogs");
   };
 
   return (

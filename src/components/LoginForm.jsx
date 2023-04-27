@@ -19,7 +19,7 @@ function LoginForm() {
       const response = await loginUser(username, password);
       setUsername("");
       setPassword("");
-      nevigateTo("/");
+      nevigateTo("/blogs");
     } catch (error) {
       console.log(error);
     }
