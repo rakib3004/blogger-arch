@@ -12,9 +12,6 @@ function LoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Submitted");
-    console.log(`Username: ${username}`);
-    console.log(`Password: ${password}`);
     try {
       const response = await loginUser(username, password);
       setUsername("");

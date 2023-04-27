@@ -15,21 +15,18 @@ function SignupForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Submitted");
-    console.log(`Username: ${username}`);
-    console.log(`Email: ${email}`);
 
-    console.log(`Password: ${password}`);
-    console.log(`Confirm Password: ${confirmPassword}`);
+    try {
+      const response = await registerUser(username, email, password);
 
-    const response = await registerUser(username, email, password);
-
-
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    nevigateTo("/blogs");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      nevigateTo("/blogs");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
