@@ -16,10 +16,9 @@ import {
 import { Add } from "@mui/icons-material";
 import "../styles/BlogBoard.css";
 import {
-  createBlog,
-  getAllBlogs,
-  updateBlogById,
-  deleteBlogById,
+  createBlogInAuthorDashboard,
+  updateBlogInAuthorDashboard,
+  deleteBlogByInAuthorDashboard,
   getBlogByAuthorId,
 } from "../services/BlogService";
 import { useParams } from "react-router-dom";
@@ -62,7 +61,7 @@ const AuthorBlogs = () => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    const response = await createBlog(blogTitle, blogDescription);
+    const response = await createBlogInAuthorDashboard(authorId, blogTitle, blogDescription);
     setBlogs(response);
     setCreateBlogDialogClose(false);
     handleCreateBlogDialogClose();
@@ -70,7 +69,7 @@ const AuthorBlogs = () => {
 
   const submitFormToUpdateBlog = async () => {
     event.preventDefault();
-    const response = await updateBlogById(blogId, blogTitle, blogDescription);
+    const response = await updateBlogInAuthorDashboard(authorId, blogId, blogTitle, blogDescription);
     setBlogs(response);
     setUpdateBlogDialogClose(false);
     handleUpdateBlogDialogClose();
@@ -79,7 +78,7 @@ const AuthorBlogs = () => {
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
-    const response = await deleteBlogById(blogId);
+    const response = await deleteBlogByInAuthorDashboard(authorId, blogId);
     setBlogs(response);
     setDeleteBlogDialogClose(false);
     handleDeleteBlogDialogClose();

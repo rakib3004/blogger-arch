@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000/api/v1/auth";
+const baseUrl = "http://localhost:8000/api/v1";
 const registerPath = "/register";
 const loginPath = "/login";
 

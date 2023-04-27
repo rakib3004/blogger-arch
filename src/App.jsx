@@ -7,7 +7,6 @@ import Dashboard from './components/Dashboard';
 import BlogBoard from './components/BlogBoard';
 import UserBoard from './components/UserBoard';
 import AuthorBlogs from './components/AuthorBlogs';
-
 import Account from './components/Account';
 import NavBar from './components/NavBar';
 
