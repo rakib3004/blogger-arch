@@ -54,7 +54,7 @@ const NavBar = () => {
 
   const handleCloseUserMenu = (event, action) => {
     setAnchorElUser(null);
-  
+
     switch (action) {
       case "Profile":
         redirectToAccountPage();
@@ -73,7 +73,6 @@ const NavBar = () => {
         break;
     }
   };
-  
 
   const redirectToAccountPage = () => {
     setAnchorElNav(null);
@@ -88,7 +87,6 @@ const NavBar = () => {
     nevigateTo("/login");
   };
 
-
   const redirectToSignupPage = () => {
     setAnchorElNav(null);
     nevigateTo("/singup");
@@ -101,7 +99,7 @@ const NavBar = () => {
 
   return (
     <div>
-      <AppBar position="static" >
+      <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AutoStoriesIcon
@@ -203,10 +201,7 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={accountHolderName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt="User"
-                    src="/user.png"
-                  />
+                  <Avatar alt="User" src="/user.png" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -225,40 +220,38 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {isLoggedIn?(
+                {isLoggedIn ? (
                   <>
-                  <MenuItem
-                  key={profile}
-                  onClick={(event) => handleCloseUserMenu(event, profile)}
-                >
-                <Typography textAlign="center">{profile}</Typography>
-                </MenuItem>
-                <MenuItem
-                  key={logout}
-                  onClick={(event) => handleCloseUserMenu(event, logout)}
-                >
-                  <Typography textAlign="center">{logout}</Typography>
-                </MenuItem>
-                </>
-                ):null}
-                {!isLoggedIn?(
+                    <MenuItem
+                      key={profile}
+                      onClick={(event) => handleCloseUserMenu(event, profile)}
+                    >
+                      <Typography textAlign="center">{profile}</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      key={logout}
+                      onClick={(event) => handleCloseUserMenu(event, logout)}
+                    >
+                      <Typography textAlign="center">{logout}</Typography>
+                    </MenuItem>
+                  </>
+                ) : null}
+                {!isLoggedIn ? (
                   <>
-                  <MenuItem
-                  key={login}
-                  onClick={(event) => handleCloseUserMenu(event, login)}
-                >
-                  <Typography textAlign="center">{login}</Typography>
-                </MenuItem>
-                <MenuItem
-                  key={signup}
-                  onClick={(event) => handleCloseUserMenu(event, signup)}
-                >
-                  <Typography textAlign="center">{signup}</Typography>
-                </MenuItem>
-                </>
-                ):null}
-
-                
+                    <MenuItem
+                      key={login}
+                      onClick={(event) => handleCloseUserMenu(event, login)}
+                    >
+                      <Typography textAlign="center">{login}</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      key={signup}
+                      onClick={(event) => handleCloseUserMenu(event, signup)}
+                    >
+                      <Typography textAlign="center">{signup}</Typography>
+                    </MenuItem>
+                  </>
+                ) : null}
               </Menu>
             </Box>
           </Toolbar>

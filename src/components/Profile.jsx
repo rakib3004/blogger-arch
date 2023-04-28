@@ -24,7 +24,7 @@ import {
 } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 
-function Account() {
+function Profile() {
   const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
@@ -114,8 +114,6 @@ function Account() {
     setDeleteUserDialogOpen(true);
   };
 
-
-
   return (
     <>
       <Card>
@@ -149,11 +147,7 @@ function Account() {
           >
             Update Password
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={deletingUser}
-          >
+          <Button variant="contained" color="secondary" onClick={deletingUser}>
             Delete Account
           </Button>
         </CardContent>
@@ -204,7 +198,7 @@ function Account() {
       </Dialog>
 
       <Dialog open={deleteUserDialogOpen} onClose={deleteUserDialogClose}>
-        <DialogTitle>Are you sure to delete this Account?</DialogTitle>
+        <DialogTitle>Are you sure to delete this account?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteUser}>
             <DialogActions>
@@ -226,4 +220,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Profile;

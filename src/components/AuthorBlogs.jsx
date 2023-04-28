@@ -14,7 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import "../styles/BlogBoard.css";
+import "../styles/Blogs.css";
 import {
   createBlogInAuthorDashboard,
   updateBlogInAuthorDashboard,
@@ -58,10 +58,13 @@ const AuthorBlogs = () => {
     setBlogDescription(event.target.value);
   };
 
-
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    const response = await createBlogInAuthorDashboard(authorId, blogTitle, blogDescription);
+    const response = await createBlogInAuthorDashboard(
+      authorId,
+      blogTitle,
+      blogDescription
+    );
     setBlogs(response);
     setCreateBlogDialogClose(false);
     handleCreateBlogDialogClose();
@@ -69,12 +72,16 @@ const AuthorBlogs = () => {
 
   const submitFormToUpdateBlog = async () => {
     event.preventDefault();
-    const response = await updateBlogInAuthorDashboard(authorId, blogId, blogTitle, blogDescription);
+    const response = await updateBlogInAuthorDashboard(
+      authorId,
+      blogId,
+      blogTitle,
+      blogDescription
+    );
     setBlogs(response);
     setUpdateBlogDialogClose(false);
     handleUpdateBlogDialogClose();
   };
-
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
@@ -83,7 +90,6 @@ const AuthorBlogs = () => {
     setDeleteBlogDialogClose(false);
     handleDeleteBlogDialogClose();
   };
-
 
   const handleCreateBlogDialogClose = () => {
     setCreateBlogDialogOpen(false);
@@ -100,8 +106,6 @@ const AuthorBlogs = () => {
   const handleDeleteBlogDialogClose = () => {
     setDeleteBlogDialogOpen(false);
   };
-
-
 
   const creatingBlogPost = () => {
     setCreateBlogDialogOpen(true);
@@ -145,7 +149,7 @@ const AuthorBlogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-            <Button
+              <Button
                 variant="contained"
                 color="primary"
                 onClick={() => updatingBlogPost(blog)}
@@ -199,9 +203,7 @@ const AuthorBlogs = () => {
         </DialogContent>
       </Dialog>
 
-
-
-         <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
+      <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToUpdateBlog}>
@@ -235,21 +237,25 @@ const AuthorBlogs = () => {
         </DialogContent>
       </Dialog>
 
-   
       <Dialog open={deleteBlogDialogOpen} onClose={deleteBlogDialogClose}>
         <DialogTitle>Are you sure to delete this blog?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteBlog}>
-                      <DialogActions>
-              <Button variant="contained"
-                color="secondary" onClick={handleDeleteBlogDialogClose}>Cancel</Button>
-              <Button variant="contained"
-                color="primary" type="submit">Delete Blog</Button>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteBlogDialogClose}
+              >
+                Cancel
+              </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Delete Blog
+              </Button>
             </DialogActions>
           </form>
         </DialogContent>
       </Dialog>
-
     </>
   );
 };

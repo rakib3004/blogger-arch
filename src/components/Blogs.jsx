@@ -14,7 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import "../styles/BlogBoard.css";
+import "../styles/Blogs.css";
 import {
   createBlog,
   getAllBlogs,
@@ -24,7 +24,7 @@ import {
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 
-const BlogBoard = () => {
+const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState([]);
@@ -253,4 +253,4 @@ const BlogBoard = () => {
   );
 };
 
-export default BlogBoard;
+export default Blogs;
