@@ -6,7 +6,7 @@ const NoBlogFound = () => {
   return (
     <Container maxWidth="sm" className="container">
       <Typography variant="h5" className="text">
-        No Blog Found
+        No User Found
       </Typography>
     </Container>
   );

@@ -12,9 +12,12 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Container
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/Blogs.css";
+import "../styles/AuthorBlogs.css";
+
 import {
   createBlogInAuthorDashboard,
   updateBlogInAuthorDashboard,
@@ -30,7 +33,8 @@ const AuthorBlogs = () => {
   const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
-  const [username, setUsername] = useState([]);
+  const [username, setUsername] = useState("");
+
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
@@ -126,7 +130,13 @@ const AuthorBlogs = () => {
 
   return (
     <>
-      {/* isLoggedIn */}
+
+      <Container maxWidth="md">
+      <Typography variant="h4" className="heading">
+      { username.charAt(0).toUpperCase() + username.slice(1)}'s Blog
+      </Typography>
+    </Container>
+          {/* isLoggedIn */}
 
       <Button
         variant="contained"
