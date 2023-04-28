@@ -184,7 +184,9 @@ const AuthorBlogs = () => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
-              rowsMin={9}
+              maxRows={8}
+              minRows={8}
+              multiline
               required
               fullWidth
             />
@@ -218,6 +220,9 @@ const AuthorBlogs = () => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
+              maxRows={8}
+              minRows={8}
+              multiline
               required
               fullWidth
             />

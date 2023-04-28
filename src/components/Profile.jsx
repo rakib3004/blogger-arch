@@ -126,7 +126,7 @@ function Account() {
       <Card>
         <CardContent>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Avatar alt="User" src="/man.png" />
+            <Avatar alt="User" src="/user.png" />
             <CardHeader title={user?.username} />
           </div>
           <Typography variant="body2" color="textSecondary" component="p">

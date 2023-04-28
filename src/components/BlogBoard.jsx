@@ -57,7 +57,6 @@ const BlogBoard = () => {
     setBlogDescription(event.target.value);
   };
 
-
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
     const response = await createBlog(blogTitle, blogDescription);
@@ -74,7 +73,6 @@ const BlogBoard = () => {
     handleUpdateBlogDialogClose();
   };
 
-
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
     const response = await deleteBlogById(blogId);
@@ -82,7 +80,6 @@ const BlogBoard = () => {
     setDeleteBlogDialogClose(false);
     handleDeleteBlogDialogClose();
   };
-
 
   const handleCreateBlogDialogClose = () => {
     setCreateBlogDialogOpen(false);
@@ -99,8 +96,6 @@ const BlogBoard = () => {
   const handleDeleteBlogDialogClose = () => {
     setDeleteBlogDialogOpen(false);
   };
-
-
 
   const creatingBlogPost = () => {
     setCreateBlogDialogOpen(true);
@@ -183,6 +178,9 @@ const BlogBoard = () => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
+              maxRows={8}
+              minRows={8}
+              multiline
               required
               fullWidth
             />
@@ -214,6 +212,9 @@ const BlogBoard = () => {
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
               margin="normal"
+              maxRows={8}
+              minRows={8}
+              multiline
               required
               fullWidth
             />
@@ -226,22 +227,25 @@ const BlogBoard = () => {
         </DialogContent>
       </Dialog>
 
-
-
       <Dialog open={deleteBlogDialogOpen} onClose={deleteBlogDialogClose}>
         <DialogTitle>Are you sure to delete this blog?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteBlog}>
-                      <DialogActions>
-              <Button variant="contained"
-                color="secondary" onClick={handleDeleteBlogDialogClose}>Cancel</Button>
-              <Button variant="contained"
-                color="primary" type="submit">Delete Blog</Button>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleDeleteBlogDialogClose}
+              >
+                Cancel
+              </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Delete Blog
+              </Button>
             </DialogActions>
           </form>
         </DialogContent>
       </Dialog>
-
     </>
   );
 };

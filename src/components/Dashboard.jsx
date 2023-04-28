@@ -11,13 +11,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import Account from "./Account";
-import LoginForm from "./LoginForm";
-import BlogBoard from "./BlogBoard";
-import UserBoard from "./UserBoard";
-import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import BlogBoard from "./BlogBoard";
+import Account from "./Profile";
+import UserBoard from "./UserBoard";
 
 const pages = ["Blogs", "Users"];
 const settings = ["Account", "Logout"];

@@ -11,23 +11,22 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
-import Account from "./Account";
-import LoginForm from "./LoginForm";
-import BlogBoard from "./BlogBoard";
-import UserBoard from "./UserBoard";
-import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const blogs = "Blogs";
 const users = "Users";
-const account = "Account";
+const profile = "Profile";
 const logout = "Logout";
-const routes = ["/blogs", "/users", "/account", "/login"];
+const login = "Login";
+const signup = "Signup";
+const routes = ["/blogs", "/users", "/profile", "/login"];
 
 const NavBar = () => {
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState("");
+  const [accountHolderName, setAccountHolderName] = useState("");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const nevigateTo = useNavigate();
@@ -36,7 +35,8 @@ const NavBar = () => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
       const decodedToken = jwt_decode(token);
-      setUsername(decodedToken.username);
+      setAccountHolderName(decodedToken.username);
+      setUsername(accountHolderName);
     };
     fetchData();
   }, []);
@@ -53,20 +53,51 @@ const NavBar = () => {
 
   const handleCloseUserMenu = (event, action) => {
     setAnchorElUser(null);
-
-    action === "Account" ? redirectToAccountPage() : redirectToLoginPage();
+  
+    switch (action) {
+      case "Profile":
+        redirectToAccountPage();
+        break;
+      case "Login":
+        redirectToLoginPage();
+        break;
+      case "Logout":
+        handleLogout();
+        break;
+      case "Signup":
+        redirectToSignupPage();
+        break;
+      default:
+        console.log("Button Clicked");
+        break;
+    }
   };
+  
 
   const redirectToAccountPage = () => {
     setAnchorElNav(null);
-    nevigateTo("/account");
+    setUsername(accountHolderName);
+    nevigateTo("/profile");
   };
-  const redirectToLoginPage = () => {
+  const handleLogout = () => {
     setAnchorElNav(null);
     Cookies.remove("jwt");
     setUsername("");
+    setAccountHolderName("");
     nevigateTo("/login");
   };
+
+
+  const redirectToSignupPage = () => {
+    setAnchorElNav(null);
+    nevigateTo("/singup");
+  };
+
+  const redirectToLoginPage = () => {
+    setAnchorElNav(null);
+    nevigateTo("/login");
+  };
+
   return (
     <div>
       <AppBar position="static" >
@@ -96,7 +127,7 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
-                aria-label="account of current user"
+                aria-label="profile of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
@@ -169,11 +200,11 @@ const NavBar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title={username}>
+              <Tooltip title={accountHolderName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     alt="User"
-                    src="/man.png"
+                    src="/user.png"
                   />
                 </IconButton>
               </Tooltip>
@@ -194,10 +225,10 @@ const NavBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem
-                  key={account}
-                  onClick={(event) => handleCloseUserMenu(event, account)}
+                  key={profile}
+                  onClick={(event) => handleCloseUserMenu(event, profile)}
                 >
-                  <Typography textAlign="center">{account}</Typography>
+                  <Typography textAlign="center">{profile}</Typography>
                 </MenuItem>
                 <MenuItem
                   key={logout}

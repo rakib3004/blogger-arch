@@ -4,7 +4,7 @@ const registerPath = "/register";
 const loginPath = "/login";
 
 export const registerUser = async (username, email, password) => {
- 
+  try {
     const response = await axios.post(
       baseUrl + registerPath,
       {
@@ -16,19 +16,23 @@ export const registerUser = async (username, email, password) => {
     );
     console.log(response);
     return response;
-  
-
- 
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const loginUser = async (username, password) => {
-  const response = await axios.post(
-    baseUrl + loginPath,
-    {
-      username,
-      password,
-    },
-    { withCredentials: true }
-  );
-  return response;
+  try {
+    const response = await axios.post(
+      baseUrl + loginPath,
+      {
+        username,
+        password,
+      },
+      { withCredentials: true }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 };

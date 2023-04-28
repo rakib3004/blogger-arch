@@ -1,14 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import LoginForm from './components/LoginForm';
-import SignupForm from './components/SignupForm';
-import Dashboard from './components/Dashboard';
-import BlogBoard from './components/BlogBoard';
-import UserBoard from './components/UserBoard';
 import AuthorBlogs from './components/AuthorBlogs';
-import Account from './components/Account';
+import BlogBoard from './components/BlogBoard';
+import LoginForm from './components/LoginForm';
 import NavBar from './components/NavBar';
+import Profile from './components/Profile';
+import SignupForm from './components/SignupForm';
+import UserBoard from './components/UserBoard';
 
 
 
@@ -25,7 +23,7 @@ return(
     <Route exact path="/blogs" Component={BlogBoard} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
     <Route exact path="/users" Component={UserBoard} />    
-    <Route exact path="/account" Component={Account} />    
+    <Route exact path="/profile" Component={Profile} />    
 
 
 

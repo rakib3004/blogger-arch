@@ -37,10 +37,10 @@ const UserBoard = () => {
       <>
         {users.map((user) => (
           <Card key={user.user.id} className="card" >
-            <CardContent>
+            <CardContent>    
               <Divider />
               <div style={{ display: "flex", alignItems: "center" }}>
-          <Avatar alt="User" src="/man.png" />
+          <Avatar alt="User" src="/user.png" />
           <CardHeader title={user.user.username} />
         </div>
 
