@@ -34,6 +34,7 @@ const AuthorBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState("");
+  const [authorName, setAuthorName] = useState("");
 
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
@@ -52,6 +53,7 @@ const AuthorBlogs = () => {
       setUsername(decodedToken.username);
       const allBlogs = await getBlogByAuthorId(authorId);
       setBlogs(allBlogs);
+      if(allBlogs.length>0) setAuthorName(allBlogs[0].user.username);
     };
     fetchData();
   }, []);
@@ -131,14 +133,14 @@ const AuthorBlogs = () => {
   return (
     <>
 
-      <Container maxWidth="md">
-      <Typography variant="h4" className="heading">
-      { username.charAt(0).toUpperCase() + username.slice(1)}'s Blog
-      </Typography>
-    </Container>
+ <Container maxWidth="md">
+     <Typography variant="h4" className="heading">
+        {authorName.charAt(0).toUpperCase() + authorName.slice(1)}'s Blogs
+        </Typography>
+      </Container>
+    
           {/* isLoggedIn */}
-
-      <Button
+        <Button
         variant="contained"
         color="success"
         onClick={creatingBlogPost}
@@ -146,8 +148,11 @@ const AuthorBlogs = () => {
       >
         <Add /> Create Blog
       </Button>
+   
       {blogs.length>0?
-      (blogs.map((blog) => (
+      ( 
+        
+        blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
               <Typography className="title">{blog.title}</Typography>
