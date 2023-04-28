@@ -96,11 +96,6 @@ function Account() {
   const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
   };
-/*  const handleDeleteAccount = async () => {
-    const username = user.username;
-    const response = await deleteUser(username);
-    nevigateTo(`/login`);
-  };*/
 
   const submitFormToDeleteUser = async () => {
     event.preventDefault();

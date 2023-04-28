@@ -29,6 +29,7 @@ const NavBar = () => {
   const [accountHolderName, setAccountHolderName] = useState("");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const isLoggedIn = true;
   const nevigateTo = useNavigate();
 
   useEffect(() => {
@@ -224,11 +225,13 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem
+                {isLoggedIn?(
+                  <>
+                  <MenuItem
                   key={profile}
                   onClick={(event) => handleCloseUserMenu(event, profile)}
                 >
-                  <Typography textAlign="center">{profile}</Typography>
+                <Typography textAlign="center">{profile}</Typography>
                 </MenuItem>
                 <MenuItem
                   key={logout}
@@ -236,6 +239,26 @@ const NavBar = () => {
                 >
                   <Typography textAlign="center">{logout}</Typography>
                 </MenuItem>
+                </>
+                ):null}
+                {!isLoggedIn?(
+                  <>
+                  <MenuItem
+                  key={login}
+                  onClick={(event) => handleCloseUserMenu(event, login)}
+                >
+                  <Typography textAlign="center">{login}</Typography>
+                </MenuItem>
+                <MenuItem
+                  key={signup}
+                  onClick={(event) => handleCloseUserMenu(event, signup)}
+                >
+                  <Typography textAlign="center">{signup}</Typography>
+                </MenuItem>
+                </>
+                ):null}
+
+                
               </Menu>
             </Box>
           </Toolbar>

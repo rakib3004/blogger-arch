@@ -41,8 +41,11 @@ const BlogBoard = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
-      const decodedToken = jwt_decode(token);
-      setUsername(decodedToken.username);
+      if(token){
+        const decodedToken = jwt_decode(token);
+        setUsername(decodedToken.username);
+      }
+    
       const allBlogs = await getAllBlogs();
       setBlogs(allBlogs);
     };
