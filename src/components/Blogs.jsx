@@ -118,6 +118,8 @@ const Blogs = () => {
 
   return (
     <>
+     
+       
       <Button
         variant="contained"
         color="success"
@@ -142,11 +144,11 @@ const Blogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-              <Button
+              {username === blog.user.username ? <>
+                <Button
                 variant="contained"
                 color="primary"
                 onClick={() => updatingBlogPost(blog)}
-                disabled={username !== blog.user.username}
               >
                 Update Blog
               </Button>
@@ -154,10 +156,10 @@ const Blogs = () => {
                 variant="contained"
                 color="secondary"
                 onClick={() => deletingBlogPost(blog.id)}
-                disabled={username !== blog.user.username}
               >
                 Delete Blog
               </Button>
+              </> : null}
             </CardContent>
           </Card>
         ))}

@@ -1,10 +1,10 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import "../styles/LoginForm.css";
+import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/AuthService";
 
-function LoginForm() {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const nevigateTo = useNavigate();
@@ -63,4 +63,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default Login;

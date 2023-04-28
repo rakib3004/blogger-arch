@@ -29,7 +29,8 @@ const NavBar = () => {
   const [accountHolderName, setAccountHolderName] = useState("");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const isLoggedIn = true;
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   const nevigateTo = useNavigate();
 
   useEffect(() => {
@@ -60,12 +61,15 @@ const NavBar = () => {
         redirectToAccountPage();
         break;
       case "Login":
+        setIsLoggedIn(true);
         redirectToLoginPage();
         break;
       case "Logout":
+        setIsLoggedIn(false);
         handleLogout();
         break;
       case "Signup":
+        setIsLoggedIn(true);
         redirectToSignupPage();
         break;
       default:
@@ -201,7 +205,9 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={accountHolderName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User" src="/user.png" />
+                  {isLoggedIn? <Avatar alt="User" src="/user.png" />: 
+                  <Avatar alt="User" src="/guest.png" />
+                  }
                 </IconButton>
               </Tooltip>
               <Menu
@@ -220,6 +226,8 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                    {/* isLoggedIn */}
+
                 {isLoggedIn ? (
                   <>
                     <MenuItem

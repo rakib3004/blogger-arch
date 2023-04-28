@@ -1,11 +1,11 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import * as yup from "yup";
-import "../styles/SignupForm.css";
+import "../styles/Signup.css";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/AuthService";
 
-function SignupForm() {
+function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,4 +88,4 @@ function SignupForm() {
   );
 }
 
-export default SignupForm;
+export default Signup;

@@ -24,6 +24,7 @@ import {
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import NoBlogFound from "./NoBlogFound";
 
 const AuthorBlogs = () => {
   const { authorId } = useParams();
@@ -125,6 +126,8 @@ const AuthorBlogs = () => {
 
   return (
     <>
+      {/* isLoggedIn */}
+
       <Button
         variant="contained"
         color="success"
@@ -133,8 +136,8 @@ const AuthorBlogs = () => {
       >
         <Add /> Create Blog
       </Button>
-      {blogs &&
-        blogs.map((blog) => (
+      {blogs.length>0?
+      (blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
               <Typography className="title">{blog.title}</Typography>
@@ -149,11 +152,11 @@ const AuthorBlogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-              <Button
+              {username === blog.user.username ? <>
+                <Button
                 variant="contained"
                 color="primary"
                 onClick={() => updatingBlogPost(blog)}
-                disabled={username !== blog.user.username}
               >
                 Update Blog
               </Button>
@@ -161,13 +164,15 @@ const AuthorBlogs = () => {
                 variant="contained"
                 color="secondary"
                 onClick={() => deletingBlogPost(blog.id)}
-                disabled={username !== blog.user.username}
               >
                 Delete Blog
               </Button>
+              </> : null}
+             
             </CardContent>
           </Card>
-        ))}
+        ))):
+        <NoBlogFound/>}
 
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
