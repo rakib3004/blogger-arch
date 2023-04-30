@@ -1,7 +1,7 @@
 import axios from "axios";
 const baseUrl = "http://localhost:8000/api/v1";
 const userRoute = "/users";
-
+const idRoute = "/id";
 
 export const getAllUsers = async () => {
     const response = await axios.get(baseUrl + userRoute);
@@ -11,6 +11,13 @@ export const getAllUsers = async () => {
 
   export const getUserByUsername = async (username) => {
     const response = await axios.get(baseUrl + userRoute + `/${username}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  };
+
+  export const getUserByUserId = async (userId) => {
+    const response = await axios.get(baseUrl + userRoute+ idRoute + `/${userId}`, {
       withCredentials: true,
     });
     return response.data;

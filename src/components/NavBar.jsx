@@ -65,7 +65,7 @@ const NavBar = () => {
         redirectToLoginPage();
         break;
       case "Logout":
-        setIsLoggedIn(false);
+        setIsLoggedIn(true);
         handleLogout();
         break;
       case "Signup":

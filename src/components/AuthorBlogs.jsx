@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from "react";
+import { Add } from "@mui/icons-material";
 import {
+  Button,
   Card,
   CardContent,
-  Typography,
-  Divider,
-  Grid,
-  IconButton,
-  Button,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   TextField,
-  Container
+  Typography
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import "../styles/Blogs.css";
+import React, { useEffect, useState } from "react";
 import "../styles/AuthorBlogs.css";
+import "../styles/Blogs.css";
 
-import {
-  createBlogInAuthorDashboard,
-  updateBlogInAuthorDashboard,
-  deleteBlogByInAuthorDashboard,
-  getBlogByAuthorId,
-} from "../services/BlogService";
-import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { useParams } from "react-router-dom";
+import {
+  createBlogInAuthorDashboard,
+  deleteBlogByInAuthorDashboard,
+  getBlogByAuthorId,
+  updateBlogInAuthorDashboard,
+} from "../services/BlogService";
+import { getUserByUserId } from "../services/UserService";
 import NoBlogFound from "./NoBlogFound";
 
 const AuthorBlogs = () => {
@@ -35,14 +34,12 @@ const AuthorBlogs = () => {
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState("");
   const [authorName, setAuthorName] = useState("");
-
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
   const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
-
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
 
@@ -53,7 +50,8 @@ const AuthorBlogs = () => {
       setUsername(decodedToken.username);
       const allBlogs = await getBlogByAuthorId(authorId);
       setBlogs(allBlogs);
-      if(allBlogs.length>0) setAuthorName(allBlogs[0].user.username);
+      const  currentAuthor = await getUserByUserId(authorId);
+      setAuthorName(currentAuthor.user.username);  
     };
     fetchData();
   }, []);
