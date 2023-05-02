@@ -2,6 +2,8 @@ import axios from "axios";
 const baseUrl = "http://localhost:8000/api/v1/auth";
 const registerPath = "/register";
 const loginPath = "/login";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
 export const registerUser = async (username, email, password) => {
   try {
@@ -32,6 +34,19 @@ export const loginUser = async (username, password) => {
       { withCredentials: true }
     );
     return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const checkLoggedIn = () => {
+  try {
+    const token = Cookies.get("jwt");
+    const decodedToken = jwt_decode(token);
+    if(decodedToken.username){
+      return true
+    }
+    return false;
   } catch (error) {
     console.error(error);
   }

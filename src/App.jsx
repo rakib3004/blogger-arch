@@ -7,7 +7,7 @@ import Users from './components/Users';
 import Blogs from './components/Blogs';
 import Login from './components/Login';
 import Signup from './components/Signup';
-
+import HomePage from './components/HomePage';
 
 
 
@@ -21,6 +21,7 @@ return(
 
     <Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
+    <Route exact path="/" Component={HomePage} /> 
     <Route exact path="/blogs" Component={Blogs} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
     <Route exact path="/users" Component={Users} />    

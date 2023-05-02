@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Divider,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../styles/AuthorBlogs.css";
@@ -27,6 +27,7 @@ import {
 } from "../services/BlogService";
 import { getUserByUserId } from "../services/UserService";
 import NoBlogFound from "./NoBlogFound";
+import { checkLoggedIn } from "../services/AuthService";
 
 const AuthorBlogs = () => {
   const { authorId } = useParams();
@@ -42,6 +43,7 @@ const AuthorBlogs = () => {
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,8 +52,10 @@ const AuthorBlogs = () => {
       setUsername(decodedToken.username);
       const allBlogs = await getBlogByAuthorId(authorId);
       setBlogs(allBlogs);
-      const  currentAuthor = await getUserByUserId(authorId);
-      setAuthorName(currentAuthor.user.username);  
+      const currentAuthor = await getUserByUserId(authorId);
+      setAuthorName(currentAuthor.user.username);
+      const loginStatus = checkLoggedIn();
+      setIsLoggedIn(loginStatus);
     };
     fetchData();
   }, []);
@@ -130,26 +134,25 @@ const AuthorBlogs = () => {
 
   return (
     <>
-
- <Container maxWidth="md">
-     <Typography variant="h4" className="heading">
-        {authorName.charAt(0).toUpperCase() + authorName.slice(1)}'s Blogs
+      <Container maxWidth="md">
+        <Typography variant="h4" className="heading">
+          {authorName.charAt(0).toUpperCase() + authorName.slice(1)}'s Blogs
         </Typography>
       </Container>
+
+      {/* isLoggedIn */}
     
-          {/* isLoggedIn */}
-        <Button
-        variant="contained"
-        color="success"
-        onClick={creatingBlogPost}
-        className="button"
-      >
-        <Add /> Create Blog
-      </Button>
-   
-      {blogs.length>0?
-      ( 
-        
+       {((username===authorName)&&isLoggedIn)? (<Button
+          variant="contained"
+          color="success"
+          onClick={creatingBlogPost}
+          className="button"
+        >
+          <Add /> Create Blog
+        </Button>):null}
+      
+
+      {blogs.length > 0 ? (
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
@@ -165,27 +168,30 @@ const AuthorBlogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-              {username === blog.user.username ? <>
-                <Button
-                variant="contained"
-                color="primary"
-                onClick={() => updatingBlogPost(blog)}
-              >
-                Update Blog
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => deletingBlogPost(blog.id)}
-              >
-                Delete Blog
-              </Button>
-              </> : null}
-             
+              {username === blog.user.username ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => updatingBlogPost(blog)}
+                  >
+                    Update Blog
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => deletingBlogPost(blog.id)}
+                  >
+                    Delete Blog
+                  </Button>
+                </>
+              ) : null}
             </CardContent>
           </Card>
-        ))):
-        <NoBlogFound/>}
+        ))
+      ) : (
+        <NoBlogFound />
+      )}
 
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>

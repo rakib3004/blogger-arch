@@ -1,18 +1,13 @@
-.display{
-    margin: 2px;
-    padding: 2px;
+.welcome{
+  
+  background-image: url('../../public/HomePage.png');
+  background-size: cover;
+  background-position: center;
+  height: max-content;
 }
 
-.link-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .link {
-    margin-left: 5px;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
-  }
+.welcome-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

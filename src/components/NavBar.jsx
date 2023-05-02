@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { checkLoggedIn } from "../services/AuthService";
 
 const blogs = "Blogs";
 const users = "Users";
@@ -39,6 +40,8 @@ const NavBar = () => {
       const decodedToken = jwt_decode(token);
       setAccountHolderName(decodedToken.username);
       setUsername(accountHolderName);
+      const loginStatus = checkLoggedIn();
+      setIsLoggedIn(loginStatus);
     };
     fetchData();
   }, []);
@@ -61,11 +64,13 @@ const NavBar = () => {
         redirectToAccountPage();
         break;
       case "Login":
-        setIsLoggedIn(true);
+        if(isLoggedIn){
+          
+        }
         redirectToLoginPage();
         break;
       case "Logout":
-        setIsLoggedIn(true);
+        setIsLoggedIn(false);
         handleLogout();
         break;
       case "Signup":
@@ -113,7 +118,7 @@ const NavBar = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/blogs"
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },

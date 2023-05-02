@@ -23,6 +23,7 @@ import {
 } from "../services/BlogService";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { checkLoggedIn } from "../services/AuthService";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -34,9 +35,10 @@ const Blogs = () => {
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
   const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
-
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +50,9 @@ const Blogs = () => {
     
       const allBlogs = await getAllBlogs();
       setBlogs(allBlogs);
+
+      const loginStatus = checkLoggedIn();
+      setIsLoggedIn(loginStatus);
     };
     fetchData();
   }, []);
@@ -120,14 +125,16 @@ const Blogs = () => {
     <>
      
        
-      <Button
-        variant="contained"
-        color="success"
-        onClick={creatingBlogPost}
-        className="button"
-      >
-        <Add /> Create Blog
-      </Button>
+     {isLoggedIn? (<Button
+          variant="contained"
+          color="success"
+          onClick={creatingBlogPost}
+          className="button"
+        >
+          <Add /> Create Blog
+        </Button>):null}
+      
+      
       {blogs &&
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
