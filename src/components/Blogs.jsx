@@ -14,6 +14,8 @@ import {
   TextField,
   Pagination,
   Stack,
+  Alert,
+  Snackbar
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/Blogs.css";
@@ -45,9 +47,14 @@ const Blogs = () => {
   const [blogDescription, setBlogDescription] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(5);
+  const [createBlogSnackbarOpen, setCreateBlogSnackbarOpen] = useState(false);
+  const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
+  const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
 
  
-  
+  /*const Alert = React.forwardRef((props, ref) => (
+    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+  ));*/
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +93,7 @@ const Blogs = () => {
       );
       setBlogs(response);
       setCreateBlogDialogClose(false);
+      setCreateBlogSnackbarOpen(true);
       handleCreateBlogDialogClose();
     }
    
@@ -96,6 +104,7 @@ const Blogs = () => {
     const response = await updateBlogById(blogId, blogTitle, blogDescription);
     setBlogs(response);
     setUpdateBlogDialogClose(false);
+    setUpdateBlogSnackbarOpen(true);
     handleUpdateBlogDialogClose();
   };
 
@@ -104,6 +113,8 @@ const Blogs = () => {
     const response = await deleteBlogById(blogId);
     setBlogs(response);
     setDeleteBlogDialogClose(false);
+    setDeleteBlogSnackbarOpen(true);
+
     handleDeleteBlogDialogClose();
   };
 
@@ -111,16 +122,20 @@ const Blogs = () => {
     setCreateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
+    setCreateBlogSnackbarOpen(true);
   };
 
   const handleUpdateBlogDialogClose = () => {
     setUpdateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
+    setUpdateBlogSnackbarOpen(true);
   };
 
   const handleDeleteBlogDialogClose = () => {
     setDeleteBlogDialogOpen(false);
+    setDeleteBlogSnackbarOpen(true);
+
   };
 
   const creatingBlogPost = () => {
@@ -143,6 +158,28 @@ const Blogs = () => {
     setCurrentPage(page);
   };
 
+  const handleCreateBlogSnackbarClose = (event, action) => {
+    if (action === 'clickaway') {
+      return;
+    }
+    setCreateBlogSnackbarOpen(false);
+  };
+  
+  const handleUpdateBlogSnackbarClose = (event, action) => {
+    if (action === 'clickaway') {
+      return;
+    }
+    setUpdateBlogSnackbarOpen(false);
+  };
+  
+
+  const handleDeleteBlogSnackbarClose = (event, action) => {
+    if (action === 'clickaway') {
+      return;
+    }
+    setDeleteBlogSnackbarOpen(false);
+  };
+  
 
   return (
     <>
@@ -284,7 +321,27 @@ const Blogs = () => {
       <Stack spacing={2}>
           <Pagination count={15} color="primary" page={currentPage} onChange={handlePageChange} />
         </Stack>
+
+        <Snackbar open={createBlogSnackbarOpen} autoHideDuration={6000} onClose={handleCreateBlogSnackbarClose}>
+         <Alert onClose={handleCreateBlogSnackbarClose} severity="success" sx={{ width: '100%' }}>
+           Blog Created Successfully!
+         </Alert>
+       </Snackbar>
+
+       <Snackbar open={updateBlogSnackbarOpen} autoHideDuration={6000} onClose={handleUpdateBlogSnackbarClose}>
+         <Alert onClose={handleUpdateBlogSnackbarClose} severity="success" sx={{ width: '100%' }}>
+           Blog Updated Successfully!
+         </Alert>
+       </Snackbar>
+
+       <Snackbar open={deleteBlogSnackbarOpen} autoHideDuration={6000} onClose={handleDeleteBlogSnackbarClose}>
+         <Alert onClose={handleDeleteBlogSnackbarClose} severity="error" sx={{ width: '100%' }}>
+           Blog Deleted Successfully!
+         </Alert>
+       </Snackbar>
+
     </>
+        
   );
 };
 

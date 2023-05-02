@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const nevigateTo = useNavigate();
 
-  const goToHomePage = () =>{
+  const showAllBlogs = () =>{
     nevigateTo('/blogs');
   }
 
@@ -14,7 +14,7 @@ const HomePage = () => {
   <>
       <Box className="welcome">
       {/* <Container> */}
-      <Button variant="contained" color="primary" className="welcome-button"  onClick={() => goToHomePage()}>
+      <Button variant="contained" color="primary" className="welcome-button"  onClick={() => showAllBlogs()}>
         Get Started!
       </Button>
       {/* </Container> */}
