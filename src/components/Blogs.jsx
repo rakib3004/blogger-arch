@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   Card,
   CardContent,
@@ -12,6 +12,8 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Pagination,
+  Stack,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/Blogs.css";
@@ -23,9 +25,13 @@ import {
 } from "../services/BlogService";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { checkLoggedIn } from "../services/AuthService";
+import { AuthContext } from "../context/AuthContext";
+
 
 const Blogs = () => {
+  const {
+    isLoggedIn,
+  } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState([]);
@@ -37,8 +43,11 @@ const Blogs = () => {
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
 
+ 
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,14 +57,12 @@ const Blogs = () => {
         setUsername(decodedToken.username);
       }
     
-      const allBlogs = await getAllBlogs();
+      const allBlogs = await getAllBlogs(currentPage,pageLimit);
       setBlogs(allBlogs);
 
-      const loginStatus = checkLoggedIn();
-      setIsLoggedIn(loginStatus);
     };
     fetchData();
-  }, []);
+  }, [currentPage,blogs]);
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
@@ -73,8 +80,7 @@ const Blogs = () => {
 
     }
     else{
-      const response = await createBlogInAuthorDashboard(
-        authorId,
+      const response = await createBlog(
         blogTitle,
         blogDescription
       );
@@ -132,6 +138,11 @@ const Blogs = () => {
     setBlogId(blogId);
     setDeleteBlogDialogOpen(true);
   };
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
 
   return (
     <>
@@ -270,6 +281,9 @@ const Blogs = () => {
           </form>
         </DialogContent>
       </Dialog>
+      <Stack spacing={2}>
+          <Pagination count={15} color="primary" page={currentPage} onChange={handlePageChange} />
+        </Stack>
     </>
   );
 };

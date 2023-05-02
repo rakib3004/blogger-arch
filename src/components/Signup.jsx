@@ -20,7 +20,7 @@ function Signup() {
 
     try {
       const response = await registerUser(username, email, password);
-
+      
       setUsername("");
       setEmail("");
       setPassword("");

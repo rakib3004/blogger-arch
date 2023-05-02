@@ -11,11 +11,12 @@ import {
   Divider,
   TextField,
   Typography,
+  Pagination,
+  Stack,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "../styles/AuthorBlogs.css";
 import "../styles/Blogs.css";
-
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { useParams } from "react-router-dom";
@@ -27,9 +28,13 @@ import {
 } from "../services/BlogService";
 import { getUserByUserId } from "../services/UserService";
 import NoBlogFound from "./NoBlogFound";
-import { checkLoggedIn } from "../services/AuthService";
+import { AuthContext } from "../context/AuthContext";
+
 
 const AuthorBlogs = () => {
+  const {
+    isLoggedIn,
+  } = useContext(AuthContext);
   const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
@@ -43,22 +48,25 @@ const AuthorBlogs = () => {
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
 
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
       const decodedToken = jwt_decode(token);
       setUsername(decodedToken.username);
-      const allBlogs = await getBlogByAuthorId(authorId);
+      const allBlogs = await getBlogByAuthorId(
+        currentPage,
+        pageLimit,
+        authorId
+      );
       setBlogs(allBlogs);
       const currentAuthor = await getUserByUserId(authorId);
       setAuthorName(currentAuthor.user.username);
-      const loginStatus = checkLoggedIn();
-      setIsLoggedIn(loginStatus);
     };
     fetchData();
-  }, []);
+  }, [currentPage,blogs]);
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
@@ -69,12 +77,9 @@ const AuthorBlogs = () => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    if(blogTitle.trim().length<1||blogDescription.trim().length<1){
-
-      console.log('empty')
-
-    }
-    else{
+    if (blogTitle.trim().length < 1 || blogDescription.trim().length < 1) {
+      console.log("empty");
+    } else {
       const response = await createBlogInAuthorDashboard(
         authorId,
         blogTitle,
@@ -84,7 +89,6 @@ const AuthorBlogs = () => {
       setCreateBlogDialogClose(false);
       handleCreateBlogDialogClose();
     }
-   
   };
 
   const submitFormToUpdateBlog = async () => {
@@ -139,6 +143,9 @@ const AuthorBlogs = () => {
     setBlogId(blogId);
     setDeleteBlogDialogOpen(true);
   };
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
@@ -149,23 +156,28 @@ const AuthorBlogs = () => {
       </Container>
 
       {/* isLoggedIn */}
-    
-       {((username===authorName)&&isLoggedIn)? (<Button
+
+      {username === authorName && isLoggedIn ? (
+        <Button
           variant="contained"
           color="success"
           onClick={creatingBlogPost}
           className="button"
         >
           <Add /> Create Blog
-        </Button>):null}
-      
+        </Button>
+      ) : null}
 
       {blogs.length > 0 ? (
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
-              <Typography className="title" variant="h4">{blog.title}</Typography>
-              <Typography className="author" variant="h6">@{blog.user.username}</Typography>
+              <Typography className="title" variant="h4">
+                {blog.title}
+              </Typography>
+              <Typography className="author" variant="h6">
+                @{blog.user.username}
+              </Typography>
               <Divider />
               <Typography className="description">
                 {blog.description}
@@ -288,6 +300,14 @@ const AuthorBlogs = () => {
           </form>
         </DialogContent>
       </Dialog>
+      <Stack spacing={2}>
+        <Pagination
+          count={15}
+          color="primary"
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      </Stack>
     </>
   );
 };

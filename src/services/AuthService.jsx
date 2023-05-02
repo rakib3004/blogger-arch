@@ -19,7 +19,7 @@ export const registerUser = async (username, email, password) => {
     console.log(response);
     return response;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 

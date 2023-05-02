@@ -17,6 +17,7 @@ function Login() {
     event.preventDefault();
     try {
       const response = await loginUser(username, password);
+      console.log(response);
       setUsername("");
       setPassword("");
       setLoggedStatusInLogin();

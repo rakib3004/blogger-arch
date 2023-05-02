@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2023 at 10:33 AM
+-- Generation Time: May 02, 2023 at 02:21 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -45,6 +45,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdAt`, `update
 ('0a9556be-3703-4ce6-835f-73754737642e', 'khalil', 'khalil@cefalo.com', '$2b$10$1w7lhEbCGIjn4yLyR1cn5eI4Z.l7zW8Lsve88pAy1vC2eyuEU8Y4W', '2023-04-17 09:06:55', '2023-04-17 09:06:55'),
 ('2ed99fff-e742-4a26-b840-c2a7248f351a', 'rakib', 'rakib@cefalo.com', '$2b$10$GvkpEHzm3R6hpq1TLr.kLeDC7bHyIlGJtFIy5GCQGSkF4kq8Ugc1u', '2023-03-31 05:04:01', '2023-04-18 02:16:14'),
 ('36de48d1-ae43-402f-a50c-dd84f953771e', 'miran', 'miran@cefalo.com', '$2b$10$X3MBGPp1yaYjQYOAeNrKnOAtlu13WYSeAqkz.wJqMALCqbHasYoie', '2023-04-03 09:45:46', '2023-04-03 09:45:46'),
+('3df85398-c628-4bfa-8a07-97f469297b3b', 'abdullah', 'abdullah@cefalo.com', '$2b$10$WcKZGCzvCE1C/e0ivE73iOgrzKxEdcm9.5zpyht.zvcObYb7CoetK', '2023-05-02 09:41:47', '2023-05-02 09:41:47'),
 ('4269af63-06ba-48a8-9e50-c96743af6ad9', 'jagonmoy', 'jagonmoy@cefalo.com', '$2b$10$gnJjEBtkPPEAP3IPNAbIje55sZbYLOCPZGJPJbCESOfHosQwWFIQa', '2023-04-03 02:30:21', '2023-04-03 02:30:21'),
 ('5ca32cb8-5c35-4f77-96c3-517007593328', 'inan', 'inan@cefalo.com', '$2b$10$6YWz/p7aio1LyRS3TWpgp.Xlr5Mq5vpt4b/TuGdE4Yxl4LOftJhIa', '2023-04-03 09:03:43', '2023-04-03 09:03:43'),
 ('63334c2a-9767-4ebc-9f64-29d327e918ff', 'tahmid', 'tahmid@cefalo.com', '$2b$10$HwLgGEUK.oL28OE1vYGAn.dX1JVHh5IsmbvPx99eKnYjNcL7/gZRe', '2023-04-04 01:55:22', '2023-04-04 01:55:22'),
@@ -55,8 +56,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `createdAt`, `update
 ('9a0dfb08-a302-4d63-b855-972661b503af', 'turja', 'turja@cefalo.com', '$2b$10$35pdG7/RIyNAt/7WsLCbP.wX/MeGX4y9aXfOtroJE1ihqBLtwyNhu', '2023-04-28 02:47:44', '2023-04-28 02:47:44'),
 ('a72d26e5-c36d-4351-993e-43491a3ad017', 'trofder', 'trofder@cefalo.com', '$2b$10$71HpkaVwcxsVBqUr8YmW2./ISYOPoFqg2JBwxVs0FSEac8CewXlJC', '2023-04-18 06:19:09', '2023-04-18 06:19:09'),
 ('acd6f5ae-5c57-47aa-996d-5a877f9bf0fb', 'tahmeed', 'tahmeed@cefalo.com', '$2b$10$utnwOW1SSLJGdf9OeV2oz.YeHv2FUXX7h6av2hWgpLjkm7o.iO/xq', '2023-04-03 02:29:44', '2023-04-03 02:29:44'),
-('bced7494-b4e2-488c-8f79-8e1cc0b29883', 'raghib', 'raghib@cefalo.com', '$2b$10$ptf0CdcGC0XbH4.ytvL6BOrEGHd3LgtiyTgTCitJM7HEzPD.BMEBO', '2023-04-03 02:30:27', '2023-04-03 02:30:27'),
-('c4264fcd-78d4-4a4c-bc5c-b1ca191e0517', 'nadim', 'nadim@cefalo.com', '$2b$10$yt0dU1L.VonPWWJ7H.F2WuuUrKRZJeJVGOcLWZYXOhWQQzzRSWwGS', '2023-04-04 01:47:43', '2023-04-04 01:47:43');
+('c4264fcd-78d4-4a4c-bc5c-b1ca191e0517', 'nadim', 'nadim@cefalo.com', '$2b$10$yt0dU1L.VonPWWJ7H.F2WuuUrKRZJeJVGOcLWZYXOhWQQzzRSWwGS', '2023-04-04 01:47:43', '2023-04-04 01:47:43'),
+('e7ea10bb-a191-4996-a881-562c2c780a90', 'ragib', 'ragib@cefalo.com', '$2b$10$qK2bGjwTrUWiYRJDamDSzeEQSuBpDsMVu/h4aooqkxf4HwTGDq0vK', '2023-05-02 03:32:12', '2023-05-02 03:32:12');
 
 --
 -- Indexes for dumped tables
