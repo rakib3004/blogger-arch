@@ -13,9 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkLoggedIn } from "../services/AuthService";
+import { AuthContext } from "../context/AuthContext";
 
 const blogs = "Blogs";
 const users = "Users";
@@ -26,11 +26,14 @@ const signup = "Signup";
 const routes = ["/blogs", "/users", "/profile", "/login"];
 
 const NavBar = () => {
+  const {
+    isLoggedIn,
+    setLoggedStatusInLogout,
+  } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [accountHolderName, setAccountHolderName] = useState("");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const nevigateTo = useNavigate();
 
@@ -40,8 +43,6 @@ const NavBar = () => {
       const decodedToken = jwt_decode(token);
       setAccountHolderName(decodedToken.username);
       setUsername(accountHolderName);
-      const loginStatus = checkLoggedIn();
-      setIsLoggedIn(loginStatus);
     };
     fetchData();
   }, []);
@@ -61,36 +62,38 @@ const NavBar = () => {
 
     switch (action) {
       case "Profile":
-        redirectToAccountPage();
+        redirectToProfilePage();
         break;
       case "Login":
-        if(isLoggedIn){
-          
+        if (!isLoggedIn) {
+          redirectToLoginPage();
+          break;
         }
-        redirectToLoginPage();
+        redirectToHomePage();
         break;
       case "Logout":
-        setIsLoggedIn(false);
         handleLogout();
         break;
       case "Signup":
-        setIsLoggedIn(true);
-        redirectToSignupPage();
+        if (!isLoggedIn) {
+          redirectToSignupPage();
+          break;
+        }
+        redirectToHomePage();
         break;
       default:
-        console.log("Button Clicked");
         break;
     }
   };
 
-  const redirectToAccountPage = () => {
+  const redirectToProfilePage = () => {
     setAnchorElNav(null);
     setUsername(accountHolderName);
     nevigateTo("/profile");
   };
   const handleLogout = () => {
     setAnchorElNav(null);
-    Cookies.remove("jwt");
+    setLoggedStatusInLogout();
     setUsername("");
     setAccountHolderName("");
     nevigateTo("/login");
@@ -104,6 +107,11 @@ const NavBar = () => {
   const redirectToLoginPage = () => {
     setAnchorElNav(null);
     nevigateTo("/login");
+  };
+
+  const redirectToHomePage = () => {
+    setAnchorElNav(null);
+    nevigateTo("/");
   };
 
   return (
@@ -164,9 +172,9 @@ const NavBar = () => {
                 <MenuItem key={blogs} onClick={() => nevigateTo("/blogs")}>
                   <Typography textAlign="center">{blogs}</Typography>
                 </MenuItem>
-                <MenuItem key={users} onClick={() => nevigateTo("/users")}>
+                {/* <MenuItem key={users} onClick={() => nevigateTo("/users")}>
                   <Typography textAlign="center">{users}</Typography>
-                </MenuItem>
+                </MenuItem> */}
               </Menu>
             </Box>
             <AutoStoriesIcon
@@ -176,7 +184,7 @@ const NavBar = () => {
               variant="h5"
               noWrap
               component="a"
-              href=""
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -198,21 +206,23 @@ const NavBar = () => {
               >
                 {blogs}
               </Button>
-              <Button
+              {/* <Button
                 key={users}
                 onClick={() => nevigateTo("/users")}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {users}
-              </Button>
+              </Button> */}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={accountHolderName}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {isLoggedIn? <Avatar alt="User" src="/user.png" />: 
-                  <Avatar alt="User" src="/guest.png" />
-                  }
+                  {isLoggedIn ? (
+                    <Avatar alt="User" src="/user.png" />
+                  ) : (
+                    <Avatar alt="User" src="/guest.png" />
+                  )}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -231,7 +241,7 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                    {/* isLoggedIn */}
+                {/* isLoggedIn */}
 
                 {isLoggedIn ? (
                   <>
@@ -249,6 +259,7 @@ const NavBar = () => {
                     </MenuItem>
                   </>
                 ) : null}
+
                 {!isLoggedIn ? (
                   <>
                     <MenuItem

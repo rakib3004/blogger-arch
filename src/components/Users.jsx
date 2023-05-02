@@ -7,6 +7,8 @@ import {
   Typography,
   Button,
   Avatar,
+  Pagination,
+  Stack,
 } from "@mui/material";
 import "../styles/Users.css";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +59,11 @@ const Users = () => {
             </Button>
           </CardContent>
         </Card>
-      ))}
+       
+        ))}
+         <Stack spacing={2}>
+          <Pagination count={15} color="primary" />
+        </Stack>
     </>
   );
 };

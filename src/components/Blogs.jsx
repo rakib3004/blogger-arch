@@ -67,10 +67,22 @@ const Blogs = () => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    const response = await createBlog(blogTitle, blogDescription);
-    setBlogs(response);
-    setCreateBlogDialogClose(false);
-    handleCreateBlogDialogClose();
+    if(blogTitle.trim().length<1||blogDescription.trim().length<1){
+
+      console.log('empty')
+
+    }
+    else{
+      const response = await createBlogInAuthorDashboard(
+        authorId,
+        blogTitle,
+        blogDescription
+      );
+      setBlogs(response);
+      setCreateBlogDialogClose(false);
+      handleCreateBlogDialogClose();
+    }
+   
   };
 
   const submitFormToUpdateBlog = async () => {
@@ -139,8 +151,8 @@ const Blogs = () => {
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
-              <Typography className="title">{blog.title}</Typography>
-              <Typography className="author">@{blog.user.username}</Typography>
+              <Typography className="title" variant="h4">{blog.title}</Typography>
+              <Typography className="author" variant="h6">@{blog.user.username}</Typography>
               <Divider />
               <Typography className="description">
                 {blog.description}

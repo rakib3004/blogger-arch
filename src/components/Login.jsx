@@ -1,10 +1,14 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import { useState } from "react";
 import "../styles/Login.css";
-import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/AuthService";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login() {
+  const {
+    setLoggedStatusInLogin,
+  } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const nevigateTo = useNavigate();
@@ -15,6 +19,7 @@ function Login() {
       const response = await loginUser(username, password);
       setUsername("");
       setPassword("");
+      setLoggedStatusInLogin();
       nevigateTo("/blogs");
     } catch (error) {
       console.log(error);

@@ -1,11 +1,14 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
-import * as yup from "yup";
 import "../styles/Signup.css";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/AuthService";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Signup() {
+  const {
+    setLoggedStatusInSignup,
+  } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +25,10 @@ function Signup() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setLoggedStatusInSignup();
       nevigateTo("/blogs");
     } catch (error) {
+
       console.log(error);
     }
   };
