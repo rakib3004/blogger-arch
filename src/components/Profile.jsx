@@ -11,20 +11,25 @@ import {
   TextField,
   Typography,
   Avatar,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
+
 import { getBlogByAuthorId } from "../services/BlogService";
 import {
   getUserByUsername,
   updateUserPassword,
   deleteUser,
 } from "../services/UserService";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Profile() {
+  const { setLoggedStatusInLogout } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
@@ -32,10 +37,13 @@ function Profile() {
   const [newPassword, setNewPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState(null);
+  const [passwordError, setPasswordError] = useState("");
   const [deleteUserDialogOpen, setDeleteUserDialogOpen] = useState(false);
   const [deleteUserDialogClose, setDeleteUserDialogClose] = useState(false);
+  const [updatePasswordSnackbarOpen, setUpdatePasswordSnackbarOpen] =
+    useState(false);
+  const [deleteAccountSnackbarOpen, setDeleteAccountSnackbarOpen] =
+    useState(false);
 
   const nevigateTo = useNavigate();
 
@@ -52,14 +60,16 @@ function Profile() {
 
   const handleUpdatePassword = async () => {
     event.preventDefault();
-    setIsUpdatingPassword(false);
-    handleConfirm();
 
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+    setPassword(newPassword);
     const username = user.username;
     const password = newPassword;
     const response = await updateUserPassword(username, password);
-
-    setIsUpdatingPassword(false);
+    setUpdatePasswordSnackbarOpen(true);
     handleUpdatePasswordDialogClose();
   };
 
@@ -72,14 +82,6 @@ function Profile() {
     setCurrentPassword("");
     setNewPassword("");
     setConfirmNewPassword("");
-  };
-
-  const handleConfirm = () => {
-    if (newPassword !== confirmNewPassword) {
-      setPasswordError("Passwords do not match");
-      return;
-    }
-    setPassword(newPassword);
   };
 
   const handleCurrentPasswordChange = () => {
@@ -101,8 +103,10 @@ function Profile() {
     event.preventDefault();
     const username = user.username;
     const response = await deleteUser(username);
+    setDeleteAccountSnackbarOpen(true);
     setDeleteUserDialogClose(false);
     handleDeleteUserDialogClose();
+    setLoggedStatusInLogout();
     nevigateTo(`/login`);
   };
 
@@ -112,6 +116,20 @@ function Profile() {
 
   const deletingUser = async (UserId) => {
     setDeleteUserDialogOpen(true);
+  };
+
+  const handleUpdatePasswordSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setUpdatePasswordSnackbarOpen(false);
+  };
+
+  const handleDeleteAccountSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setDeleteAccountSnackbarOpen(false);
   };
 
   return (
@@ -187,6 +205,11 @@ function Profile() {
               required
               fullWidth
             />
+            <div>
+              <Typography variant="h7" color="error">
+                {passwordError}
+              </Typography>
+            </div>
             <DialogActions>
               <Button onClick={handleUpdatePasswordDialogClose}>Cancel</Button>
               <Button type="submit" /*disabled={isUpdatingPassword}*/>
@@ -216,6 +239,34 @@ function Profile() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <Snackbar
+        open={updatePasswordSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleUpdatePasswordSnackbarClose}
+      >
+        <Alert
+          onClose={handleUpdatePasswordSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Password Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={deleteAccountSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleDeleteAccountSnackbarClose}
+      >
+        <Alert
+          onClose={handleDeleteAccountSnackbarClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Account Deleted Successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -28,6 +28,8 @@ import {
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Blogs = () => {
   const { isLoggedIn } = useContext(AuthContext);
@@ -54,6 +56,8 @@ const Blogs = () => {
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
+  const nevigateTo = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +69,7 @@ const Blogs = () => {
       setOldBlogs(blogs);
       const allBlogs = await getAllBlogs(currentPage, pageLimit);
       setBlogs(allBlogs);
+      nevigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
       (blogs===oldBlogs)?setIsBlogsDataChanged(false):setIsBlogsDataChanged(true);
     };
     fetchData();
@@ -76,9 +81,14 @@ const Blogs = () => {
     setBlogTitle(event.target.value);
   };
 
+
   const handleBlogDescriptionChange = (event) => {
     setBlogDescription(event.target.value);
   };
+
+  const showUserDetails = (username)=>{
+    nevigateTo(`/users/${username}`);
+  }
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
@@ -221,12 +231,16 @@ const Blogs = () => {
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
-              <Typography className="title" variant="h4">
+              <Typography className="title" variant="h4" color="primary">
                 {blog.title}
               </Typography>
-              <Typography className="author" variant="h6">
+              {/* <Typography className="author" variant="h6">
                 @{blog.user.username}
-              </Typography>
+              </Typography> */}
+              <Button className="author" variant="contained" 
+                    color="warning" onClick={() => showUserDetails(blog.user.username)}>
+                @{blog.user.username}  
+              </Button>
               <Divider />
               <Typography className="description">
                 {blog.description}

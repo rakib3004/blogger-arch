@@ -7,50 +7,59 @@ import {
   Typography,
   Button,
   Avatar,
-  Pagination,
-  Stack,
 } from "@mui/material";
 import "../styles/Users.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getBlogByAuthorId } from "../services/BlogService";
-import { getAllUsers } from "../services/UserService";
+import { getUserByUsername } from "../services/UserService";
+
 
 const User = () => {
- 
+  const demoUser = {username:"test",email:"test@test.com",updatedAt:"10/2/23", createdAt:"10/2/23"};
+  const { username } = useParams();
+  const [user,setUser] = useState(demoUser);
+
+  const nevigateTo = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
-     
+      const response = await getUserByUsername(username);
+      setUser(response.user);
     };
     fetchData();
   }, []);
 
- 
+
+  const showAuthorAllBlog = (userId) => {
+    nevigateTo(`/blogs/author/${userId}`);
+  };
   return (
     <>
-        <Card key={user.id} className="card">
-          <CardContent>
-            <Divider />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Avatar alt="User" src="/user.png" />
-              <CardHeader title={user.user.username} />
-            </div>
+      <Card key={user.id} className="card">
+        <CardContent>
+          <Divider />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar alt="User" src="/user.png" />
+            <CardHeader title={user.username} />
+          </div>
 
-            <Typography>Email: {user.user.email}</Typography>
-            <Typography className="user-time">
-              Created At: {new Date(user.user.createdAt).toLocaleString()}
-            </Typography>
-            <Typography className="user-time">
-              Last Updated: {new Date(user.user.updatedAt).toLocaleString()}
-            </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => showAuthorAllBlog(user.user.id)}
-            >
-              Show Blogs
-            </Button>
-          </CardContent>
-        </Card>
+          <Typography>Email: {user.email}</Typography>
+          <Typography className="user-time">
+            Created At: {new Date(user.createdAt).toLocaleString()}
+          </Typography>
+          <Typography className="user-time">
+            Last Updated: {new Date(user.updatedAt).toLocaleString()}
+          </Typography>
+           <Button
+            variant="contained"
+            color="primary"
+            onClick={() => showAuthorAllBlog(user.id)}
+          >
+            Show Blogs
+          </Button> 
+        </CardContent>
+      </Card>
+
     </>
   );
 };

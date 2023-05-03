@@ -21,7 +21,7 @@ import "../styles/AuthorBlogs.css";
 import "../styles/Blogs.css";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   createBlogInAuthorDashboard,
   deleteBlogByInAuthorDashboard,
@@ -59,6 +59,9 @@ const AuthorBlogs = () => {
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
+  const nevigateTo = useNavigate();
+
+
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
@@ -86,6 +89,10 @@ const AuthorBlogs = () => {
   const handleBlogDescriptionChange = (event) => {
     setBlogDescription(event.target.value);
   };
+
+  const showUserDetails = (username)=>{
+    nevigateTo(`/users/${username}`);
+  }
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
@@ -259,9 +266,13 @@ const AuthorBlogs = () => {
               <Typography className="title" variant="h4">
                 {blog.title}
               </Typography>
-              <Typography className="author" variant="h6">
+              {/* <Typography className="author" variant="h6">
                 @{blog.user.username}
-              </Typography>
+              </Typography> */}
+               <Button className="author" variant="contained" 
+                    color="warning" onClick={() => showUserDetails(blog.user.username)}>
+                @{blog.user.username}  
+              </Button>
               <Divider />
               <Typography className="description">
                 {blog.description}
