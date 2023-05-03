@@ -8,6 +8,7 @@ const HomePage = () => {
 
   const showAllBlogs = () =>{
     nevigateTo('/blogs');
+    
   }
 
   return (

@@ -6,29 +6,38 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function Signup() {
-  const {
-    setLoggedStatusInSignup,
-  } = useContext(AuthContext);
+  const { setLoggedStatusInSignup } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const nevigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if(password!==confirmPassword){
+      setErrorMessage("Passwords don't natch");
+      return;
+    }
+
     try {
       const response = await registerUser(username, email, password);
-      
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setLoggedStatusInSignup();
-      nevigateTo("/blogs");
-    } catch (error) {
 
+      if (response.status === 200) {
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setLoggedStatusInSignup();
+        nevigateTo("/blogs");
+        return;
+      }
+
+      setErrorMessage(response.data);
+    } catch (error) {
       console.log(error);
     }
   };
@@ -73,6 +82,11 @@ function Signup() {
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
+        </div>
+        <div>
+          <Typography variant="h7" color="error">
+            {errorMessage}
+          </Typography>
         </div>
         <Button
           className="signup-button"

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const blogs = "Blogs";
+const home = "Home";
 const users = "Users";
 const profile = "Profile";
 const logout = "Logout";
@@ -31,7 +32,7 @@ const NavBar = () => {
     setLoggedStatusInLogout,
   } = useContext(AuthContext);
   const [username, setUsername] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("guest");
+  const [accountHolderName, setAccountHolderName] = useState("");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -126,7 +127,6 @@ const NavBar = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -169,9 +169,13 @@ const NavBar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
+                <MenuItem key={home} onClick={() => nevigateTo("/")}>
+                  <Typography textAlign="center">{home}</Typography>
+                </MenuItem>
                 <MenuItem key={blogs} onClick={() => nevigateTo("/blogs")}>
                   <Typography textAlign="center">{blogs}</Typography>
                 </MenuItem>
+               
                 {/* <MenuItem key={users} onClick={() => nevigateTo("/users")}>
                   <Typography textAlign="center">{users}</Typography>
                 </MenuItem> */}
@@ -184,7 +188,6 @@ const NavBar = () => {
               variant="h5"
               noWrap
               component="a"
-              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -198,6 +201,13 @@ const NavBar = () => {
             >
               Blogger
             </Typography>
+            <Button
+                key={home}
+                onClick={() => nevigateTo("/")}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {home}
+              </Button>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 key={blogs}
@@ -206,6 +216,7 @@ const NavBar = () => {
               >
                 {blogs}
               </Button>
+           
               {/* <Button
                 key={users}
                 onClick={() => nevigateTo("/users")}

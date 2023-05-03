@@ -16,10 +16,9 @@ export const registerUser = async (username, email, password) => {
       },
       { withCredentials: true }
     );
-    console.log(response);
     return response;
   } catch (error) {
-    console.log(error);
+    return error.response;
   }
 };
 
@@ -35,8 +34,8 @@ export const loginUser = async (username, password) => {
     );
     return response;
   } catch (error) {
-    console.error(error);
-  }
+    return error.response; 
+   }
 };
 
 export const checkLoggedIn = () => {
@@ -48,6 +47,6 @@ export const checkLoggedIn = () => {
     }
     return false;
   } catch (error) {
-    console.error(error);
+    return error.response; 
   }
 };

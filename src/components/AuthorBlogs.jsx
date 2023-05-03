@@ -392,14 +392,16 @@ const AuthorBlogs = () => {
           </form>
         </DialogContent>
       </Dialog>
-      <Stack spacing={2}>
-        <Pagination
-          count={15}
-          color="primary"
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-      </Stack>
+      {/* {blogs.length > 0 ? ( */}
+        <Stack spacing={2}>
+          <Pagination
+            count={15}
+            color="primary"
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </Stack>
+     {/* ) : null} */} 
 
       <Snackbar
         open={createBlogSnackbarOpen}

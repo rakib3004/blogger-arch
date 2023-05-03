@@ -11,17 +11,27 @@ function Login() {
   } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const nevigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await loginUser(username, password);
-      console.log(response);
+
+
+      if(response.status===200){
       setUsername("");
       setPassword("");
+      setErrorMessage("");
       setLoggedStatusInLogin();
       nevigateTo("/blogs");
+      return;
+      }
+
+      setErrorMessage(response.data);
+    
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +60,10 @@ function Login() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
+        <div>
+        <Typography variant="h7" color="error">{errorMessage}</Typography>
+        </div>
+
         <Button
           className="login-button"
           variant="contained"
