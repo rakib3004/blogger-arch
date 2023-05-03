@@ -67,7 +67,10 @@ export const deleteBlogById = async (blogId) => {
   return allBlogs;
 };
 
-export const createBlogInAuthorDashboard = async (
+
+
+
+export const createBlogInAuthorDashboard = async (currentPage, pageLimit,
   authorId,
   title,
   description
@@ -79,13 +82,13 @@ export const createBlogInAuthorDashboard = async (
       { withCredentials: true }
     );
 
-    const allBlogs = await getBlogByAuthorId(authorId);
+    const allBlogs = await getBlogByAuthorId(currentPage, pageLimit, authorId);
     return allBlogs;
   } catch (error) {
     console.error(error);
   }
 };
-export const updateBlogInAuthorDashboard = async (
+export const updateBlogInAuthorDashboard = async (currentPage, pageLimit, 
   authorId,
   blogId,
   title,
@@ -97,7 +100,7 @@ export const updateBlogInAuthorDashboard = async (
       { title, description },
       { withCredentials: true }
     );
-    const allBlogs = await getBlogByAuthorId(authorId);
+    const allBlogs = await getBlogByAuthorId(currentPage, pageLimit, authorId);
     console.log(allBlogs);
     return allBlogs;
   } catch (error) {
@@ -105,10 +108,10 @@ export const updateBlogInAuthorDashboard = async (
   }
 };
 
-export const deleteBlogByInAuthorDashboard = async (authorId, blogId) => {
+export const deleteBlogByInAuthorDashboard = async (currentPage, pageLimit, authorId, blogId) => {
   const response = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
     withCredentials: true,
   });
-  const allBlogs = await getBlogByAuthorId(authorId);
+  const allBlogs = await getBlogByAuthorId(currentPage, pageLimit, authorId);
   return allBlogs;
 };

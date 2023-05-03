@@ -13,6 +13,8 @@ import {
   Typography,
   Pagination,
   Stack,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import "../styles/AuthorBlogs.css";
@@ -30,13 +32,12 @@ import { getUserByUserId } from "../services/UserService";
 import NoBlogFound from "./NoBlogFound";
 import { AuthContext } from "../context/AuthContext";
 
-
 const AuthorBlogs = () => {
-  const {
-    isLoggedIn,
-  } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
+  const [oldBlogs, setOldBlogs] = useState([]);
+  const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState("");
   const [authorName, setAuthorName] = useState("");
@@ -50,23 +51,34 @@ const AuthorBlogs = () => {
   const [blogDescription, setBlogDescription] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(5);
+  const [createBlogSnackbarOpen, setCreateBlogSnackbarOpen] = useState(false);
+  const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
+  const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
+  const [isErrorInTitle, setIsErrorInTitle] = useState(false);
+  const [isErrorInDescription, setIsErrorInDescription] = useState(false);
+  const [titleErrorStatus, setTitleErrorStatus] = useState("");
+  const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
       const decodedToken = jwt_decode(token);
       setUsername(decodedToken.username);
+      setOldBlogs(blogs);
       const allBlogs = await getBlogByAuthorId(
         currentPage,
         pageLimit,
         authorId
       );
       setBlogs(allBlogs);
+      blogs === oldBlogs
+        ? setIsBlogsDataChanged(false)
+        : setIsBlogsDataChanged(true);
       const currentAuthor = await getUserByUserId(authorId);
       setAuthorName(currentAuthor.user.username);
     };
     fetchData();
-  }, [currentPage,blogs]);
+  }, [currentPage, isBlogsDataChanged]);
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
@@ -77,38 +89,81 @@ const AuthorBlogs = () => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    if (blogTitle.trim().length < 1 || blogDescription.trim().length < 1) {
-      console.log("empty");
-    } else {
+
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+    if (blogTitle.trim() && blogDescription.trim()) {
       const response = await createBlogInAuthorDashboard(
+        currentPage,
+        pageLimit,
         authorId,
         blogTitle,
         blogDescription
       );
       setBlogs(response);
       setCreateBlogDialogClose(false);
+      setCreateBlogSnackbarOpen(true);
       handleCreateBlogDialogClose();
+      return;
+    }
+    if (!blogTitle.trim()) {
+      setIsErrorInTitle(true);
+      setTitleErrorStatus("Blog title is empty");
+    }
+
+    if (!blogDescription.trim()) {
+      setIsErrorInDescription(true);
+      setDescriptionErrorStatus("Blog Description is empty");
     }
   };
 
   const submitFormToUpdateBlog = async () => {
     event.preventDefault();
-    const response = await updateBlogInAuthorDashboard(
-      authorId,
-      blogId,
-      blogTitle,
-      blogDescription
-    );
-    setBlogs(response);
-    setUpdateBlogDialogClose(false);
-    handleUpdateBlogDialogClose();
+
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+    if (blogTitle.trim() && blogDescription.trim()) {
+      const response = await updateBlogInAuthorDashboard(
+        currentPage,
+        pageLimit,
+        authorId,
+        blogId,
+        blogTitle,
+        blogDescription
+      );
+
+      setBlogs(response);
+      setUpdateBlogDialogClose(false);
+      setUpdateBlogSnackbarOpen(true);
+      handleUpdateBlogDialogClose();
+      return;
+    }
+    if (!blogTitle.trim()) {
+      setIsErrorInTitle(true);
+      setTitleErrorStatus("Blog title is empty");
+    }
+
+    if (!blogDescription.trim()) {
+      setIsErrorInDescription(true);
+      setDescriptionErrorStatus("Blog Description is empty");
+    }
   };
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
-    const response = await deleteBlogByInAuthorDashboard(authorId, blogId);
+    const response = await deleteBlogByInAuthorDashboard(
+      currentPage,
+      pageLimit,
+      authorId,
+      blogId
+    );
     setBlogs(response);
     setDeleteBlogDialogClose(false);
+    setDeleteBlogSnackbarOpen(true);
     handleDeleteBlogDialogClose();
   };
 
@@ -116,12 +171,20 @@ const AuthorBlogs = () => {
     setCreateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
   };
 
   const handleUpdateBlogDialogClose = () => {
     setUpdateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
   };
 
   const handleDeleteBlogDialogClose = () => {
@@ -145,6 +208,27 @@ const AuthorBlogs = () => {
   };
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
+  };
+
+  const handleCreateBlogSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setCreateBlogSnackbarOpen(false);
+  };
+
+  const handleUpdateBlogSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setUpdateBlogSnackbarOpen(false);
+  };
+
+  const handleDeleteBlogSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setDeleteBlogSnackbarOpen(false);
   };
 
   return (
@@ -220,18 +304,22 @@ const AuthorBlogs = () => {
             <TextField
               label="Title"
               type="text"
+              margin="normal"
               value={blogTitle}
               onChange={handleBlogTitleChange}
-              margin="normal"
+              error={isErrorInTitle}
+              helperText={titleErrorStatus}
               required
               fullWidth
             />
             <TextField
               label="Description"
               type="text"
+              margin="normal"
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
-              margin="normal"
+              error={isErrorInDescription}
+              helperText={descriptionErrorStatus}
               maxRows={8}
               minRows={8}
               multiline
@@ -254,18 +342,22 @@ const AuthorBlogs = () => {
             <TextField
               label="Title"
               type="text"
+              margin="normal"
               value={blogTitle}
               onChange={handleBlogTitleChange}
-              margin="normal"
+              error={isErrorInTitle}
+              helperText={titleErrorStatus}
               required
               fullWidth
             />
             <TextField
               label="Description"
               type="text"
+              margin="normal"
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
-              margin="normal"
+              error={isErrorInDescription}
+              helperText={descriptionErrorStatus}
               maxRows={8}
               minRows={8}
               multiline
@@ -308,6 +400,48 @@ const AuthorBlogs = () => {
           onChange={handlePageChange}
         />
       </Stack>
+
+      <Snackbar
+        open={createBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleCreateBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleCreateBlogSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Blog Created Successfully!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={updateBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleUpdateBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleUpdateBlogSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Blog Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={deleteBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleDeleteBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleDeleteBlogSnackbarClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Blog Deleted Successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

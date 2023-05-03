@@ -15,7 +15,7 @@ import {
   Pagination,
   Stack,
   Alert,
-  Snackbar
+  Snackbar,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import "../styles/Blogs.css";
@@ -29,12 +29,11 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { AuthContext } from "../context/AuthContext";
 
-
 const Blogs = () => {
-  const {
-    isLoggedIn,
-  } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
+  const [oldBlogs, setOldBlogs] = useState([]);
+  const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
   const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
@@ -50,26 +49,28 @@ const Blogs = () => {
   const [createBlogSnackbarOpen, setCreateBlogSnackbarOpen] = useState(false);
   const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
   const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
+  const [isErrorInTitle, setIsErrorInTitle] = useState(false);
+  const [isErrorInDescription, setIsErrorInDescription] = useState(false);
+  const [titleErrorStatus, setTitleErrorStatus] = useState("");
+  const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
- 
-  /*const Alert = React.forwardRef((props, ref) => (
-    <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
-  ));*/
 
   useEffect(() => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
-      if(token){
+      if (token) {
         const decodedToken = jwt_decode(token);
         setUsername(decodedToken.username);
       }
-    
-      const allBlogs = await getAllBlogs(currentPage,pageLimit);
+      setOldBlogs(blogs);
+      const allBlogs = await getAllBlogs(currentPage, pageLimit);
       setBlogs(allBlogs);
-
+      (blogs===oldBlogs)?setIsBlogsDataChanged(false):setIsBlogsDataChanged(true);
     };
     fetchData();
-  }, [currentPage,blogs]);
+  }, [currentPage,isBlogsDataChanged]);
+
+ 
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
@@ -81,31 +82,52 @@ const Blogs = () => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
-    if(blogTitle.trim().length<1||blogDescription.trim().length<1){
-
-      console.log('empty')
-
-    }
-    else{
-      const response = await createBlog(
-        blogTitle,
-        blogDescription
-      );
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+    if (blogTitle.trim() && blogDescription.trim()) {
+      const response = await createBlog(blogTitle, blogDescription);
       setBlogs(response);
       setCreateBlogDialogClose(false);
       setCreateBlogSnackbarOpen(true);
       handleCreateBlogDialogClose();
+      return;
     }
-   
+    if (!blogTitle.trim()) {
+      setIsErrorInTitle(true);
+      setTitleErrorStatus("Blog title is empty");
+    }
+
+    if (!blogDescription.trim()) {
+      setIsErrorInDescription(true);
+      setDescriptionErrorStatus("Blog Description is empty");
+    }
   };
 
   const submitFormToUpdateBlog = async () => {
     event.preventDefault();
-    const response = await updateBlogById(blogId, blogTitle, blogDescription);
-    setBlogs(response);
-    setUpdateBlogDialogClose(false);
-    setUpdateBlogSnackbarOpen(true);
-    handleUpdateBlogDialogClose();
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+    if (blogTitle.trim() && blogDescription.trim()) {
+      const response = await updateBlogById(blogId, blogTitle, blogDescription);
+      setBlogs(response);
+      setUpdateBlogDialogClose(false);
+      setUpdateBlogSnackbarOpen(true);
+      handleUpdateBlogDialogClose();
+      return;
+    }
+    if (!blogTitle.trim()) {
+      setIsErrorInTitle(true);
+      setTitleErrorStatus("Blog title is empty");
+    }
+
+    if (!blogDescription.trim()) {
+      setIsErrorInDescription(true);
+      setDescriptionErrorStatus("Blog Description is empty");
+    }
   };
 
   const submitFormToDeleteBlog = async () => {
@@ -114,7 +136,6 @@ const Blogs = () => {
     setBlogs(response);
     setDeleteBlogDialogClose(false);
     setDeleteBlogSnackbarOpen(true);
-
     handleDeleteBlogDialogClose();
   };
 
@@ -122,20 +143,24 @@ const Blogs = () => {
     setCreateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
-    setCreateBlogSnackbarOpen(true);
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
   };
 
   const handleUpdateBlogDialogClose = () => {
     setUpdateBlogDialogOpen(false);
     setBlogTitle("");
     setBlogDescription("");
-    setUpdateBlogSnackbarOpen(true);
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
   };
 
   const handleDeleteBlogDialogClose = () => {
     setDeleteBlogDialogOpen(false);
-    setDeleteBlogSnackbarOpen(true);
-
   };
 
   const creatingBlogPost = () => {
@@ -159,48 +184,49 @@ const Blogs = () => {
   };
 
   const handleCreateBlogSnackbarClose = (event, action) => {
-    if (action === 'clickaway') {
+    if (action === "clickaway") {
       return;
     }
     setCreateBlogSnackbarOpen(false);
   };
-  
+
   const handleUpdateBlogSnackbarClose = (event, action) => {
-    if (action === 'clickaway') {
+    if (action === "clickaway") {
       return;
     }
     setUpdateBlogSnackbarOpen(false);
   };
-  
 
   const handleDeleteBlogSnackbarClose = (event, action) => {
-    if (action === 'clickaway') {
+    if (action === "clickaway") {
       return;
     }
     setDeleteBlogSnackbarOpen(false);
   };
-  
 
   return (
     <>
-     
-       
-     {isLoggedIn? (<Button
+      {isLoggedIn ? (
+        <Button
           variant="contained"
           color="success"
           onClick={creatingBlogPost}
           className="button"
         >
           <Add /> Create Blog
-        </Button>):null}
-      
-      
+        </Button>
+      ) : null}
+
       {blogs &&
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
-              <Typography className="title" variant="h4">{blog.title}</Typography>
-              <Typography className="author" variant="h6">@{blog.user.username}</Typography>
+              <Typography className="title" variant="h4">
+                {blog.title}
+              </Typography>
+              <Typography className="author" variant="h6">
+                @{blog.user.username}
+              </Typography>
               <Divider />
               <Typography className="description">
                 {blog.description}
@@ -211,22 +237,24 @@ const Blogs = () => {
               <Typography className="time">
                 Updated at: {new Date(blog.updatedAt).toLocaleString()}
               </Typography>
-              {username === blog.user.username ? <>
-                <Button
-                variant="contained"
-                color="primary"
-                onClick={() => updatingBlogPost(blog)}
-              >
-                Update Blog
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => deletingBlogPost(blog.id)}
-              >
-                Delete Blog
-              </Button>
-              </> : null}
+              {username === blog.user.username ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => updatingBlogPost(blog)}
+                  >
+                    Update Blog
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => deletingBlogPost(blog.id)}
+                  >
+                    Delete Blog
+                  </Button>
+                </>
+              ) : null}
             </CardContent>
           </Card>
         ))}
@@ -238,18 +266,22 @@ const Blogs = () => {
             <TextField
               label="Title"
               type="text"
+              margin="normal"
               value={blogTitle}
               onChange={handleBlogTitleChange}
-              margin="normal"
+              error={isErrorInTitle}
+              helperText={titleErrorStatus}
               required
               fullWidth
             />
             <TextField
               label="Description"
               type="text"
+              margin="normal"
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
-              margin="normal"
+              error={isErrorInDescription}
+              helperText={descriptionErrorStatus}
               maxRows={8}
               minRows={8}
               multiline
@@ -272,18 +304,22 @@ const Blogs = () => {
             <TextField
               label="Title"
               type="text"
+              margin="normal"
               value={blogTitle}
               onChange={handleBlogTitleChange}
-              margin="normal"
+              error={isErrorInTitle}
+              helperText={titleErrorStatus}
               required
               fullWidth
             />
             <TextField
               label="Description"
               type="text"
+              margin="normal"
               value={blogDescription}
               onChange={handleBlogDescriptionChange}
-              margin="normal"
+              error={isErrorInDescription}
+              helperText={descriptionErrorStatus}
               maxRows={8}
               minRows={8}
               multiline
@@ -319,29 +355,56 @@ const Blogs = () => {
         </DialogContent>
       </Dialog>
       <Stack spacing={2}>
-          <Pagination count={15} color="primary" page={currentPage} onChange={handlePageChange} />
-        </Stack>
+        <Pagination
+          count={15}
+          color="primary"
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      </Stack>
 
-        <Snackbar open={createBlogSnackbarOpen} autoHideDuration={6000} onClose={handleCreateBlogSnackbarClose}>
-         <Alert onClose={handleCreateBlogSnackbarClose} severity="success" sx={{ width: '100%' }}>
-           Blog Created Successfully!
-         </Alert>
-       </Snackbar>
+      <Snackbar
+        open={createBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleCreateBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleCreateBlogSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Blog Created Successfully!
+        </Alert>
+      </Snackbar>
 
-       <Snackbar open={updateBlogSnackbarOpen} autoHideDuration={6000} onClose={handleUpdateBlogSnackbarClose}>
-         <Alert onClose={handleUpdateBlogSnackbarClose} severity="success" sx={{ width: '100%' }}>
-           Blog Updated Successfully!
-         </Alert>
-       </Snackbar>
+      <Snackbar
+        open={updateBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleUpdateBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleUpdateBlogSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Blog Updated Successfully!
+        </Alert>
+      </Snackbar>
 
-       <Snackbar open={deleteBlogSnackbarOpen} autoHideDuration={6000} onClose={handleDeleteBlogSnackbarClose}>
-         <Alert onClose={handleDeleteBlogSnackbarClose} severity="error" sx={{ width: '100%' }}>
-           Blog Deleted Successfully!
-         </Alert>
-       </Snackbar>
-
+      <Snackbar
+        open={deleteBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleDeleteBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleDeleteBlogSnackbarClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Blog Deleted Successfully!
+        </Alert>
+      </Snackbar>
     </>
-        
   );
 };
 

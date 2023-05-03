@@ -31,7 +31,7 @@ const NavBar = () => {
     setLoggedStatusInLogout,
   } = useContext(AuthContext);
   const [username, setUsername] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("");
+  const [accountHolderName, setAccountHolderName] = useState("guest");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 

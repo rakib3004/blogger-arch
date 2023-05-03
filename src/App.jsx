@@ -8,7 +8,7 @@ import Blogs from './components/Blogs';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import HomePage from './components/HomePage';
-
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 
@@ -19,8 +19,24 @@ return(
   <NavBar/>
   <Routes>
 
-    <Route exact path="/login" Component={Login} />
+    {/*
+    <Route exact path="/login" element={
+      <ProtectedRoute>
+        <Signup/>
+      </ProtectedRoute>
+    } />
+
+    <Route exact path="/signup" element={
+      <ProtectedRoute>
+        <Signup/>
+      </ProtectedRoute>
+    } />*/}
+
+<Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
+          
+    
+
     <Route exact path="/" Component={HomePage} /> 
     <Route exact path="/blogs" Component={Blogs} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
