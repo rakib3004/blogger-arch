@@ -31,8 +31,8 @@ const NavBar = () => {
     isLoggedIn,
     setLoggedStatusInLogout,
   } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("");
+  const [username, setUsername] = useState("guest");
+  const [accountHolderName, setAccountHolderName] = useState("guest");
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -42,8 +42,11 @@ const NavBar = () => {
     const fetchData = async () => {
       const token = Cookies.get("jwt");
       const decodedToken = jwt_decode(token);
-      setAccountHolderName(decodedToken.username);
-      setUsername(accountHolderName);
+      if(!(decodedToken.username)){
+        setAccountHolderName(decodedToken.username);
+        setUsername(accountHolderName);
+      }
+ 
     };
     fetchData();
   }, []);

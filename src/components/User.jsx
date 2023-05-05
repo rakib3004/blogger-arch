@@ -19,7 +19,7 @@ const User = () => {
   const { username } = useParams();
   const [user,setUser] = useState(demoUser);
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +31,7 @@ const User = () => {
 
 
   const showAuthorAllBlog = (userId) => {
-    nevigateTo(`/blogs/author/${userId}`);
+    navigateTo(`/blogs/author/${userId}`);
   };
   return (
     <>

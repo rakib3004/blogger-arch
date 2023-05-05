@@ -45,7 +45,7 @@ function Profile() {
   const [deleteAccountSnackbarOpen, setDeleteAccountSnackbarOpen] =
     useState(false);
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +93,7 @@ function Profile() {
   };
 
   const showAuthorAllBlog = () => {
-    nevigateTo(`/blogs/author/${user.id}`);
+    navigateTo(`/blogs/author/${user.id}`);
   };
   const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
@@ -107,7 +107,7 @@ function Profile() {
     setDeleteUserDialogClose(false);
     handleDeleteUserDialogClose();
     setLoggedStatusInLogout();
-    nevigateTo(`/login`);
+    navigateTo(`/login`);
   };
 
   const handleDeleteUserDialogClose = () => {

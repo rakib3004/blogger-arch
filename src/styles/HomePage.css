@@ -1,6 +1,6 @@
 .welcome{
   
-  background-image: url('../../public/HomePage.png');
+  background-image: url('/HomePage.png');
   background-size: cover;
   background-position: center;
   height: 100vh;

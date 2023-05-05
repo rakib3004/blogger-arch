@@ -6,14 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function Login() {
-  const {
-    setLoggedStatusInLogin,
-  } = useContext(AuthContext);
+  const { setLoggedStatusInLogin, } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,7 +24,7 @@ function Login() {
       setPassword("");
       setErrorMessage("");
       setLoggedStatusInLogin();
-      nevigateTo("/blogs");
+      navigateTo("/blogs");
       return;
       }
 
@@ -40,7 +38,7 @@ function Login() {
 
 
   return (
-    <div>
+    <>
       <Typography variant="h4" component="h2" align="center">
         Login
       </Typography>
@@ -81,7 +79,7 @@ function Login() {
           </Link>
         </div>
       </form>
-    </div>
+    </>
 
   );
 }

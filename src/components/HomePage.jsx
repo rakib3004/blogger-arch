@@ -4,10 +4,10 @@ import "../styles/HomePage.css";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   const showAllBlogs = () =>{
-    nevigateTo('/blogs');
+    navigateTo('/blogs');
     
   }
 

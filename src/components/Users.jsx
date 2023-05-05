@@ -19,7 +19,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ const Users = () => {
   }, []);
 
   const showAuthorAllBlog = (userId) => {
-    nevigateTo(`/blogs/author/${userId}`);
+    navigateTo(`/blogs/author/${userId}`);
   };
   return (
     <>

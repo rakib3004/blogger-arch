@@ -56,7 +56,7 @@ const Blogs = () => {
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const Blogs = () => {
       setOldBlogs(blogs);
       const allBlogs = await getAllBlogs(currentPage, pageLimit);
       setBlogs(allBlogs);
-      nevigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
       (blogs===oldBlogs)?setIsBlogsDataChanged(false):setIsBlogsDataChanged(true);
     };
     fetchData();
@@ -87,7 +87,7 @@ const Blogs = () => {
   };
 
   const showUserDetails = (username)=>{
-    nevigateTo(`/users/${username}`);
+    navigateTo(`/users/${username}`);
   }
 
   const submitFormToCreateBlog = async () => {
@@ -229,6 +229,7 @@ const Blogs = () => {
 
       {blogs &&
         blogs.map((blog) => (
+        <>
           <Card key={blog.id} className="card">
             <CardContent>
               <Typography className="title" variant="h4" color="primary">
@@ -271,6 +272,8 @@ const Blogs = () => {
               ) : null}
             </CardContent>
           </Card>
+
+          </>
         ))}
 
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>

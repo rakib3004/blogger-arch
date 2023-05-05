@@ -12,9 +12,6 @@ const AuthProvider = (props) => {
         setIsLoggedIn(true);
       }
 
-      const setLoggedStatusInSignup = () =>{
-        setIsLoggedIn(true);
-      }
 
       const setLoggedStatusInLogout = () =>{
         Cookies.remove("jwt");
@@ -25,7 +22,6 @@ const AuthProvider = (props) => {
         <AuthContext.Provider
             value={{
                 setLoggedStatusInLogin,
-                setLoggedStatusInSignup,
                 setLoggedStatusInLogout,
                 isLoggedIn,
             }}

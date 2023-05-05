@@ -59,7 +59,7 @@ const AuthorBlogs = () => {
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const AuthorBlogs = () => {
   };
 
   const showUserDetails = (username)=>{
-    nevigateTo(`/users/${username}`);
+    navigateTo(`/users/${username}`);
   }
 
   const submitFormToCreateBlog = async () => {

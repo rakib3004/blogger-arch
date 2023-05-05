@@ -1,19 +1,19 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import "../styles/Signup.css";
 import { registerUser } from "../services/AuthService";
-import { useEffect, useState, useContext } from "react";
+import {  useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function Signup() {
-  const { setLoggedStatusInSignup } = useContext(AuthContext);
+  const { setLoggedStatusInLogin, } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const nevigateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,25 +25,26 @@ function Signup() {
 
     try {
       const response = await registerUser(username, email, password);
-
-      if (response.status === 200) {
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        setLoggedStatusInSignup();
-        nevigateTo("/blogs");
-        return;
+      if (response.status !== 200) {
+        setErrorMessage(response.data);
       }
-
-      setErrorMessage(response.data);
     } catch (error) {
       console.log(error);
     }
+
+   
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setErrorMessage("");
+   setLoggedStatusInLogin();
+    navigateTo("/blogs");
+
   };
 
   return (
-    <div>
+    <>
       <Typography variant="h4" component="h2" align="center">
         Signup
       </Typography>
@@ -84,7 +85,7 @@ function Signup() {
           />
         </div>
         <div>
-          <Typography variant="h7" color="error">
+          <Typography variant="h6" color="error">
             {errorMessage}
           </Typography>
         </div>
@@ -103,7 +104,7 @@ function Signup() {
           </Link>
         </div>
       </form>
-    </div>
+    </>
   );
 }
 
