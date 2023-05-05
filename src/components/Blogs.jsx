@@ -1,42 +1,35 @@
-import { useEffect, useState, useContext } from "react";
+import { Add } from "@mui/icons-material";
 import {
+  Alert,
+  Button,
   Card,
   CardContent,
-  Typography,
-  Divider,
-  Grid,
-  IconButton,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  Divider,
   Pagination,
-  Stack,
-  Alert,
   Snackbar,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import "../styles/Blogs.css";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import {
   createBlog,
+  deleteBlogById,
   getAllBlogs,
   updateBlogById,
-  deleteBlogById,
 } from "../services/BlogService";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
+import NoBlogFound from "./NoBlogFound";
+import "../styles/Blogs.css";
 
 const Blogs = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
-  const [oldBlogs, setOldBlogs] = useState([]);
-  const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
@@ -57,38 +50,53 @@ const Blogs = () => {
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
   const navigateTo = useNavigate();
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const page = queryParams.get("page") || currentPage;
-  const limit = queryParams.get("limit") || pageLimit;
+  
+
  
+
+
+  const fetchQueryParams = () => {
+    const pageValue = queryParams.get("page") || currentPage;
+    const limitValue = queryParams.get("limit") || pageLimit;
+    setCurrentPage(pageValue);
+    setPageLimit(limitValue);
+  }
+
+  const fetchAllBlogsData = async () => {
+    const allBlogs = await getAllBlogs(currentPage, pageLimit);
+    setBlogs(allBlogs);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      setOldBlogs(blogs);
-      const allBlogs = await getAllBlogs(currentPage, pageLimit);
-      setBlogs(allBlogs);
+      await fetchAllBlogsData(currentPage, pageLimit);
       navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-      (blogs===oldBlogs)?setIsBlogsDataChanged(false):setIsBlogsDataChanged(true);
     };
     fetchData();
-  }, [currentPage,pageLimit,isBlogsDataChanged]);
+  }, [currentPage, pageLimit]);
 
- 
+  useEffect(() => {
+    const fetchData = async () => {
+      fetchQueryParams();
+      await fetchAllBlogsData(currentPage, pageLimit);
+      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+    };
+    fetchData();
+  }, [navigateTo]);
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
 
-
   const handleBlogDescriptionChange = (event) => {
     setBlogDescription(event.target.value);
   };
 
-  const showUserDetails = (username)=>{
+  const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
-  }
+  };
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
@@ -227,51 +235,62 @@ const Blogs = () => {
         </Button>
       ) : null}
 
-      {blogs &&
+      {blogs? (
         blogs.map((blog) => (
-        <>
-          <Card key={blog.id} className="card">
-            <CardContent>
-              <Typography className="title" variant="h4" color="primary">
-                {blog.title}
-              </Typography>
-              <Button className="author" variant="contained" 
-                    color="warning" onClick={() => showUserDetails(blog.user.username)}>
-                @{blog.user.username}  
-              </Button>
-              <Divider />
-              <Typography className="description">
-                {blog.description}
-              </Typography>
-              <Typography className="time">
-                Created at: {new Date(blog.createdAt).toLocaleString()}
-              </Typography>
-              <Typography className="time">
-                Updated at: {new Date(blog.updatedAt).toLocaleString()}
-              </Typography>
-              {username === blog.user.username ? (
-                <>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => updatingBlogPost(blog)}
-                  >
-                    Update Blog
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deletingBlogPost(blog.id)}
-                  >
-                    Delete Blog
-                  </Button>
-                </>
-              ) : null}
-            </CardContent>
-          </Card>
+          <>
+            <Card key={blog.id} className="card">
+              <CardContent>
+                <Typography className="title" variant="h4" color="primary">
+                  {blog.title}
+                </Typography>
+                <Button
+                  className="author"
+                  variant="contained"
+                  color="warning"
+                  onClick={() => showUserDetails(blog.user.username)}
+                >
+                  @{blog.user.username}
+                </Button>
+                <Divider />
 
+                <Typography className="description">
+                  {blog.description.substring(0, 430)}... 
+                  <Link className="linkStyle" to={`/blogs/${blog.id}`}>
+                    Read more
+                </Link>
+                </Typography>
+               
+              
+
+                <Typography className="time">
+                  Created at: {new Date(blog.createdAt).toLocaleString()}
+                </Typography>
+                <Typography className="time">
+                  Updated at: {new Date(blog.updatedAt).toLocaleString()}
+                </Typography>
+                {username === blog.user.username ? (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => updatingBlogPost(blog)}
+                    >
+                      Update Blog
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => deletingBlogPost(blog.id)}
+                    >
+                      Delete Blog
+                    </Button>
+                  </>
+                ) : null}
+              </CardContent>
+            </Card>
           </>
-        ))}
+        )))
+      : (<NoBlogFound/>)}
 
       <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>

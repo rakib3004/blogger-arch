@@ -15,9 +15,8 @@ import { getUserByUsername } from "../services/UserService";
 
 
 const User = () => {
-  const demoUser = {username:"test",email:"test@test.com",updatedAt:"10/2/23", createdAt:"10/2/23"};
   const { username } = useParams();
-  const [user,setUser] = useState(demoUser);
+  const [user,setUser] = useState([]);
 
   const navigateTo = useNavigate();
 

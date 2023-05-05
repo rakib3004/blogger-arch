@@ -1,5 +1,6 @@
 import { Add } from "@mui/icons-material";
 import {
+  Alert,
   Button,
   Card,
   CardContent,
@@ -9,19 +10,15 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Pagination,
+  Snackbar,
+  Stack,
   TextField,
   Typography,
-  Pagination,
-  Stack,
-  Alert,
-  Snackbar,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import "../styles/AuthorBlogs.css";
-import "../styles/Blogs.css";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import { useParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import {
   createBlogInAuthorDashboard,
   deleteBlogByInAuthorDashboard,
@@ -29,9 +26,9 @@ import {
   updateBlogInAuthorDashboard,
 } from "../services/BlogService";
 import { getUserByUserId } from "../services/UserService";
+import "../styles/AuthorBlogs.css";
+import "../styles/Blogs.css";
 import NoBlogFound from "./NoBlogFound";
-import {useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 
 const AuthorBlogs = () => {
   const { isLoggedIn, username } = useContext(AuthContext);

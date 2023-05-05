@@ -11,6 +11,7 @@ import HomePage from './components/HomePage';
 import Blog from './components/Blog';
 import User from './components/User';   ``
 import ProtectedRoute from './components/ProtectedRoute';
+import NotFound from './components/NotFound';
 
 
 
@@ -21,20 +22,6 @@ return(
   <NavBar/>
   <Routes>
 
-    {/*
-    <Route exact path="/login" element={
-      <ProtectedRoute>
-        <Signup/>
-      </ProtectedRoute>
-    } />
-
-    <Route exact path="/signup" element={
-      <ProtectedRoute>
-        <Signup/>
-      </ProtectedRoute>
-    } />*/}
-
-    {/* public route, private route */}
 
     <Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
@@ -46,6 +33,8 @@ return(
     <Route exact path="/users" Component={Users} />   
     <Route exact path="/users/:username" Component={User} />    
     <Route exact path="/profile" Component={Profile} />    
+    <Route exact path="/*" Component={NotFound} />    
+
 
 
 

@@ -1,57 +1,98 @@
-import { useContext, useEffect, useState } from "react";
 import {
+  Button,
   Card,
   CardContent,
-  CardHeader,
   Divider,
-  Typography,
-  Button,
-  Avatar,
-  Pagination,
-  Stack,
+  Typography
 } from "@mui/material";
-import "../styles/Users.css";
-import { useNavigate } from "react-router-dom";
-import { getBlogByAuthorId } from "../services/BlogService";
-import { getAllUsers } from "../services/UserService";
+import { useEffect, useState } from "react";
+import "../styles/Blogs.css";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getBlogById } from "../services/BlogService";
+import { getUserByUserId } from "../services/UserService";
+
 
 const Blog = () => {
- 
+  const {id} = useParams();
+  const [blog, setBlog] = useState([]);
+  const [username,setUsername] = useState("");
+  const [authorId,setAuthorId] = useState("");
+  const navigateTo = useNavigate();
+
+
   useEffect(() => {
     const fetchData = async () => {
-     
+     await fetchSingleBlog();
     };
     fetchData();
   }, []);
 
- 
+  const fetchSingleBlog = async() =>{
+    const response = await getBlogById(id);
+    setBlog(response);
+    setAuthorId(blog.authorId);
+    const author = await getUserByUserId(authorId);
+    console.log('data', author);
+    setUsername(author.user.username);
+  }
+  const showUserDetails = (username)=>{
+    navigateTo(`/users/${username}`);
+  }
+
   return (
     <>
-        <Card key={user.id} className="card">
-          <CardContent>
-            <Divider />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Avatar alt="User" src="/user.png" />
-              <CardHeader title={user.user.username} />
-            </div>
+    <Card key={blog.id} className="card">
+      <CardContent>
+        <Typography className="title" variant="h4" color="primary">
+          {blog.title}
+        </Typography>
+        <Button
+          className="author"
+          variant="contained"
+          color="warning"
+          onClick={() => showUserDetails(username)}
+        >
+          @{username}
+        </Button>
+        <Divider />
 
-            <Typography>Email: {user.user.email}</Typography>
-            <Typography className="user-time">
-              Created At: {new Date(user.user.createdAt).toLocaleString()}
-            </Typography>
-            <Typography className="user-time">
-              Last Updated: {new Date(user.user.updatedAt).toLocaleString()}
-            </Typography>
+        <Typography className="description">
+          {blog.description}
+          <Link className="linkStyle" to={`/blogs`}>
+            Read Less
+        </Link>
+        </Typography>
+       
+      
+
+        <Typography className="time">
+          Created at: {new Date(blog.createdAt).toLocaleString()}
+        </Typography>
+        <Typography className="time">
+          Updated at: {new Date(blog.updatedAt).toLocaleString()}
+        </Typography>
+        {/* {username === blog.user.username ? (
+          <>
             <Button
               variant="contained"
               color="primary"
-              onClick={() => showAuthorAllBlog(user.user.id)}
+              onClick={() => updatingBlogPost(blog)}
             >
-              Show Blogs
+              Update Blog
             </Button>
-          </CardContent>
-        </Card>
-    </>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => deletingBlogPost(blog.id)}
+            >
+              Delete Blog
+            </Button>
+          </>
+        ) : null} */}
+      </CardContent>
+    </Card>
+  </>
   );
 };
 

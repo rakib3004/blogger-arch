@@ -1,29 +1,42 @@
-
-.button{
-    margin:20px;
- }
-
-.card{
-margin-bottom:3px;
-
+.button {
+  margin: 20px;
 }
 
-.title{
-font-weight: bold;
-font-size: 1.2rem;
-}
-.author{
-font-size: 3.9rem;
-font-weight: bold;
-margin-bottom: 1px;
-}
-.description{
-    font-size: 1rem;
-
+.card {
+  margin-bottom: 3px;
 }
 
-.time{
-    color: rgba(0, 0, 0, 0.54) ;
-    font-size: 0.9rem;
-    margin-bottom: 1px;
+.title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.author {
+  font-size: 3.9rem;
+  font-weight: bold;
+  margin-bottom: 1px;
+}
+.description {
+  font-size: 1rem;
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.9rem;
+  margin-bottom: 1px;
+}
+
+.linkDivStyle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.linkStyle {
+  color: black;
+  display: inline-flex;
+  margin-bottom: 0.5rem;
+  margin-bottom: 0;
+  text-decoration: none;
+  cursor: pointer;
+  text-decoration: underline;
 }
