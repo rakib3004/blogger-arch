@@ -5,16 +5,41 @@ import { createContext, useState } from 'react';
 const AuthContext = createContext();
 
 const AuthProvider = (props) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername] = useState("");
 
   
       const setLoggedStatusInLogin= () =>{
-        setIsLoggedIn(true);
+        try{
+          const token = Cookies.get("jwt");
+          const decodedToken = jwt_decode(token);
+          const loggedInUsername = decodedToken.username;
+          if(loggedInUsername){
+            setUsername(loggedInUsername);
+            setIsLoggedIn(true);
+
+          }
+          else{
+            setIsLoggedIn(false);
+
+          }
+
+        }
+
+        catch(error){
+
+
+          Cookies.remove("jwt");
+          setUsername("");
+          setIsLoggedIn(false);
+        }
+      
       }
 
 
       const setLoggedStatusInLogout = () =>{
         Cookies.remove("jwt");
+        setUsername("");
         setIsLoggedIn(false);
       }
 
@@ -24,6 +49,7 @@ const AuthProvider = (props) => {
                 setLoggedStatusInLogin,
                 setLoggedStatusInLogout,
                 isLoggedIn,
+                username,
             }}
         >
             {props.children}

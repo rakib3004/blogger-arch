@@ -15,9 +15,6 @@ import {
   Alert,
 } from "@mui/material";
 import axios from "axios";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-
 import { getBlogByAuthorId } from "../services/BlogService";
 import {
   getUserByUsername,
@@ -29,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 function Profile() {
-  const { setLoggedStatusInLogout } = useContext(AuthContext);
+  const { setLoggedStatusInLogout, username } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
@@ -49,9 +46,6 @@ function Profile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookies.get("jwt");
-      const decodedToken = jwt_decode(token);
-      const username = decodedToken.username;
       const response = await getUserByUsername(username);
       setUser(response.user);
     };

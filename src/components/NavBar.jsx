@@ -1,18 +1,19 @@
+import {
+
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -27,27 +28,15 @@ const signup = "Signup";
 const routes = ["/blogs", "/users", "/profile", "/login"];
 
 const NavBar = () => {
-  const {
-    isLoggedIn,
-    setLoggedStatusInLogout,
-  } = useContext(AuthContext);
-  const [username, setUsername] = useState("guest");
-  const [accountHolderName, setAccountHolderName] = useState("guest");
+  const { isLoggedIn, setLoggedStatusInLogout, username } =
+    useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const nevigateTo = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = Cookies.get("jwt");
-      const decodedToken = jwt_decode(token);
-      if(!(decodedToken.username)){
-        setAccountHolderName(decodedToken.username);
-        setUsername(accountHolderName);
-      }
- 
-    };
+    const fetchData = async () => {};
     fetchData();
   }, []);
   const handleOpenNavMenu = (event) => {
@@ -92,14 +81,11 @@ const NavBar = () => {
 
   const redirectToProfilePage = () => {
     setAnchorElNav(null);
-    setUsername(accountHolderName);
     nevigateTo("/profile");
   };
   const handleLogout = () => {
     setAnchorElNav(null);
     setLoggedStatusInLogout();
-    setUsername("");
-    setAccountHolderName("");
     nevigateTo("/login");
   };
 
@@ -178,7 +164,7 @@ const NavBar = () => {
                 <MenuItem key={blogs} onClick={() => nevigateTo("/blogs")}>
                   <Typography textAlign="center">{blogs}</Typography>
                 </MenuItem>
-               
+
                 {/* <MenuItem key={users} onClick={() => nevigateTo("/users")}>
                   <Typography textAlign="center">{users}</Typography>
                 </MenuItem> */}
@@ -205,12 +191,12 @@ const NavBar = () => {
               Blogger
             </Typography>
             <Button
-                key={home}
-                onClick={() => nevigateTo("/")}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {home}
-              </Button>
+              key={home}
+              onClick={() => nevigateTo("/")}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              {home}
+            </Button>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
                 key={blogs}
@@ -219,7 +205,7 @@ const NavBar = () => {
               >
                 {blogs}
               </Button>
-           
+
               {/* <Button
                 key={users}
                 onClick={() => nevigateTo("/users")}
@@ -230,7 +216,7 @@ const NavBar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title={accountHolderName}>
+              <Tooltip title={username === "" ? "guest" : username}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {isLoggedIn ? (
                     <Avatar alt="User" src="/user.png" />
@@ -239,6 +225,8 @@ const NavBar = () => {
                   )}
                 </IconButton>
               </Tooltip>
+              <Typography textAlign="center">{username === "" ? "guest" : username}</Typography>
+
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"

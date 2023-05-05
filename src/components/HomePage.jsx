@@ -14,12 +14,9 @@ const HomePage = () => {
   return (
   <>
       <Box className="welcome">
-      {/* <Container> */}
       <Button variant="contained" color="primary" className="welcome-button"  onClick={() => showAllBlogs()}>
         Get Started!
-      </Button>
-      {/* </Container> */}
-      
+      </Button>      
     </Box>
   </>
   );

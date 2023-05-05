@@ -19,7 +19,7 @@ function Signup() {
     event.preventDefault();
 
     if(password!==confirmPassword){
-      setErrorMessage("Passwords don't natch");
+      setErrorMessage("Passwords don't match");
       return;
     }
 

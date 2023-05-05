@@ -16,7 +16,7 @@ import {
   Alert,
   Snackbar,
 } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import "../styles/AuthorBlogs.css";
 import "../styles/Blogs.css";
 import Cookies from "js-cookie";
@@ -30,16 +30,16 @@ import {
 } from "../services/BlogService";
 import { getUserByUserId } from "../services/UserService";
 import NoBlogFound from "./NoBlogFound";
+import {useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const AuthorBlogs = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const { authorId } = useParams();
   const [blogs, setBlogs] = useState([]);
   const [oldBlogs, setOldBlogs] = useState([]);
   const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
-  const [username, setUsername] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
@@ -64,9 +64,6 @@ const AuthorBlogs = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookies.get("jwt");
-      const decodedToken = jwt_decode(token);
-      setUsername(decodedToken.username);
       setOldBlogs(blogs);
       const allBlogs = await getBlogByAuthorId(
         currentPage,
@@ -246,7 +243,6 @@ const AuthorBlogs = () => {
         </Typography>
       </Container>
 
-      {/* isLoggedIn */}
 
       {username === authorName && isLoggedIn ? (
         <Button
@@ -263,12 +259,10 @@ const AuthorBlogs = () => {
         blogs.map((blog) => (
           <Card key={blog.id} className="card">
             <CardContent>
-              <Typography className="title" variant="h4">
+              <Typography className="title" variant="h4" color="primary">
                 {blog.title}
               </Typography>
-              {/* <Typography className="author" variant="h6">
-                @{blog.user.username}
-              </Typography> */}
+             
                <Button className="author" variant="contained" 
                     color="warning" onClick={() => showUserDetails(blog.user.username)}>
                 @{blog.user.username}  

@@ -29,15 +29,15 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 const Blogs = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, username } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
   const [oldBlogs, setOldBlogs] = useState([]);
   const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
-  const [username, setUsername] = useState([]);
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
@@ -58,14 +58,14 @@ const Blogs = () => {
 
   const navigateTo = useNavigate();
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const page = queryParams.get("page") || currentPage;
+  const limit = queryParams.get("limit") || pageLimit;
+ 
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookies.get("jwt");
-      if (token) {
-        const decodedToken = jwt_decode(token);
-        setUsername(decodedToken.username);
-      }
       setOldBlogs(blogs);
       const allBlogs = await getAllBlogs(currentPage, pageLimit);
       setBlogs(allBlogs);
@@ -73,7 +73,7 @@ const Blogs = () => {
       (blogs===oldBlogs)?setIsBlogsDataChanged(false):setIsBlogsDataChanged(true);
     };
     fetchData();
-  }, [currentPage,isBlogsDataChanged]);
+  }, [currentPage,pageLimit,isBlogsDataChanged]);
 
  
 
@@ -235,9 +235,6 @@ const Blogs = () => {
               <Typography className="title" variant="h4" color="primary">
                 {blog.title}
               </Typography>
-              {/* <Typography className="author" variant="h6">
-                @{blog.user.username}
-              </Typography> */}
               <Button className="author" variant="contained" 
                     color="warning" onClick={() => showUserDetails(blog.user.username)}>
                 @{blog.user.username}  

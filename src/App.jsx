@@ -34,6 +34,8 @@ return(
       </ProtectedRoute>
     } />*/}
 
+    {/* public route, private route */}
+
     <Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
           
