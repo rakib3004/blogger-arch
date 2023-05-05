@@ -5,37 +5,39 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-function Login() {
-  const { setLoggedStatusInLogin, } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
+const Login = () => {
+  const { setLoggedStatusInLogin, isLoggedIn, username } = useContext(AuthContext);
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigateTo = useNavigate();
+  useEffect(() => {
+
+      console.log("still i am here", username);
+      if (isLoggedIn) {
+        navigateTo("/");
+      }
+ 
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await loginUser(username, password);
-
-
-      if(response.status===200){
-      setUsername("");
-      setPassword("");
-      setErrorMessage("");
-      setLoggedStatusInLogin();
-      navigateTo("/blogs");
-      return;
+      const response = await loginUser(userName, password);
+      if (response.status === 200) {
+        setUserName("");
+        setPassword("");
+        setErrorMessage("");
+        setLoggedStatusInLogin();
+        navigateTo("/blogs");
+        return;
       }
-
       setErrorMessage(response.data);
-    
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
   return (
     <>
@@ -47,8 +49,8 @@ function Login() {
           <TextField
             required
             label="Username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
+            value={userName}
+            onChange={(event) => setUserName(event.target.value)}
           />
         </div>
         <div>
@@ -61,7 +63,9 @@ function Login() {
           />
         </div>
         <div>
-        <Typography variant="h7" color="error">{errorMessage}</Typography>
+          <Typography variant="h7" color="error">
+            {errorMessage}
+          </Typography>
         </div>
 
         <Button
@@ -80,8 +84,7 @@ function Login() {
         </div>
       </form>
     </>
-
   );
-}
+};
 
 export default Login;

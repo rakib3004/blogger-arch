@@ -10,7 +10,6 @@ import Signup from './pages/Signup';
 import HomePage from './pages/HomePage';
 import Blog from './pages/Blog';
 import User from './pages/User';   ``
-import ProtectedRoute from './pages/ProtectedRoute';
 import NotFound from './pages/NotFound';
 
 

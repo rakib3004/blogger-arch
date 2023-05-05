@@ -17,18 +17,9 @@ const AuthProvider = (props) => {
           if(loggedInUsername){
             setUsername(loggedInUsername);
             setIsLoggedIn(true);
-
           }
-          else{
-            setIsLoggedIn(false);
-
-          }
-
         }
-
         catch(error){
-
-
           Cookies.remove("jwt");
           setUsername("");
           setIsLoggedIn(false);

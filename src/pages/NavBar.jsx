@@ -1,5 +1,4 @@
 import {
-
   AppBar,
   Avatar,
   Box,
@@ -58,21 +57,14 @@ const NavBar = () => {
         redirectToProfilePage();
         break;
       case "Login":
-        if (!isLoggedIn) {
-          redirectToLoginPage();
-          break;
-        }
-        redirectToHomePage();
+        redirectToLoginPage();
+        break;
         break;
       case "Logout":
         handleLogout();
         break;
       case "Signup":
-        if (!isLoggedIn) {
-          redirectToSignupPage();
-          break;
-        }
-        redirectToHomePage();
+        redirectToSignupPage();
         break;
       default:
         break;
@@ -225,7 +217,9 @@ const NavBar = () => {
                   )}
                 </IconButton>
               </Tooltip>
-              <Typography textAlign="center">{username === "" ? "guest" : username}</Typography>
+              <Typography textAlign="center">
+                {username === "" ? "guest" : username}
+              </Typography>
 
               <Menu
                 sx={{ mt: "45px" }}

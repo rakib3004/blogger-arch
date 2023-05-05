@@ -5,8 +5,8 @@ import {  useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-function Signup() {
-  const { setLoggedStatusInLogin, } = useContext(AuthContext);
+const Signup = () =>{
+  const { setLoggedStatusInLogin, isLoggedIn, } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,14 +15,22 @@ function Signup() {
 
   const navigateTo = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if(isLoggedIn){
+        navigateTo('/');
+      }
+    };
+    fetchData();
+  }, []);
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if(password!==confirmPassword){
       setErrorMessage("Passwords don't match");
       return;
     }
-
     try {
       const response = await registerUser(username, email, password);
       if (response.status !== 200) {

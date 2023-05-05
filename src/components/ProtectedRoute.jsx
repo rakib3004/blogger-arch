@@ -1,5 +1,4 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import "../styles/Signup.css";
 import { registerUser } from "../services/AuthService";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";

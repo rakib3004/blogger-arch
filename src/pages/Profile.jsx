@@ -25,8 +25,8 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-function Profile() {
-  const { setLoggedStatusInLogout, username } = useContext(AuthContext);
+const Profile = () => {
+  const { setLoggedStatusInLogout, username, isLoggedIn } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
@@ -46,6 +46,9 @@ function Profile() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if(!isLoggedIn){
+        navigateTo('/login');
+      }
       const response = await getUserByUsername(username);
       setUser(response.user);
     };
@@ -263,6 +266,6 @@ function Profile() {
       </Snackbar>
     </>
   );
-}
+};
 
 export default Profile;
