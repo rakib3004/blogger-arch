@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AuthorBlogs from './components/AuthorBlogs';
-import NavBar from './components/NavBar';
-import Profile from './components/Profile';
-import Users from './components/Users';
-import Blogs from './components/Blogs';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import HomePage from './components/HomePage';
-import Blog from './components/Blog';
-import User from './components/User';   ``
-import ProtectedRoute from './components/ProtectedRoute';
-import NotFound from './components/NotFound';
+import AuthorBlogs from './pages/AuthorBlogs';
+import NavBar from './pages/NavBar';
+import Profile from './pages/Profile';
+import Users from './pages/Users';
+import Blogs from './pages/Blogs';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import HomePage from './pages/HomePage';
+import Blog from './pages/Blog';
+import User from './pages/User';   ``
+import ProtectedRoute from './pages/ProtectedRoute';
+import NotFound from './pages/NotFound';
 
 
 
