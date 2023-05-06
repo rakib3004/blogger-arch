@@ -14,8 +14,6 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import axios from "axios";
-import { getBlogByAuthorId } from "../services/BlogService";
 import {
   getUserByUsername,
   updateUserPassword,

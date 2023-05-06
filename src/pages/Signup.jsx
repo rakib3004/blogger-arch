@@ -1,7 +1,7 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import "../styles/Signup.css";
 import { registerUser } from "../services/AuthService";
-import {  useState, useContext } from "react";
+import {  useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -17,9 +17,9 @@ const Signup = () =>{
 
   useEffect(() => {
     const fetchData = async () => {
-      if(isLoggedIn){
-        navigateTo('/');
-      }
+      // if(isLoggedIn){
+      //   navigateTo('/');
+      // }
     };
     fetchData();
   }, []);

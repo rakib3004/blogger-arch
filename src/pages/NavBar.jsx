@@ -17,14 +17,11 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const blogs = "Blogs";
-const home = "Home";
-const users = "Users";
+
 const profile = "Profile";
 const logout = "Logout";
 const login = "Login";
 const signup = "Signup";
-const routes = ["/blogs", "/users", "/profile", "/login"];
 
 const NavBar = () => {
   const { isLoggedIn, setLoggedStatusInLogout, username } =
@@ -60,9 +57,9 @@ const NavBar = () => {
         redirectToLoginPage();
         break;
         break;
-      case "Logout":
-        handleLogout();
-        break;
+      // case "Logout":
+      //   handleLogout();
+      //   break;
       case "Signup":
         redirectToSignupPage();
         break;
@@ -150,16 +147,15 @@ const NavBar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <MenuItem key={home} onClick={() => nevigateTo("/")}>
-                  <Typography textAlign="center">{home}</Typography>
+                <>
+                <MenuItem key="home" onClick={() => nevigateTo("/")}>
+                  <Typography textAlign="center">home</Typography>
                 </MenuItem>
-                <MenuItem key={blogs} onClick={() => nevigateTo("/blogs")}>
-                  <Typography textAlign="center">{blogs}</Typography>
+                <MenuItem key="blogs" onClick={() => nevigateTo("/blogs")}>
+                  <Typography textAlign="center">blogs</Typography>
                 </MenuItem>
-
-                {/* <MenuItem key={users} onClick={() => nevigateTo("/users")}>
-                  <Typography textAlign="center">{users}</Typography>
-                </MenuItem> */}
+               
+                </>
               </Menu>
             </Box>
             <AutoStoriesIcon
@@ -183,28 +179,22 @@ const NavBar = () => {
               Blogger
             </Typography>
             <Button
-              key={home}
+              key="home"
               onClick={() => nevigateTo("/")}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              {home}
+              home
             </Button>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Button
-                key={blogs}
+                key="blogs"
                 onClick={() => nevigateTo("/blogs")}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {blogs}
+                blogs
               </Button>
 
-              {/* <Button
-                key={users}
-                onClick={() => nevigateTo("/users")}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {users}
-              </Button> */}
+        
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -217,9 +207,9 @@ const NavBar = () => {
                   )}
                 </IconButton>
               </Tooltip>
-              <Typography textAlign="center">
+              {/* <Typography textAlign="center">
                 {username === "" ? "guest" : username}
-              </Typography>
+              </Typography> */}
 
               <Menu
                 sx={{ mt: "45px" }}
@@ -242,13 +232,13 @@ const NavBar = () => {
                 {isLoggedIn ? (
                   <>
                     <MenuItem
-                      key={profile}
+                      key="profile"
                       onClick={(event) => handleCloseUserMenu(event, profile)}
                     >
                       <Typography textAlign="center">{profile}</Typography>
                     </MenuItem>
                     <MenuItem
-                      key={logout}
+                      key="logout"
                       onClick={(event) => handleCloseUserMenu(event, logout)}
                     >
                       <Typography textAlign="center">{logout}</Typography>
@@ -259,13 +249,13 @@ const NavBar = () => {
                 {!isLoggedIn ? (
                   <>
                     <MenuItem
-                      key={login}
+                      key="login"
                       onClick={(event) => handleCloseUserMenu(event, login)}
                     >
                       <Typography textAlign="center">{login}</Typography>
                     </MenuItem>
                     <MenuItem
-                      key={signup}
+                      key="signup"
                       onClick={(event) => handleCloseUserMenu(event, signup)}
                     >
                       <Typography textAlign="center">{signup}</Typography>

@@ -18,13 +18,11 @@ function App() {
 
 return(
   <BrowserRouter>
+  
   <NavBar/>
   <Routes>
-
-
     <Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
-          
     <Route exact path="/" Component={HomePage} /> 
     <Route exact path="/blogs" Component={Blogs } /> 
     <Route exact path="/blogs/:id" Component={Blog} /> 
@@ -33,10 +31,6 @@ return(
     <Route exact path="/users/:username" Component={User} />    
     <Route exact path="/profile" Component={Profile} />    
     <Route exact path="/*" Component={NotFound} />    
-
-
-
-
   </Routes>
       
 </BrowserRouter>

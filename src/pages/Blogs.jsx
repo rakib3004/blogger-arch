@@ -53,10 +53,6 @@ const Blogs = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   
-
- 
-
-
   const fetchQueryParams = () => {
     const pageValue = queryParams.get("page") || currentPage;
     const limitValue = queryParams.get("limit") || pageLimit;
@@ -224,7 +220,7 @@ const Blogs = () => {
 
   return (
     <>
-      {isLoggedIn ? (
+   {isLoggedIn ? (
         <Button
           variant="contained"
           color="success"
@@ -233,7 +229,7 @@ const Blogs = () => {
         >
           <Add /> Create Blog
         </Button>
-      ) : null}
+      ) : null} 
 
       {blogs? (
         blogs.map((blog) => (
@@ -292,7 +288,7 @@ const Blogs = () => {
         )))
       : (<NoBlogFound/>)}
 
-      <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
+      <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToCreateBlog}>
@@ -330,7 +326,7 @@ const Blogs = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
+      <Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToUpdateBlog}>
@@ -368,7 +364,7 @@ const Blogs = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={deleteBlogDialogOpen} onClose={deleteBlogDialogClose}>
+      <Dialog open={deleteBlogDialogOpen} onClose={handleDeleteBlogDialogClose}>
         <DialogTitle>Are you sure to delete this blog?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteBlog}>
@@ -391,7 +387,7 @@ const Blogs = () => {
         <Pagination
           count={15}
           color="primary"
-          page={currentPage}
+          page={parseInt(currentPage)}
           onChange={handlePageChange}
         />
       </Stack>
