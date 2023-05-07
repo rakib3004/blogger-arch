@@ -61,8 +61,6 @@ const Profile = () => {
       return;
     }
     setPassword(newPassword);
-    const username = user.username;
-    const password = newPassword;
     const response = await updateUserPassword(username, password);
     setUpdatePasswordSnackbarOpen(true);
     handleUpdatePasswordDialogClose();
@@ -96,7 +94,6 @@ const Profile = () => {
 
   const submitFormToDeleteUser = async () => {
     event.preventDefault();
-    const username = user.username;
     const response = await deleteUser(username);
     setDeleteAccountSnackbarOpen(true);
     setDeleteUserDialogClose(false);

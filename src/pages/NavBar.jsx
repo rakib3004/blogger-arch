@@ -56,15 +56,13 @@ const NavBar = () => {
       case "Login":
         redirectToLoginPage();
         break;
+      case "Logout":
+        handleLogout();
         break;
-      // case "Logout":
-      //   handleLogout();
-      //   break;
       case "Signup":
         redirectToSignupPage();
         break;
-      default:
-        break;
+
     }
   };
 
@@ -207,9 +205,9 @@ const NavBar = () => {
                   )}
                 </IconButton>
               </Tooltip>
-              {/* <Typography textAlign="center">
+              <Typography textAlign="center">
                 {username === "" ? "guest" : username}
-              </Typography> */}
+              </Typography>
 
               <Menu
                 sx={{ mt: "45px" }}

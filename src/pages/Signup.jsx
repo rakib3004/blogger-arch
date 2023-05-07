@@ -17,9 +17,9 @@ const Signup = () =>{
 
   useEffect(() => {
     const fetchData = async () => {
-      // if(isLoggedIn){
-      //   navigateTo('/');
-      // }
+      if(isLoggedIn){
+        navigateTo('/');
+      }
     };
     fetchData();
   }, []);
