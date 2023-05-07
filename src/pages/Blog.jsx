@@ -10,7 +10,6 @@ const Blog = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState([]);
   const [username, setUsername] = useState("");
-  const [authorId, setAuthorId] = useState("");
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -23,9 +22,7 @@ const Blog = () => {
   const fetchSingleBlog = async () => {
     const response = await getBlogById(id);
     setBlog(response);
-    setAuthorId(blog.authorId);
-    const author = await getUserByUserId(authorId);
-    console.log("data", author);
+    const author = await getUserByUserId(response.authorId);
     setUsername(author.user.username);
   };
   const showUserDetails = (username) => {
