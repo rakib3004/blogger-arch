@@ -26,7 +26,7 @@ const AuthProvider = (props) => {
         setUsername(loggedInUsername);
         setIsLoggedIn(true);
       } catch (error) {
-        console.error("There is some problem:", error);
+        console.error("Error:", error);
       }
     } else {
       setUsername("");
@@ -36,7 +36,6 @@ const AuthProvider = (props) => {
  
  
   const setLoggedStatusInLogout = () => {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   Cookies.remove("jwt");
     setUsername("");
     setIsLoggedIn(false);

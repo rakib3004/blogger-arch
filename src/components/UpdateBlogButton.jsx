@@ -14,7 +14,7 @@ import {
     TextField,
     Typography,
   } from "@mui/material";
-  import { useContext, useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
   import {
     createBlog,
     deleteBlogById,
@@ -23,13 +23,12 @@ import {
   } from "../services/BlogService";
   
   import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
-  import { AuthContext } from "../context/AuthContext";
-  
+  import { useContext } from "react";
+  import { BlogContext } from "../context/BlogContext";  
   
   const UpdateBlogButton = ({blog}) => {
-    const { isLoggedIn, username } = useContext(AuthContext);
     const navigateTo = useNavigate();
-    const [blogs, setBlogs] = useState([]);
+    const { setAllBlogs, blogs } = useContext(BlogContext);
     const [blogId, setBlogId] = useState(null);
 
     const [blogTitle, setBlogTitle] = useState("");
@@ -64,7 +63,7 @@ import {
       setDescriptionErrorStatus("");
       if (blogTitle.trim() && blogDescription.trim()) {
         const response = await updateBlogById(blogId, blogTitle, blogDescription);
-        setBlogs(response);
+        setAllBlogs(response);
         setUpdateBlogDialogClose(false);
         setUpdateBlogSnackbarOpen(true);
         handleUpdateBlogDialogClose();

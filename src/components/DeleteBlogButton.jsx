@@ -14,7 +14,7 @@ import {
     TextField,
     Typography,
   } from "@mui/material";
-  import { useContext, useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
   import {
     createBlog,
     deleteBlogById,
@@ -23,14 +23,13 @@ import {
   } from "../services/BlogService";
   
   import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
-  import { AuthContext } from "../context/AuthContext";
-  
+  import { useContext } from "react";
+  import { BlogContext } from "../context/BlogContext";    
   
   const DeleteBlogButton = ({blog}) => {
   
-    const { isLoggedIn, username } = useContext(AuthContext);
     const navigateTo = useNavigate();
-    const [blogs, setBlogs] = useState([]);
+    const { setAllBlogs, blogs } = useContext(BlogContext);
     const [blogId, setBlogId] = useState(null);
 
     const [blogTitle, setBlogTitle] = useState("");
@@ -45,7 +44,7 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
     const response = await deleteBlogById(blogId);
-    setBlogs(response);
+    setAllBlogs(response);
     setDeleteBlogDialogClose(false);
     setDeleteBlogSnackbarOpen(true);
     handleDeleteBlogDialogClose();

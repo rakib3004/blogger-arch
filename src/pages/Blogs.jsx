@@ -15,9 +15,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { BlogContext } from "../context/BlogContext";
+
 import {
   createBlog,
   deleteBlogById,
@@ -32,9 +35,10 @@ import CreateBlogButton from '../components/CreateBlogButton';
 
 const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   const { isLoggedIn, username } = useContext(AuthContext);
-  const [blogs, setBlogs] = useState([]);
-  const [blogId, setBlogId] = useState(null);
+  const { setAllBlogs, blogs } = useContext(BlogContext);
 
+  //const [blogs, setBlogs] = useState([]);
+  const [blogId, setBlogId] = useState(null);
 
   const navigateTo = useNavigate();
 
@@ -51,7 +55,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
 
   const fetchAllBlogsData = async () => {
     const allBlogs = await getAllBlogs(currentPage, pageLimit);
-    setBlogs(allBlogs);
+    setAllBlogs(allBlogs);
   };
 
   useEffect(() => {
@@ -64,13 +68,6 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   }, [searchParams]);
 
 
-  const handleBlogTitleChange = (event) => {
-    setBlogTitle(event.target.value);
-  };
-
-  const handleBlogDescriptionChange = (event) => {
-    setBlogDescription(event.target.value);
-  };
 
   const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
