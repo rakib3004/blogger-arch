@@ -59,11 +59,10 @@ const Users = () => {
             </Button>
           </CardContent>
         </Card>
-       
-        ))}
-         <Stack spacing={2}>
-          <Pagination count={15} color="primary" />
-        </Stack>
+      ))}
+      <Stack spacing={2}>
+        <Pagination count={15} color="primary" />
+      </Stack>
     </>
   );
 };

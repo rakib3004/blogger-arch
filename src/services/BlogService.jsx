@@ -13,7 +13,7 @@ export const getAllBlogs = async (currentPage, pageLimit) => {
   return response.data;
 };
 
-export const getBlogByAuthorId = async (currentPage, pageLimit, authorId) => {
+export const getBlogsByAuthorId = async (currentPage, pageLimit, authorId) => {
   const response = await axios.get(
     baseUrl + blogRoute + authorRoute + `/${authorId}`,
     {
@@ -67,10 +67,9 @@ export const deleteBlogById = async (blogId) => {
   return allBlogs;
 };
 
-
-
-
-export const createBlogInAuthorDashboard = async (currentPage, pageLimit,
+export const createBlogInAuthorDashboard = async (
+  currentPage,
+  pageLimit,
   authorId,
   title,
   description
@@ -88,7 +87,9 @@ export const createBlogInAuthorDashboard = async (currentPage, pageLimit,
     console.error(error);
   }
 };
-export const updateBlogInAuthorDashboard = async (currentPage, pageLimit, 
+export const updateBlogInAuthorDashboard = async (
+  currentPage,
+  pageLimit,
   authorId,
   blogId,
   title,
@@ -108,7 +109,12 @@ export const updateBlogInAuthorDashboard = async (currentPage, pageLimit,
   }
 };
 
-export const deleteBlogByInAuthorDashboard = async (currentPage, pageLimit, authorId, blogId) => {
+export const deleteBlogByInAuthorDashboard = async (
+  currentPage,
+  pageLimit,
+  authorId,
+  blogId
+) => {
   const response = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
     withCredentials: true,
   });

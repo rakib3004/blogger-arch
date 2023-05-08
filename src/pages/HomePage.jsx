@@ -6,19 +6,23 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigateTo = useNavigate();
 
-  const showAllBlogs = () =>{
-    navigateTo('/blogs');
-    
-  }
+  const showAllBlogs = () => {
+    navigateTo("/blogs");
+  };
 
   return (
-  <>
+    <>
       <Box className="welcome">
-      <Button variant="contained" color="primary" className="welcome-button"  onClick={() => showAllBlogs()}>
-        Get Started!
-      </Button>      
-    </Box>
-  </>
+        <Button
+          variant="contained"
+          color="primary"
+          className="welcome-button"
+          onClick={() => showAllBlogs()}
+        >
+          Get Started!
+        </Button>
+      </Box>
+    </>
   );
 };
 

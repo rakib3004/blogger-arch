@@ -17,7 +17,6 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-
 const profile = "Profile";
 const logout = "Logout";
 const login = "Login";
@@ -62,7 +61,6 @@ const NavBar = () => {
       case "Signup":
         redirectToSignupPage();
         break;
-
     }
   };
 
@@ -146,13 +144,12 @@ const NavBar = () => {
                 }}
               >
                 <div>
-                <MenuItem key="home" onClick={() => nevigateTo("/")}>
-                  <Typography textAlign="center">home</Typography>
-                </MenuItem>
-                <MenuItem key="blogs" onClick={() => nevigateTo("/blogs")}>
-                  <Typography textAlign="center">blogs</Typography>
-                </MenuItem>
-               
+                  <MenuItem key="home" onClick={() => nevigateTo("/")}>
+                    <Typography textAlign="center">home</Typography>
+                  </MenuItem>
+                  <MenuItem key="blogs" onClick={() => nevigateTo("/blogs")}>
+                    <Typography textAlign="center">blogs</Typography>
+                  </MenuItem>
                 </div>
               </Menu>
             </Box>
@@ -191,8 +188,6 @@ const NavBar = () => {
               >
                 blogs
               </Button>
-
-        
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>

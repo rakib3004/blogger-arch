@@ -32,7 +32,6 @@ export const loginUser = async (username, password) => {
     );
     return response;
   } catch (error) {
-    return error.response; 
-   }
+    return error.response;
+  }
 };
-

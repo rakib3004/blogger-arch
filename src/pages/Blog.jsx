@@ -7,8 +7,8 @@ import { getUserByUserId } from "../services/UserService";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { BlogContext } from "../context/BlogContext";
-import UpdateBlogButton from '../components/UpdateBlogButton';
-import DeleteBlogButton from '../components/DeleteBlogButton';
+import UpdateBlogButton from "../components/UpdateBlogButton";
+import DeleteBlogButton from "../components/DeleteBlogButton";
 
 const Blog = () => {
   const { isLoggedIn, username } = useContext(AuthContext);
@@ -66,13 +66,13 @@ const Blog = () => {
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
           {username === authorName ? (
-          <>
-           <>
-              <UpdateBlogButton blog={blog}/>
-              <DeleteBlogButton blog={blog}/>
+            <>
+              <>
+                <UpdateBlogButton blog={blog} />
+                <DeleteBlogButton blog={blog} />
+              </>
             </>
-          </>
-        ) : null}
+          ) : null}
         </CardContent>
       </Card>
     </>

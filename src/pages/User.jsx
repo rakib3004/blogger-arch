@@ -13,10 +13,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getBlogByAuthorId } from "../services/BlogService";
 import { getUserByUsername } from "../services/UserService";
 
-
 const User = () => {
   const { username } = useParams();
-  const [user,setUser] = useState([]);
+  const [user, setUser] = useState([]);
 
   const navigateTo = useNavigate();
 
@@ -27,7 +26,6 @@ const User = () => {
     };
     fetchData();
   }, []);
-
 
   const showAuthorAllBlog = (userId) => {
     navigateTo(`/blogs/author/${userId}`);
@@ -49,16 +47,15 @@ const User = () => {
           <Typography className="user-time">
             Last Updated: {new Date(user.updatedAt).toLocaleString()}
           </Typography>
-           <Button
+          <Button
             variant="contained"
             color="primary"
             onClick={() => showAuthorAllBlog(user.id)}
           >
             Show Blogs
-          </Button> 
+          </Button>
         </CardContent>
       </Card>
-
     </>
   );
 };

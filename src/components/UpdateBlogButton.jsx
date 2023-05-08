@@ -1,161 +1,159 @@
 import {
-    Alert,
-    Button,
-    Card,
-    CardContent,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Divider,
-    Pagination,
-    Snackbar,
-    Stack,
-    TextField,
-    Typography,
-  } from "@mui/material";
-  import { useEffect, useState } from "react";
-  import {
-    createBlog,
-    deleteBlogById,
-    getAllBlogs,
-    updateBlogById,
-  } from "../services/BlogService";
-  
-  import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
-  import { useContext } from "react";
-  import { BlogContext } from "../context/BlogContext";  
-  
-  const UpdateBlogButton = ({blog}) => {
-    const navigateTo = useNavigate();
-    const { setAllBlogs, blogs } = useContext(BlogContext);
-    const [blogId, setBlogId] = useState(null);
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Pagination,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  createBlog,
+  deleteBlogById,
+  getAllBlogs,
+  updateBlogById,
+} from "../services/BlogService";
 
-    const [blogTitle, setBlogTitle] = useState("");
-    const [blogDescription, setBlogDescription] = useState("");
+import {
+  useLocation,
+  useNavigate,
+  Link,
+  useSearchParams,
+} from "react-router-dom";
+import { useContext } from "react";
+import { BlogContext } from "../context/BlogContext";
 
+const UpdateBlogButton = ({ blog }) => {
+  const navigateTo = useNavigate();
+  const { setAllBlogs, blogs } = useContext(BlogContext);
+  const [blogId, setBlogId] = useState(null);
 
-    const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
-    const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
-    const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogDescription, setBlogDescription] = useState("");
 
+  const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
+  const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
+  const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
 
-    const handleBlogTitleChange = (event) => {
-      setBlogTitle(event.target.value);
-    };
-  
-    const handleBlogDescriptionChange = (event) => {
-      setBlogDescription(event.target.value);
-    };
+  const handleBlogTitleChange = (event) => {
+    setBlogTitle(event.target.value);
+  };
 
-    const [isErrorInTitle, setIsErrorInTitle] = useState(false);
-    const [isErrorInDescription, setIsErrorInDescription] = useState(false);
-    const [titleErrorStatus, setTitleErrorStatus] = useState("");
-    const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
+  const handleBlogDescriptionChange = (event) => {
+    setBlogDescription(event.target.value);
+  };
 
+  const [isErrorInTitle, setIsErrorInTitle] = useState(false);
+  const [isErrorInDescription, setIsErrorInDescription] = useState(false);
+  const [titleErrorStatus, setTitleErrorStatus] = useState("");
+  const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
+  const submitFormToUpdateBlog = async () => {
+    event.preventDefault();
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+    if (blogTitle.trim() && blogDescription.trim()) {
+      const response = await updateBlogById(blogId, blogTitle, blogDescription);
+      setAllBlogs(response);
+      setUpdateBlogDialogClose(false);
+      setUpdateBlogSnackbarOpen(true);
+      handleUpdateBlogDialogClose();
+      return;
+    }
+    if (!blogTitle.trim()) {
+      setIsErrorInTitle(true);
+      setTitleErrorStatus("Blog title is empty");
+    }
 
-    const submitFormToUpdateBlog = async () => {
-      event.preventDefault();
-      setIsErrorInTitle(false);
-      setIsErrorInDescription(false);
-      setTitleErrorStatus("");
-      setDescriptionErrorStatus("");
-      if (blogTitle.trim() && blogDescription.trim()) {
-        const response = await updateBlogById(blogId, blogTitle, blogDescription);
-        setAllBlogs(response);
-        setUpdateBlogDialogClose(false);
-        setUpdateBlogSnackbarOpen(true);
-        handleUpdateBlogDialogClose();
-        return;
-      }
-      if (!blogTitle.trim()) {
-        setIsErrorInTitle(true);
-        setTitleErrorStatus("Blog title is empty");
-      }
-  
-      if (!blogDescription.trim()) {
-        setIsErrorInDescription(true);
-        setDescriptionErrorStatus("Blog Description is empty");
-      }
-    };
-    const handleUpdateBlogDialogClose = () => {
-      setUpdateBlogDialogOpen(false);
-      setBlogTitle("");
-      setBlogDescription("");
-      setIsErrorInTitle(false);
-      setIsErrorInDescription(false);
-      setTitleErrorStatus("");
-      setDescriptionErrorStatus("");
-    };
+    if (!blogDescription.trim()) {
+      setIsErrorInDescription(true);
+      setDescriptionErrorStatus("Blog Description is empty");
+    }
+  };
+  const handleUpdateBlogDialogClose = () => {
+    setUpdateBlogDialogOpen(false);
+    setBlogTitle("");
+    setBlogDescription("");
+    setIsErrorInTitle(false);
+    setIsErrorInDescription(false);
+    setTitleErrorStatus("");
+    setDescriptionErrorStatus("");
+  };
 
-    const updatingBlogPost = (blog) => {
-      setBlogTitle(blog.title);
-      setBlogDescription(blog.description);
-      setBlogId(blog.id);
-      setUpdateBlogDialogOpen(true);
-    };
+  const updatingBlogPost = (blog) => {
+    setBlogTitle(blog.title);
+    setBlogDescription(blog.description);
+    setBlogId(blog.id);
+    setUpdateBlogDialogOpen(true);
+  };
 
-    const handleUpdateBlogSnackbarClose = (event, action) => {
-      if (action === "clickaway") {
-        return;
-      }
-      setUpdateBlogSnackbarOpen(false);
-    };
+  const handleUpdateBlogSnackbarClose = (event, action) => {
+    if (action === "clickaway") {
+      return;
+    }
+    setUpdateBlogSnackbarOpen(false);
+  };
 
-
-  
-   
-    return (
-      <>
+  return (
+    <>
       <Button
-      variant="contained"
-      color="primary"
-      onClick={() => updatingBlogPost(blog)}
-    >       
-     Update Blog
-     </Button>
+        variant="contained"
+        color="primary"
+        onClick={() => updatingBlogPost(blog)}
+      >
+        Update Blog
+      </Button>
 
-<Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
-<DialogTitle>Update Blog</DialogTitle>
-<DialogContent>
-  <form onSubmit={submitFormToUpdateBlog}>
-    <TextField
-      label="Title"
-      type="text"
-      margin="normal"
-      value={blogTitle}
-      onChange={handleBlogTitleChange}
-      error={isErrorInTitle}
-      helperText={titleErrorStatus}
-      required
-      fullWidth
-    />
-    <TextField
-      label="Description"
-      type="text"
-      margin="normal"
-      value={blogDescription}
-      onChange={handleBlogDescriptionChange}
-      error={isErrorInDescription}
-      helperText={descriptionErrorStatus}
-      maxRows={8}
-      minRows={8}
-      multiline
-      required
-      fullWidth
-    />
+      <Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
+        <DialogTitle>Update Blog</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitFormToUpdateBlog}>
+            <TextField
+              label="Title"
+              type="text"
+              margin="normal"
+              value={blogTitle}
+              onChange={handleBlogTitleChange}
+              error={isErrorInTitle}
+              helperText={titleErrorStatus}
+              required
+              fullWidth
+            />
+            <TextField
+              label="Description"
+              type="text"
+              margin="normal"
+              value={blogDescription}
+              onChange={handleBlogDescriptionChange}
+              error={isErrorInDescription}
+              helperText={descriptionErrorStatus}
+              maxRows={8}
+              minRows={8}
+              multiline
+              required
+              fullWidth
+            />
 
-    <DialogActions>
-      <Button onClick={handleUpdateBlogDialogClose}>Cancel</Button>
-      <Button type="submit">Update Blog</Button>
-    </DialogActions>
-  </form>
-</DialogContent>
-</Dialog>
+            <DialogActions>
+              <Button onClick={handleUpdateBlogDialogClose}>Cancel</Button>
+              <Button type="submit">Update Blog</Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
 
-
-<Snackbar      open={updateBlogSnackbarOpen}
+      <Snackbar
+        open={updateBlogSnackbarOpen}
         autoHideDuration={2000}
         onClose={handleUpdateBlogSnackbarClose}
       >
@@ -167,11 +165,8 @@ import {
           Blog Updated Successfully!
         </Alert>
       </Snackbar>
+    </>
+  );
+};
 
-  
-</>
-    );
-  };
-  
-  export default UpdateBlogButton;
-  
+export default UpdateBlogButton;

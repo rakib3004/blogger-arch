@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { createContext, useState,  useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -8,14 +8,12 @@ const AuthProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
-
   useEffect(() => {
     const fetchData = () => {
       setLoggedStatusInLogin();
     };
     fetchData();
   }, []);
-
 
   const setLoggedStatusInLogin = () => {
     const token = Cookies.get("jwt");
@@ -33,10 +31,9 @@ const AuthProvider = (props) => {
       setIsLoggedIn(false);
     }
   };
- 
- 
+
   const setLoggedStatusInLogout = () => {
-  Cookies.remove("jwt");
+    Cookies.remove("jwt");
     setUsername("");
     setIsLoggedIn(false);
   };

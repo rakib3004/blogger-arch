@@ -1,45 +1,47 @@
 import {
-    Alert,
-    Button,
-    Card,
-    CardContent,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Divider,
-    Pagination,
-    Snackbar,
-    Stack,
-    TextField,
-    Typography,
-  } from "@mui/material";
-  import { useEffect, useState } from "react";
-  import {
-    createBlog,
-    deleteBlogById,
-    getAllBlogs,
-    updateBlogById,
-  } from "../services/BlogService";
-  
-  import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
-  import { useContext } from "react";
-  import { BlogContext } from "../context/BlogContext";    
-  
-  const DeleteBlogButton = ({blog}) => {
-  
-    const navigateTo = useNavigate();
-    const { setAllBlogs, blogs } = useContext(BlogContext);
-    const [blogId, setBlogId] = useState(null);
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Pagination,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  createBlog,
+  deleteBlogById,
+  getAllBlogs,
+  updateBlogById,
+} from "../services/BlogService";
 
-    const [blogTitle, setBlogTitle] = useState("");
-    const [blogDescription, setBlogDescription] = useState("");
+import {
+  useLocation,
+  useNavigate,
+  Link,
+  useSearchParams,
+} from "react-router-dom";
+import { useContext } from "react";
+import { BlogContext } from "../context/BlogContext";
 
+const DeleteBlogButton = ({ blog }) => {
+  const navigateTo = useNavigate();
+  const { setAllBlogs, blogs } = useContext(BlogContext);
+  const [blogId, setBlogId] = useState(null);
 
-const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogDescription, setBlogDescription] = useState("");
+
+  const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
   const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
-
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
@@ -50,8 +52,7 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
     handleDeleteBlogDialogClose();
   };
 
-
- const handleDeleteBlogDialogClose = () => {
+  const handleDeleteBlogDialogClose = () => {
     setDeleteBlogDialogOpen(false);
   };
 
@@ -60,7 +61,6 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
     setDeleteBlogDialogOpen(true);
   };
 
-    
   const handleDeleteBlogSnackbarClose = (event, action) => {
     if (action === "clickaway") {
       return;
@@ -68,10 +68,9 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
     setDeleteBlogSnackbarOpen(false);
   };
 
-
-    return (
-        <>
-        <Button
+  return (
+    <>
+      <Button
         variant="contained"
         color="secondary"
         onClick={() => deletingBlogPost(blog.id)}
@@ -99,7 +98,6 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
         </DialogContent>
       </Dialog>
 
-      
       <Snackbar
         open={deleteBlogSnackbarOpen}
         autoHideDuration={2000}
@@ -113,10 +111,8 @@ const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
           Blog Deleted Successfully!
         </Alert>
       </Snackbar>
+    </>
+  );
+};
 
-      </>
-    );
-  };
-  
-  export default DeleteBlogButton;
-  
+export default DeleteBlogButton;

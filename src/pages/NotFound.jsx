@@ -4,18 +4,16 @@ import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
-
   const navigateTo = useNavigate();
 
-  const backToHome = () =>{
-    navigateTo('/');
-  }
+  const backToHome = () => {
+    navigateTo("/");
+  };
 
   return (
     <>
-    <Box className="NotFound404">   
-  </Box>
-</>
+      <Box className="NotFound404"></Box>
+    </>
   );
 };
 

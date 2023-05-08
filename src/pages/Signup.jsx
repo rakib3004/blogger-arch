@@ -1,12 +1,12 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import "../styles/Signup.css";
 import { registerUser } from "../services/AuthService";
-import {  useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const Signup = () =>{
-  const { setLoggedStatusInLogin, isLoggedIn, } = useContext(AuthContext);
+const Signup = () => {
+  const { setLoggedStatusInLogin, isLoggedIn } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,18 +16,17 @@ const Signup = () =>{
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    const fetchData = async() => {
-      if(isLoggedIn){
-        navigateTo('/');
+    const fetchData = async () => {
+      if (isLoggedIn) {
+        navigateTo("/");
       }
     };
     fetchData();
   }, [isLoggedIn]);
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(password!==confirmPassword){
+    if (password !== confirmPassword) {
       setErrorMessage("Passwords don't match");
       return;
     }
@@ -40,15 +39,13 @@ const Signup = () =>{
       console.log(error);
     }
 
-   
     setUsername("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
     setErrorMessage("");
-   setLoggedStatusInLogin();
+    setLoggedStatusInLogin();
     navigateTo("/blogs");
-
   };
 
   return (
@@ -114,6 +111,6 @@ const Signup = () =>{
       </form>
     </>
   );
-}
+};
 
 export default Signup;

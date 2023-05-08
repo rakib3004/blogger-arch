@@ -6,14 +6,9 @@ const BlogProvider = (props) => {
     const [blogs, setBlogs] = useState([]);
     const [username, setUsername] = useState("");
 
-    const setAuthorBlogs = (blog) => {
-      setBlogs(blogs);  
-    };
-
     const setAllBlogs = (blogs) =>{
-        setBlogs(blogs);
+        setBlogs(blogs)
     };
-    
   return (
     <BlogContext.Provider
       value={{

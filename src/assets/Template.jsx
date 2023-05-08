@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,92 +17,64 @@ import {
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import {
-  createBlog,
-  deleteBlogById,
-  getAllBlogs,
-  updateBlogById,
+  createBlogInAuthorDashboard,
+  deleteBlogByInAuthorDashboard,
+  getBlogByAuthorId,
+  updateBlogInAuthorDashboard,
 } from "../services/BlogService";
-import NoBlogFound from "./NoBlogFound";
+import { getUserByUserId } from "../services/UserService";
+import "../styles/AuthorBlogs.css";
 import "../styles/Blogs.css";
-import BlogCard from '../components/BlogCard';
+import NoBlogFound from "./NoBlogFound";
 
-
-const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
+const AuthorBlogs = () => {
+  const { authorId } = useParams();
   const { isLoggedIn, username } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
+  const [oldBlogs, setOldBlogs] = useState([]);
+  const [isBlogsDataChanged, setIsBlogsDataChanged] = useState(false);
   const [blogId, setBlogId] = useState(null);
-
-
+  const [authorName, setAuthorName] = useState("");
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
   const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
-
-
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [pageLimit, setPageLimit] = useState(5);
-
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
   const [createBlogSnackbarOpen, setCreateBlogSnackbarOpen] = useState(false);
   const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
   const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
-
-
   const [isErrorInTitle, setIsErrorInTitle] = useState(false);
   const [isErrorInDescription, setIsErrorInDescription] = useState(false);
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
-   const navigateTo = useNavigate();
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  
-
-
-  const [searchParams] = useSearchParams();
-  
-  const fetchQueryParams = () => {
-    // const pageValue = searchParams.get("page") ;
-    // const limitValue = searchParams.get("limit");
-    // if(pageValue) setCurrentPage(pageValue);
-    // if(limitValue) setCurrentPage(limitValue);
-
-    const pageValue = searchParams.get("page") || currentPage;
-    const limitValue = searchParams.get("limit") || pageLimit;
-    setCurrentPage(pageValue);
-    setPageLimit(limitValue);
-  }
-
-  const fetchAllBlogsData = async () => {
-    const allBlogs = await getAllBlogs(currentPage, pageLimit);
-    setBlogs(allBlogs);
-  };
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
- //fetchQueryParams();
-      await fetchAllBlogsData(currentPage, pageLimit);
-      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+      setOldBlogs(blogs);
+      const allBlogs = await getBlogByAuthorId(
+        currentPage,
+        pageLimit,
+        authorId
+      );
+      setBlogs(allBlogs);
+      blogs === oldBlogs
+        ? setIsBlogsDataChanged(false)
+        : setIsBlogsDataChanged(true);
+      const currentAuthor = await getUserByUserId(authorId);
+      setAuthorName(currentAuthor.user.username);
     };
     fetchData();
-  }, [searchParams]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     fetchQueryParams();
-  //     await fetchAllBlogsData(currentPage, pageLimit);
-  //     navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-  //   };
-  //   fetchData();
-  // }, [navigateTo]);
-
+  }, [currentPage, isBlogsDataChanged]);
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
   };
@@ -116,12 +89,19 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
 
   const submitFormToCreateBlog = async () => {
     event.preventDefault();
+
     setIsErrorInTitle(false);
     setIsErrorInDescription(false);
     setTitleErrorStatus("");
     setDescriptionErrorStatus("");
     if (blogTitle.trim() && blogDescription.trim()) {
-      const response = await createBlog(blogTitle, blogDescription);
+      const response = await createBlogInAuthorDashboard(
+        currentPage,
+        pageLimit,
+        authorId,
+        blogTitle,
+        blogDescription
+      );
       setBlogs(response);
       setCreateBlogDialogClose(false);
       setCreateBlogSnackbarOpen(true);
@@ -141,12 +121,21 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
 
   const submitFormToUpdateBlog = async () => {
     event.preventDefault();
+
     setIsErrorInTitle(false);
     setIsErrorInDescription(false);
     setTitleErrorStatus("");
     setDescriptionErrorStatus("");
     if (blogTitle.trim() && blogDescription.trim()) {
-      const response = await updateBlogById(blogId, blogTitle, blogDescription);
+      const response = await updateBlogInAuthorDashboard(
+        currentPage,
+        pageLimit,
+        authorId,
+        blogId,
+        blogTitle,
+        blogDescription
+      );
+
       setBlogs(response);
       setUpdateBlogDialogClose(false);
       setUpdateBlogSnackbarOpen(true);
@@ -166,7 +155,12 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
-    const response = await deleteBlogById(blogId);
+    const response = await deleteBlogByInAuthorDashboard(
+      currentPage,
+      pageLimit,
+      authorId,
+      blogId
+    );
     setBlogs(response);
     setDeleteBlogDialogClose(false);
     setDeleteBlogSnackbarOpen(true);
@@ -212,10 +206,9 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
     setBlogId(blogId);
     setDeleteBlogDialogOpen(true);
   };
-
-  // const handlePageChange = (event, page) => {
-  //   setCurrentPage(page);
-  // };
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   const handleCreateBlogSnackbarClose = (event, action) => {
     if (action === "clickaway") {
@@ -240,7 +233,13 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
 
   return (
     <>
-   {isLoggedIn ? (
+      <Container maxWidth="md">
+        <Typography variant="h4" className="heading">
+          {authorName.charAt(0).toUpperCase() + authorName.slice(1)}'s Blogs
+        </Typography>
+      </Container>
+
+      {username === authorName && isLoggedIn ? (
         <Button
           variant="contained"
           color="success"
@@ -249,67 +248,60 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
         >
           <Add /> Create Blog
         </Button>
-      ) : null} 
+      ) : null}
 
-      {blogs? (
+      {blogs.length > 0 ? (
         blogs.map((blog) => (
-          <>
-          <BlogCard blog={blog} />
-            {/* <Card key={blog.id} className="card">
-              <CardContent>
-                <Typography className="title" variant="h4" color="primary">
-                  {blog.title}
-                </Typography>
-                <Button
-                  className="author"
-                  variant="contained"
-                  color="warning"
-                  onClick={() => showUserDetails(blog.user.username)}
-                >
-                  @{blog.user.username}
-                </Button>
-                <Divider />
+          <Card key={blog.id} className="card">
+            <CardContent>
+              <Typography className="title" variant="h4" color="primary">
+                {blog.title}
+              </Typography>
 
-                <Typography className="description">
-                  {blog.description.substring(0, 430)}... 
-                  <Link className="linkStyle" to={`/blogs/${blog.id}`}>
-                    Read more
-                </Link>
-                </Typography>
-               
-              
+              <Button
+                className="author"
+                variant="contained"
+                color="warning"
+                onClick={() => showUserDetails(blog.user.username)}
+              >
+                @{blog.user.username}
+              </Button>
+              <Divider />
+              <Typography className="description">
+                {blog.description}
+              </Typography>
+              <Typography className="time">
+                Created at: {new Date(blog.createdAt).toLocaleString()}
+              </Typography>
+              <Typography className="time">
+                Updated at: {new Date(blog.updatedAt).toLocaleString()}
+              </Typography>
+              {username === blog.user.username ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => updatingBlogPost(blog)}
+                  >
+                    Update Blog
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => deletingBlogPost(blog.id)}
+                  >
+                    Delete Blog
+                  </Button>
+                </>
+              ) : null}
+            </CardContent>
+          </Card>
+        ))
+      ) : (
+        <NoBlogFound />
+      )}
 
-                <Typography className="time">
-                  Created at: {new Date(blog.createdAt).toLocaleString()}
-                </Typography>
-                <Typography className="time">
-                  Updated at: {new Date(blog.updatedAt).toLocaleString()}
-                </Typography>
-                {username === blog.user.username ? (
-                  <>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => updatingBlogPost(blog)}
-                    >
-                      Update Blog
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => deletingBlogPost(blog.id)}
-                    >
-                      Delete Blog
-                    </Button>
-                  </>
-                ) : null}
-              </CardContent>
-            </Card> */}
-          </>
-        )))
-      : (<NoBlogFound/>)}
-
-      <Dialog open={createBlogDialogOpen} onClose={handleCreateBlogDialogClose}>
+      <Dialog open={createBlogDialogOpen} onClose={createBlogDialogClose}>
         <DialogTitle>Create Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToCreateBlog}>
@@ -338,6 +330,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
               required
               fullWidth
             />
+
             <DialogActions>
               <Button onClick={handleCreateBlogDialogClose}>Cancel</Button>
               <Button type="submit">Create Blog</Button>
@@ -346,7 +339,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
         </DialogContent>
       </Dialog>
 
-      {/* <Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
+      <Dialog open={updateBlogDialogOpen} onClose={updateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToUpdateBlog}>
@@ -382,9 +375,9 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
             </DialogActions>
           </form>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
 
-      <Dialog open={deleteBlogDialogOpen} onClose={handleDeleteBlogDialogClose}>
+      <Dialog open={deleteBlogDialogOpen} onClose={deleteBlogDialogClose}>
         <DialogTitle>Are you sure to delete this blog?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteBlog}>
@@ -403,14 +396,16 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
           </form>
         </DialogContent>
       </Dialog>
-      {/* <Stack spacing={2}>
+      {/* {blogs.length > 0 ? ( */}
+      <Stack spacing={2}>
         <Pagination
           count={15}
           color="primary"
-          page={parseInt(currentPage)}
+          page={currentPage}
           onChange={handlePageChange}
         />
-      </Stack> */}
+      </Stack>
+      {/* ) : null} */}
 
       <Snackbar
         open={createBlogSnackbarOpen}
@@ -457,4 +452,4 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   );
 };
 
-export default Blogs;
+export default AuthorBlogs;
