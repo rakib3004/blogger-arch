@@ -25,9 +25,8 @@ import {
   updateBlogById,
 } from "../services/BlogService";
 import NoBlogFound from "./NoBlogFound";
-
 import "../styles/Blogs.css";
-
+import BlogCard from '../components/BlogCard';
 
 
 const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
@@ -74,7 +73,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
     // if(pageValue) setCurrentPage(pageValue);
     // if(limitValue) setCurrentPage(limitValue);
 
-        const pageValue = searchParams.get("page") || currentPage;
+    const pageValue = searchParams.get("page") || currentPage;
     const limitValue = searchParams.get("limit") || pageLimit;
     setCurrentPage(pageValue);
     setPageLimit(limitValue);
@@ -255,7 +254,8 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
       {blogs? (
         blogs.map((blog) => (
           <>
-            <Card key={blog.id} className="card">
+          <BlogCard blog={blog} />
+            {/* <Card key={blog.id} className="card">
               <CardContent>
                 <Typography className="title" variant="h4" color="primary">
                   {blog.title}
@@ -304,7 +304,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
                   </>
                 ) : null}
               </CardContent>
-            </Card>
+            </Card> */}
           </>
         )))
       : (<NoBlogFound/>)}
@@ -338,7 +338,6 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
               required
               fullWidth
             />
-
             <DialogActions>
               <Button onClick={handleCreateBlogDialogClose}>Cancel</Button>
               <Button type="submit">Create Blog</Button>
@@ -347,7 +346,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
+      {/* <Dialog open={updateBlogDialogOpen} onClose={handleUpdateBlogDialogClose}>
         <DialogTitle>Update Blog</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToUpdateBlog}>
@@ -383,7 +382,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
             </DialogActions>
           </form>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <Dialog open={deleteBlogDialogOpen} onClose={handleDeleteBlogDialogClose}>
         <DialogTitle>Are you sure to delete this blog?</DialogTitle>
