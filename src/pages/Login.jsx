@@ -13,13 +13,14 @@ const Login = () => {
 
   const navigateTo = useNavigate();
   useEffect(() => {
-
-      console.log("still i am here", username);
-      if (isLoggedIn) {
-        navigateTo("/");
-      }
- 
-  }, []);
+    
+      const fetchData = async () => {
+        if (isLoggedIn) {
+          navigateTo("/");
+        }
+      };
+      fetchData();
+  }, [isLoggedIn]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

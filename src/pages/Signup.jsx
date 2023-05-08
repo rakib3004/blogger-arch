@@ -16,13 +16,13 @@ const Signup = () =>{
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async() => {
       if(isLoggedIn){
         navigateTo('/');
       }
     };
     fetchData();
-  }, []);
+  }, [isLoggedIn]);
 
 
   const handleSubmit = async (event) => {

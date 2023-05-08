@@ -1,12 +1,20 @@
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { createContext, useState } from "react";
+import { createContext, useState,  useEffect } from "react";
 
 const AuthContext = createContext();
 
 const AuthProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+
+
+  useEffect(() => {
+    const fetchData = () => {
+      setLoggedStatusInLogin();
+    };
+    fetchData();
+  }, []);
 
 
   const setLoggedStatusInLogin = () => {

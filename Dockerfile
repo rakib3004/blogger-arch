@@ -18,7 +18,6 @@ ENV DATABASE_PORT 3306
 ENV DATABASE_NAME blogger
 ENV DATABASE_HOST localhost
 ENV DATABASE_USER root
-ENV DATABASE_PASSWORD 
 ENV DATABASE_TABLE_NAME users
 ENV DB_URI mysql://root@localhost:3306/blogger
 ENV JWT_SECRET_TOKEN khondokhondocetonagulochetonahinhoyeroysarthohasilermohautsobesottorakorevoy

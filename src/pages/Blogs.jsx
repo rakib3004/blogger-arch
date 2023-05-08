@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import {
   createBlog,
@@ -25,37 +25,57 @@ import {
   updateBlogById,
 } from "../services/BlogService";
 import NoBlogFound from "./NoBlogFound";
+
 import "../styles/Blogs.css";
 
-const Blogs = () => {
+
+
+const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
+
+
   const [createBlogDialogOpen, setCreateBlogDialogOpen] = useState(false);
   const [createBlogDialogClose, setCreateBlogDialogClose] = useState(false);
   const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
   const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
   const [deleteBlogDialogOpen, setDeleteBlogDialogOpen] = useState(false);
   const [deleteBlogDialogClose, setDeleteBlogDialogClose] = useState(false);
+
+
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(5);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [pageLimit, setPageLimit] = useState(5);
+
+
   const [createBlogSnackbarOpen, setCreateBlogSnackbarOpen] = useState(false);
   const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
   const [deleteBlogSnackbarOpen, setDeleteBlogSnackbarOpen] = useState(false);
+
+
   const [isErrorInTitle, setIsErrorInTitle] = useState(false);
   const [isErrorInDescription, setIsErrorInDescription] = useState(false);
   const [titleErrorStatus, setTitleErrorStatus] = useState("");
   const [descriptionErrorStatus, setDescriptionErrorStatus] = useState("");
 
-  const navigateTo = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+   const navigateTo = useNavigate();
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  
+
+
+  const [searchParams] = useSearchParams();
   
   const fetchQueryParams = () => {
-    const pageValue = queryParams.get("page") || currentPage;
-    const limitValue = queryParams.get("limit") || pageLimit;
+    // const pageValue = searchParams.get("page") ;
+    // const limitValue = searchParams.get("limit");
+    // if(pageValue) setCurrentPage(pageValue);
+    // if(limitValue) setCurrentPage(limitValue);
+
+        const pageValue = searchParams.get("page") || currentPage;
+    const limitValue = searchParams.get("limit") || pageLimit;
     setCurrentPage(pageValue);
     setPageLimit(limitValue);
   }
@@ -67,20 +87,21 @@ const Blogs = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+ //fetchQueryParams();
       await fetchAllBlogsData(currentPage, pageLimit);
       navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
     };
     fetchData();
-  }, [currentPage, pageLimit]);
+  }, [searchParams]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      fetchQueryParams();
-      await fetchAllBlogsData(currentPage, pageLimit);
-      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-    };
-    fetchData();
-  }, [navigateTo]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     fetchQueryParams();
+  //     await fetchAllBlogsData(currentPage, pageLimit);
+  //     navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+  //   };
+  //   fetchData();
+  // }, [navigateTo]);
 
   const handleBlogTitleChange = (event) => {
     setBlogTitle(event.target.value);
@@ -193,9 +214,9 @@ const Blogs = () => {
     setDeleteBlogDialogOpen(true);
   };
 
-  const handlePageChange = (event, page) => {
-    setCurrentPage(page);
-  };
+  // const handlePageChange = (event, page) => {
+  //   setCurrentPage(page);
+  // };
 
   const handleCreateBlogSnackbarClose = (event, action) => {
     if (action === "clickaway") {
@@ -383,14 +404,14 @@ const Blogs = () => {
           </form>
         </DialogContent>
       </Dialog>
-      <Stack spacing={2}>
+      {/* <Stack spacing={2}>
         <Pagination
           count={15}
           color="primary"
           page={parseInt(currentPage)}
           onChange={handlePageChange}
         />
-      </Stack>
+      </Stack> */}
 
       <Snackbar
         open={createBlogSnackbarOpen}

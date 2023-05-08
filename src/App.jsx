@@ -11,7 +11,7 @@ import HomePage from './pages/HomePage';
 import Blog from './pages/Blog';
 import User from './pages/User';   ``
 import NotFound from './pages/NotFound';
-
+import Dashboard from './pages/Dashboard';
 
 
 function App() {
@@ -24,7 +24,8 @@ return(
     <Route exact path="/login" Component={Login} />
     <Route exact path="/signup" Component={Signup} />
     <Route exact path="/" Component={HomePage} /> 
-    <Route exact path="/blogs" Component={Blogs } /> 
+    <Route exact path="/blogs" Component={Dashboard } /> 
+
     <Route exact path="/blogs/:id" Component={Blog} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
     <Route exact path="/users" Component={Users} />   
