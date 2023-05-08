@@ -145,7 +145,7 @@ const NavBar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <>
+                <div>
                 <MenuItem key="home" onClick={() => nevigateTo("/")}>
                   <Typography textAlign="center">home</Typography>
                 </MenuItem>
@@ -153,7 +153,7 @@ const NavBar = () => {
                   <Typography textAlign="center">blogs</Typography>
                 </MenuItem>
                
-                </>
+                </div>
               </Menu>
             </Box>
             <AutoStoriesIcon
@@ -228,7 +228,7 @@ const NavBar = () => {
                 {/* isLoggedIn */}
 
                 {isLoggedIn ? (
-                  <>
+                  <div>
                     <MenuItem
                       key="profile"
                       onClick={(event) => handleCloseUserMenu(event, profile)}
@@ -241,11 +241,11 @@ const NavBar = () => {
                     >
                       <Typography textAlign="center">{logout}</Typography>
                     </MenuItem>
-                  </>
+                  </div>
                 ) : null}
 
                 {!isLoggedIn ? (
-                  <>
+                  <div>
                     <MenuItem
                       key="login"
                       onClick={(event) => handleCloseUserMenu(event, login)}
@@ -258,7 +258,7 @@ const NavBar = () => {
                     >
                       <Typography textAlign="center">{signup}</Typography>
                     </MenuItem>
-                  </>
+                  </div>
                 ) : null}
               </Menu>
             </Box>

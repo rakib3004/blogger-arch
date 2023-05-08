@@ -26,11 +26,9 @@ const AuthProvider = (props) => {
         setUsername(loggedInUsername);
         setIsLoggedIn(true);
       } catch (error) {
-        console.error("Invalid token:", error);
-        console.log("!!!-----------------!!!!!!!!!!!");
+        console.error("There is some problem:", error);
       }
     } else {
-      console.log("-----------------");
       setUsername("");
       setIsLoggedIn(false);
     }

@@ -20,7 +20,6 @@ import { AuthContext } from "../context/AuthContext";
 import UpdateBlogButton from './UpdateBlogButton';
 import DeleteBlogButton from './DeleteBlogButton';
 
-
 const BlogCard = ({blog}) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const navigateTo = useNavigate();

@@ -15,6 +15,12 @@ import {
     Typography,
   } from "@mui/material";
   import { useContext, useEffect, useState } from "react";
+  import {
+    createBlog,
+    deleteBlogById,
+    getAllBlogs,
+    updateBlogById,
+  } from "../services/BlogService";
   
   import { useLocation, useNavigate, Link, useSearchParams } from "react-router-dom";
   import { AuthContext } from "../context/AuthContext";
@@ -23,13 +29,17 @@ import {
   const UpdateBlogButton = ({blog}) => {
     const { isLoggedIn, username } = useContext(AuthContext);
     const navigateTo = useNavigate();
+    const [blogs, setBlogs] = useState([]);
+    const [blogId, setBlogId] = useState(null);
 
     const [blogTitle, setBlogTitle] = useState("");
     const [blogDescription, setBlogDescription] = useState("");
 
-    
+
     const [updateBlogDialogOpen, setUpdateBlogDialogOpen] = useState(false);
     const [updateBlogDialogClose, setUpdateBlogDialogClose] = useState(false);
+    const [updateBlogSnackbarOpen, setUpdateBlogSnackbarOpen] = useState(false);
+
 
     const handleBlogTitleChange = (event) => {
       setBlogTitle(event.target.value);
@@ -70,12 +80,33 @@ import {
         setDescriptionErrorStatus("Blog Description is empty");
       }
     };
+    const handleUpdateBlogDialogClose = () => {
+      setUpdateBlogDialogOpen(false);
+      setBlogTitle("");
+      setBlogDescription("");
+      setIsErrorInTitle(false);
+      setIsErrorInDescription(false);
+      setTitleErrorStatus("");
+      setDescriptionErrorStatus("");
+    };
+
+    const updatingBlogPost = (blog) => {
+      setBlogTitle(blog.title);
+      setBlogDescription(blog.description);
+      setBlogId(blog.id);
+      setUpdateBlogDialogOpen(true);
+    };
+
+    const handleUpdateBlogSnackbarClose = (event, action) => {
+      if (action === "clickaway") {
+        return;
+      }
+      setUpdateBlogSnackbarOpen(false);
+    };
 
 
   
-    const showUserDetails = (username) => {
-      navigateTo(`/users/${username}`);
-    };
+   
     return (
       <>
       <Button
@@ -123,6 +154,22 @@ import {
   </form>
 </DialogContent>
 </Dialog>
+
+
+<Snackbar      open={updateBlogSnackbarOpen}
+        autoHideDuration={2000}
+        onClose={handleUpdateBlogSnackbarClose}
+      >
+        <Alert
+          onClose={handleUpdateBlogSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Blog Updated Successfully!
+        </Alert>
+      </Snackbar>
+
+  
 </>
     );
   };
