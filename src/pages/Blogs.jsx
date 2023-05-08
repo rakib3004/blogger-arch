@@ -37,7 +37,6 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const { setAllBlogs, blogs } = useContext(BlogContext);
 
-  //const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState(null);
 
   const navigateTo = useNavigate();
@@ -45,7 +44,6 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   const [searchParams] = useSearchParams();
   
   const fetchQueryParams = () => {
- 
 
     const pageValue = searchParams.get("page") || currentPage;
     const limitValue = searchParams.get("limit") || pageLimit;
@@ -67,9 +65,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
     fetchData();
   }, [searchParams]);
 
-
-
-  const showUserDetails = (username) => {
+const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
   };
 
@@ -77,9 +73,7 @@ const Blogs = ({currentPage, setCurrentPage,  pageLimit, setPageLimit}) => {
   return (
     <>
    {isLoggedIn ? (
-      
-
-        <CreateBlogButton/>
+      <CreateBlogButton/>
       ) : null} 
 
       {blogs? (

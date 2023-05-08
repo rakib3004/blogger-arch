@@ -1,15 +1,21 @@
 import { Button, Card, CardContent, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import "../styles/Blogs.css";
-
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getBlogById } from "../services/BlogService";
 import { getUserByUserId } from "../services/UserService";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { BlogContext } from "../context/BlogContext";
+import UpdateBlogButton from '../components/UpdateBlogButton';
+import DeleteBlogButton from '../components/DeleteBlogButton';
 
 const Blog = () => {
+  const { isLoggedIn, username } = useContext(AuthContext);
+  const { setAllBlogs, blogs } = useContext(BlogContext);
   const { id } = useParams();
   const [blog, setBlog] = useState([]);
-  const [username, setUsername] = useState("");
+  const [authorName, setAuthorName] = useState("");
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -23,10 +29,10 @@ const Blog = () => {
     const response = await getBlogById(id);
     setBlog(response);
     const author = await getUserByUserId(response.authorId);
-    setUsername(author.user.username);
+    setAuthorName(author.user.username);
   };
-  const showUserDetails = (username) => {
-    navigateTo(`/users/${username}`);
+  const showUserDetails = (authorName) => {
+    navigateTo(`/users/${authorName}`);
   };
 
   return (
@@ -40,9 +46,9 @@ const Blog = () => {
             className="author"
             variant="contained"
             color="warning"
-            onClick={() => showUserDetails(username)}
+            onClick={() => showUserDetails(authorName)}
           >
-            @{username}
+            @{authorName}
           </Button>
           <Divider />
 
@@ -59,24 +65,14 @@ const Blog = () => {
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {/* {username === blog.user.username ? (
+          {username === authorName ? (
           <>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => updatingBlogPost(blog)}
-            >
-              Update Blog
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => deletingBlogPost(blog.id)}
-            >
-              Delete Blog
-            </Button>
+           <>
+              <UpdateBlogButton blog={blog}/>
+              <DeleteBlogButton blog={blog}/>
+            </>
           </>
-        ) : null} */}
+        ) : null}
         </CardContent>
       </Card>
     </>
