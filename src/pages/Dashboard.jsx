@@ -9,12 +9,13 @@ const Dashboard = () => {
 
   const navigateTo = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-    };
-    fetchData();
-  }, [currentPage, pageLimit]);
+  // useEffect(() => {
+  //   console.log(" dashboard ", currentPage, pageLimit);
+  // const fetchData = async () => {
+  //   //   navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+  //    };
+  //   fetchData();
+  // }, []);
 
   return (
     <>
@@ -25,7 +26,7 @@ const Dashboard = () => {
         setPageLimit={setPageLimit}
       />
 
-      <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage}  />
+      <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} pageLimit={pageLimit}  />
     </>
   );
 };

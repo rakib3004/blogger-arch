@@ -1,57 +1,33 @@
-import { Add } from "@mui/icons-material";
+import { useContext, useEffect, useState } from "react";
 import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Pagination,
-  Snackbar,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import {
-  useLocation,
   useNavigate,
-  Link,
-  useSearchParams,
+  useSearchParams
 } from "react-router-dom";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { BlogContext } from "../context/BlogContext";
 
+import BlogCard from "../components/BlogCard";
+import CreateBlogButton from "../components/CreateBlogButton";
 import {
-
   getAllBlogs,
   getBlogsByAuthorId
 } from "../services/BlogService";
-import NoBlogFound from "./NoBlogFound";
 import "../styles/Blogs.css";
-import BlogCard from "../components/BlogCard";
-import CreateBlogButton from "../components/CreateBlogButton";
+import NoBlogFound from "./NoBlogFound";
 
 const Blogs = ({ currentPage, setCurrentPage, pageLimit, setPageLimit, authorId }) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const { setAllBlogs, blogs } = useContext(BlogContext);
+  // check 
   const [blogId, setBlogId] = useState(null);
   const navigateTo = useNavigate();
+  const [queryPage, setQueryPage] = useState(currentPage);
+  const [queryLimit, setQueryLimit] = useState(pageLimit);
 
   const [searchParams] = useSearchParams();
 
-  const fetchQueryParams = () => {
-    const pageValue = searchParams.get("page") || currentPage;
-    const limitValue = searchParams.get("limit") || pageLimit;
-    setCurrentPage(pageValue);
-    setPageLimit(limitValue);
-  };
-
   const fetchAllBlogsData = async () => {
+   
     if(authorId){
     const allAuthorBlogs = await getBlogsByAuthorId(currentPage,pageLimit,authorId) 
     setAllBlogs(allAuthorBlogs);
@@ -64,21 +40,53 @@ const Blogs = ({ currentPage, setCurrentPage, pageLimit, setPageLimit, authorId 
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      //fetchQueryParams();
+    let  pageValue = searchParams.get("page") || currentPage;
+    let limitValue = searchParams.get("limit") || pageLimit;
+
+    
+
+    if(pageValue && pageValue!== 'null') setCurrentPage(pageValue);
+    if(limitValue && limitValue!== 'null') setPageLimit(limitValue);
+
+    if(!pageValue){
+      pageValue = currentPage;
+    }
+
+    if(!limitValue){
+      limitValue = pageLimit;
+    }
+    console.log('error point', pageValue, limitValue);
+
+    // console.log(pageValue + " " + limitValue);
+    // setCurrentPage(pageValue);
+    // setPageLimit(limitValue);
+
+    fetchData();
+  }, []);
+
+  // combine useeffect
+  useEffect(() => {
+    fetchData();
+  }, [currentPage, pageLimit]);
+
+ 
+
+  const fetchData = async () => {
+    //  fetchQueryParams();
+
       await fetchAllBlogsData(currentPage, pageLimit);
-      navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
+      // navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
       if(authorId){
         navigateTo(`/blogs/author/${authorId}?page=${currentPage}&limit=${pageLimit}`);
         }
         else{
           navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-
         }
 
     };
-    fetchData();
-  }, [searchParams]);
+
+
+
 
   const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);

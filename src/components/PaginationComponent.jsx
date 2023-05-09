@@ -3,9 +3,17 @@ import {
     Pagination,
     Stack,
   } from "@mui/material";
-const PaginationComponent = ({currentPage,  setCurrentPage }) => {
+  import {
+    useNavigate,
+  
+  } from "react-router-dom";
+const PaginationComponent = ({currentPage,  setCurrentPage, pageLimit }) => {
+  const navigateTo = useNavigate();
+
      const handlePageChange = (event, page) => {
-    setCurrentPage(page);
+      console.log(page);
+      setCurrentPage(page);
+    navigateTo(`.?page=${page}&limit=${pageLimit}`);
   };
    
   return (

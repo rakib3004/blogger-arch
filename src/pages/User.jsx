@@ -20,19 +20,24 @@ const User = () => {
   const [user, setUser] = useState([]);
 const {username } =
     useContext(AuthContext);
-  useEffect(() => {
-    const fetchData = async () => {
+    const getUserDetails = async() =>{
       const response = await getUserByUsername(authorName);
       setUser(response.user);
+    }
+  useEffect(() => {
+    const fetchData = async () => {
+      await getUserDetails();
     };
     fetchData();
-  }, []);
+  }, [authorName]);
 
 
   return (
     <div className="userContent">
       <UserCard user={user} />
-      {username == authorName?  <ProfileSetting />:null }
+
+
+      {username === authorName?  <ProfileSetting />:null }
     </div>
   );
 };
