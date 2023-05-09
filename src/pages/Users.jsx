@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import "../styles/Users.css";
 import { useNavigate } from "react-router-dom";
-import { getBlogByAuthorId } from "../services/BlogService";
 import { getAllUsers } from "../services/UserService";
 
 const Users = () => {

@@ -65,8 +65,9 @@ const UpdateBlogButton = ({ blog }) => {
     setTitleErrorStatus("");
     setDescriptionErrorStatus("");
     if (blogTitle.trim() && blogDescription.trim()) {
-      const response = await createBlog(blogTitle, blogDescription);
-      setAllBlogs(response);
+      const createResponse = await createBlog(blogTitle, blogDescription);
+      const updatedBlogs = await getAllBlogs();
+      setAllBlogs(updatedBlogs);
       setCreateBlogDialogClose(false);
       setCreateBlogSnackbarOpen(true);
       handleCreateBlogDialogClose();

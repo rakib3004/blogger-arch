@@ -16,6 +16,7 @@ const Blog = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState([]);
   const [authorName, setAuthorName] = useState("");
+  const isSingleBlog = true;
   const navigateTo = useNavigate();
 
   useEffect(() => {
@@ -54,10 +55,10 @@ const Blog = () => {
 
           <Typography className="description">
             {blog.description}
-            <Link className="linkStyle" to={`/blogs`}>
+          </Typography>
+          <Link className="linkStyle" to={`/blogs`}>
               Read Less
             </Link>
-          </Typography>
 
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
@@ -68,8 +69,8 @@ const Blog = () => {
           {username === authorName ? (
             <>
               <>
-                <UpdateBlogButton blog={blog} />
-                <DeleteBlogButton blog={blog} />
+                <UpdateBlogButton blog={blog} setBlog={setBlog} isSingleBlog={isSingleBlog} />
+                <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog}/>
               </>
             </>
           ) : null}

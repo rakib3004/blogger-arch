@@ -33,38 +33,36 @@ export const getBlogById = async (blogId) => {
 
 export const createBlog = async (title, description) => {
   try {
-    const newBlog = await axios.post(
+    const createResponse = await axios.post(
       baseUrl + blogRoute,
       { title, description },
       { withCredentials: true }
     );
 
-    const allBlogs = await getAllBlogs();
-    return allBlogs;
+    return createResponse;
   } catch (error) {
     console.error(error);
   }
 };
 export const updateBlogById = async (blogId, title, description) => {
   try {
-    const response = await axios.put(
+    const updateResponse = await axios.put(
       baseUrl + blogRoute + `/${blogId}`,
       { title, description },
       { withCredentials: true }
     );
-    const allBlogs = await getAllBlogs();
-    return allBlogs;
+    return updateResponse.data.data;
+    
   } catch (error) {
     console.error(error);
   }
 };
 
 export const deleteBlogById = async (blogId) => {
-  const response = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
+  const deleteResponse = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
     withCredentials: true,
   });
-  const allBlogs = await getAllBlogs();
-  return allBlogs;
+  return deleteResponse;
 };
 
 export const createBlogInAuthorDashboard = async (

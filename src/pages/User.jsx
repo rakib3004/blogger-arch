@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import "../styles/Users.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { getBlogByAuthorId } from "../services/BlogService";
 import { getUserByUsername } from "../services/UserService";
 
 const User = () => {

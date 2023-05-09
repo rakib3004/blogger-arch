@@ -31,7 +31,7 @@ import {
 import { useContext } from "react";
 import { BlogContext } from "../context/BlogContext";
 
-const UpdateBlogButton = ({ blog }) => {
+const UpdateBlogButton = ({ blog, setBlog, isSingleBlog }) => {
   const navigateTo = useNavigate();
   const { setAllBlogs, blogs } = useContext(BlogContext);
   const [blogId, setBlogId] = useState(null);
@@ -63,8 +63,13 @@ const UpdateBlogButton = ({ blog }) => {
     setTitleErrorStatus("");
     setDescriptionErrorStatus("");
     if (blogTitle.trim() && blogDescription.trim()) {
-      const response = await updateBlogById(blogId, blogTitle, blogDescription);
-      setAllBlogs(response);
+      const updatedResponse = await updateBlogById(blogId, blogTitle, blogDescription);
+      const updatedBlogs = await getAllBlogs();
+      setAllBlogs(updatedBlogs);
+      if(isSingleBlog){
+        setBlog(updatedResponse);
+      }
+      
       setUpdateBlogDialogClose(false);
       setUpdateBlogSnackbarOpen(true);
       handleUpdateBlogDialogClose();

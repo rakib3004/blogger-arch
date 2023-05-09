@@ -31,7 +31,7 @@ import {
 import { useContext } from "react";
 import { BlogContext } from "../context/BlogContext";
 
-const DeleteBlogButton = ({ blog }) => {
+const DeleteBlogButton = ({ blog,  isSingleBlog }) => {
   const navigateTo = useNavigate();
   const { setAllBlogs, blogs } = useContext(BlogContext);
   const [blogId, setBlogId] = useState(null);
@@ -45,11 +45,16 @@ const DeleteBlogButton = ({ blog }) => {
 
   const submitFormToDeleteBlog = async () => {
     event.preventDefault();
-    const response = await deleteBlogById(blogId);
-    setAllBlogs(response);
+    const deleteResponse = await deleteBlogById(blogId);
+    const updatedBlogs = await getAllBlogs();
+    setAllBlogs(updatedBlogs);
+
     setDeleteBlogDialogClose(false);
     setDeleteBlogSnackbarOpen(true);
     handleDeleteBlogDialogClose();
+    if(isSingleBlog){
+      navigateTo("/blogs");
+    }
   };
 
   const handleDeleteBlogDialogClose = () => {
