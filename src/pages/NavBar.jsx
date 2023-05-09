@@ -66,7 +66,8 @@ const NavBar = () => {
 
   const redirectToProfilePage = () => {
     setAnchorElNav(null);
-    nevigateTo("/profile");
+  nevigateTo(`/users/${username}`);
+
   };
   const handleLogout = () => {
     setAnchorElNav(null);

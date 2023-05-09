@@ -26,6 +26,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await loginUser(userName, password);
+      console.log(response);
       if (response.status === 200) {
         setUserName("");
         setPassword("");

@@ -24,7 +24,7 @@ import {
 import { AuthContext } from "../context/AuthContext";
 import UpdateBlogButton from "./UpdateBlogButton";
 import DeleteBlogButton from "./DeleteBlogButton";
-
+import '../styles/Blogs.css'
 const BlogCard = ({ blog }) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const navigateTo = useNavigate();
@@ -42,7 +42,7 @@ const BlogCard = ({ blog }) => {
           <Button
             className="author"
             variant="contained"
-            color="warning"
+            color="primary"
             onClick={() => showUserDetails(blog.user.username)}
           >
             @{blog.user.username}
@@ -62,10 +62,12 @@ const BlogCard = ({ blog }) => {
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
           {username === blog.user.username ? (
-            <>
-              <UpdateBlogButton blog={blog} />
-              <DeleteBlogButton blog={blog} />
-            </>
+        
+            <div style={{display:"flex", margin: '1rem 0 0.5rem 0'}}>
+            <UpdateBlogButton blog={blog} />
+            <DeleteBlogButton blog={blog} />
+            </div>
+           
           ) : null}
         </CardContent>
       </Card>

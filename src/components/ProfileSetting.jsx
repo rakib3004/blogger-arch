@@ -19,14 +19,15 @@ import {
   updateUserPassword,
   deleteUser,
 } from "../services/UserService";
+import "../styles/Users.css";
+
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const Profile = () => {
-  const { setLoggedStatusInLogout, username, isLoggedIn } =
+const ProfileSetting = () => {
+    const { setLoggedStatusInLogout, username, isLoggedIn } =
     useContext(AuthContext);
-  const [user, setUser] = useState(null);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -42,17 +43,6 @@ const Profile = () => {
     useState(false);
 
   const navigateTo = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!isLoggedIn) {
-        navigateTo("/login");
-      }
-      const response = await getUserByUsername(username);
-      setUser(response.user);
-    };
-    fetchData();
-  }, []);
 
   const handleUpdatePassword = async () => {
     event.preventDefault();
@@ -78,7 +68,7 @@ const Profile = () => {
     setConfirmNewPassword("");
   };
 
-  const handleCurrentPasswordChange = () => {
+  const handleCurrentPasswordChange = (event) => {
     setCurrentPassword(event.target.value);
   };
 
@@ -86,9 +76,7 @@ const Profile = () => {
     setNewPassword(event.target.value);
   };
 
-  const showAuthorAllBlog = () => {
-    navigateTo(`/blogs/author/${user.id}`);
-  };
+
   const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
   };
@@ -124,45 +112,20 @@ const Profile = () => {
     }
     setDeleteAccountSnackbarOpen(false);
   };
-
   return (
-    <>
-      <Card>
-        <CardContent>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Avatar alt="User" src="/user.png" />
-            <CardHeader title={user?.username} />
-          </div>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Email : {user?.email}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Created At: {user ? new Date(user.createdAt).toLocaleString() : "-"}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Updated At: {user ? new Date(user.updatedAt).toLocaleString() : "-"}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={showAuthorAllBlog}
-          >
-            Show Blogs
-          </Button>
-        </CardContent>
-        <CardContent>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleUpdatePasswordDialogOpen}
-          >
-            Update Password
-          </Button>
-          <Button variant="contained" color="secondary" onClick={deletingUser}>
-            Delete Account
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="settingButton">
+     <Typography variant="h5" color="primary">Profile Settings</Typography>
+      <Button 
+        variant="contained"
+        color="success"
+        onClick={handleUpdatePasswordDialogOpen}
+      >
+        Update Password
+      </Button>
+      <Button className="settingButton"
+       variant="contained" color="error" onClick={deletingUser}>
+        Delete Account
+      </Button>
 
       <Dialog
         open={updatePasswordDialogOpen}
@@ -205,7 +168,7 @@ const Profile = () => {
             </div>
             <DialogActions>
               <Button onClick={handleUpdatePasswordDialogClose}>Cancel</Button>
-              <Button type="submit" /*disabled={isUpdatingPassword}*/>
+              <Button type="submit">
                 Update password
               </Button>
             </DialogActions>
@@ -213,7 +176,7 @@ const Profile = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={deleteUserDialogOpen} onClose={deleteUserDialogClose}>
+      <Dialog open={deleteUserDialogOpen} onClose={handleDeleteUserDialogClose}>
         <DialogTitle>Are you sure to delete this account?</DialogTitle>
         <DialogContent>
           <form onSubmit={submitFormToDeleteUser}>
@@ -260,8 +223,9 @@ const Profile = () => {
           Account Deleted Successfully!
         </Alert>
       </Snackbar>
-    </>
+
+    </div>
   );
 };
 
-export default Profile;
+export default ProfileSetting;

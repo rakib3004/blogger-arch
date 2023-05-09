@@ -11,7 +11,7 @@ const PaginationComponent = ({currentPage,  setCurrentPage }) => {
   return (
     <Stack spacing={2}>
     <Pagination
-      count={15}
+      count={5}
       color="primary"
       page={parseInt(currentPage)}
       onChange={handlePageChange}

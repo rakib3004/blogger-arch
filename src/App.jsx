@@ -2,14 +2,13 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthorBlogs from './pages/AuthorBlogs';
 import NavBar from './pages/NavBar';
-import Profile from './pages/Profile';
 import Users from './pages/Users';
 import Blogs from './pages/Blogs';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import HomePage from './pages/HomePage';
 import Blog from './pages/Blog';
-import User from './pages/User';   ``
+import User from './pages/User'; 
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 
@@ -29,8 +28,7 @@ return(
     <Route exact path="/blogs/:id" Component={Blog} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
     <Route exact path="/users" Component={Users} />   
-    <Route exact path="/users/:username" Component={User} />    
-    <Route exact path="/profile" Component={Profile} />    
+    <Route exact path="/users/:authorName" Component={User} />    
     <Route exact path="/*" Component={NotFound} />    
   </Routes>
       

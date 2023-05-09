@@ -1,16 +1,32 @@
-.card{
-    margin-bottom:3px;
-    }
-    
-    .user{
-    font-weight: bold;
-    font-size: 2.7rem;
-    }
-   
-   
-    
-    .user-time{
-        color: rgba(0, 0, 0, 0.54) ;
-        font-size: 1.4rem;
-        margin-bottom: 0.4px;
-    }
+.card {
+  margin-bottom: 3px;
+}
+
+.user {
+  font-weight: bold;
+  font-size: 2.7rem;
+}
+
+.user-time {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 1.4rem;
+  margin-bottom: 0.4px;
+}
+
+.userContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* optional, adjust to your needs */
+}
+
+.showBlogsButton {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+  }
+
+.settingButton{
+   margin-top: 20px;
+}

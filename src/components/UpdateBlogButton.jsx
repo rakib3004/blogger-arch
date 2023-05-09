@@ -114,6 +114,7 @@ const UpdateBlogButton = ({ blog, setBlog, isSingleBlog }) => {
       <Button
         variant="contained"
         color="primary"
+        style={{ marginRight: '0.5rem'}}
         onClick={() => updatingBlogPost(blog)}
       >
         Update Blog
