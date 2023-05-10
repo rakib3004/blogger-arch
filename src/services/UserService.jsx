@@ -10,13 +10,19 @@ export const getAllUsers = async () => {
 };
 
 export const getUserByUsername = async (username) => {
-  const response = await axios.get(baseUrl + userRoute + `/${username}`, {
-    withCredentials: true,
-  });
-  return response.data;
+  try{
+    const response = await axios.get(baseUrl + userRoute + `/${username}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  }
+catch(error){
+  console.log(error);
+}
 };
 
 export const getUserByUserId = async (userId) => {
+  try{
   const response = await axios.get(
     baseUrl + userRoute + idRoute + `/${userId}`,
     {
@@ -24,6 +30,11 @@ export const getUserByUserId = async (userId) => {
     }
   );
   return response.data;
+}
+catch(error){
+  console.log(554544);
+  console.log(error);
+}
 };
 
 export const updateUserPassword = async (username, password) => {

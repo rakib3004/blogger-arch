@@ -28,7 +28,7 @@ const fetchData = async () => {
         authorId={authorId}
       />
 
-      <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage}  />
+      <PaginationComponent currentPage={currentPage} setCurrentPage={setCurrentPage} pageLimit={pageLimit} authorId={authorId} />
     </>
   );
 };

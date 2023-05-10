@@ -27,10 +27,16 @@ const Blog = () => {
   }, []);
 
   const fetchSingleBlog = async () => {
-    const response = await getBlogById(id);
-    setBlog(response);
-    const author = await getUserByUserId(response.authorId);
-    setAuthorName(author.user.username);
+    try{
+      const response = await getBlogById(id);
+      setBlog(response);
+      const author = await getUserByUserId(response.authorId);
+      setAuthorName(author.user.username);
+    }
+  catch(error){
+    navigateTo(`/notfound`);
+  }
+
   };
   const showUserDetails = (authorName) => {
     navigateTo(`/users/${authorName}`);

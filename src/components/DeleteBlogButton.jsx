@@ -58,6 +58,7 @@ const DeleteBlogButton = ({ blog,  isSingleBlog }) => {
   };
 
   const handleDeleteBlogDialogClose = () => {
+
     setDeleteBlogDialogOpen(false);
   };
 

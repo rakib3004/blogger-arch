@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthorBlogs from './pages/AuthorBlogs';
 import NavBar from './pages/NavBar';
-import Users from './pages/Users';
 import Blogs from './pages/Blogs';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -27,9 +26,10 @@ return(
 
     <Route exact path="/blogs/:id" Component={Blog} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
-    <Route exact path="/users" Component={Users} />   
     <Route exact path="/users/:authorName" Component={User} />    
     <Route exact path="/*" Component={NotFound} />    
+    <Route exact path="/notfound" Component={NotFound} />    
+
   </Routes>
       
 </BrowserRouter>

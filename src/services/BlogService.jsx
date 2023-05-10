@@ -2,6 +2,7 @@ import axios from "axios";
 const baseUrl = "http://localhost:8000/api/v1";
 const blogRoute = "/blogs";
 const authorRoute = "/author";
+const countRoute = "/size";
 
 export const getAllBlogs = async (currentPage, pageLimit) => {
   const response = await axios.get(baseUrl + blogRoute, {
@@ -13,7 +14,20 @@ export const getAllBlogs = async (currentPage, pageLimit) => {
   return response.data;
 };
 
+export const countAllBlogs = async () => {
+  try{
+    const response = await axios.get(baseUrl + blogRoute + countRoute, );
+    console.log('Total Blogs', response.data.count);
+    return response.data.count;
+  }
+  catch(err){
+    console.log(err);
+  }
+
+};
+
 export const getBlogsByAuthorId = async (currentPage, pageLimit, authorId) => {
+  try{
   const response = await axios.get(
     baseUrl + blogRoute + authorRoute + `/${authorId}`,
     {
@@ -24,11 +38,29 @@ export const getBlogsByAuthorId = async (currentPage, pageLimit, authorId) => {
     }
   );
   return response.data;
+}
+catch(error){
+  console.log(error);
+}
+};
+
+export const countBlogsByAuthorId = async ( authorId) => {
+  const response = await axios.get(
+    baseUrl + blogRoute + authorRoute + countRoute + `/${authorId}`,);
+    console.log('Total Author Blogs', response.data.count);
+
+  return response.data.count;
 };
 
 export const getBlogById = async (blogId) => {
-  const response = await axios.get(baseUrl + blogRoute + `/${blogId}`);
-  return response.data;
+  try{
+    const response = await axios.get(baseUrl + blogRoute + `/${blogId}`);
+    return response.data;
+  }
+  catch(error){
+    console.log(error);
+  }
+  
 };
 
 export const createBlog = async (title, description) => {
@@ -41,9 +73,10 @@ export const createBlog = async (title, description) => {
 
     return createResponse;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
+
 export const updateBlogById = async (blogId, title, description) => {
   try {
     const updateResponse = await axios.put(
@@ -52,16 +85,18 @@ export const updateBlogById = async (blogId, title, description) => {
       { withCredentials: true }
     );
     return updateResponse.data.data;
-    
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 
 export const deleteBlogById = async (blogId) => {
-  const deleteResponse = await axios.delete(baseUrl + blogRoute + `/${blogId}`, {
-    withCredentials: true,
-  });
+  const deleteResponse = await axios.delete(
+    baseUrl + blogRoute + `/${blogId}`,
+    {
+      withCredentials: true,
+    }
+  );
   return deleteResponse;
 };
 
@@ -82,7 +117,7 @@ export const createBlogInAuthorDashboard = async (
     const allBlogs = await getBlogByAuthorId(currentPage, pageLimit, authorId);
     return allBlogs;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 export const updateBlogInAuthorDashboard = async (
@@ -100,10 +135,9 @@ export const updateBlogInAuthorDashboard = async (
       { withCredentials: true }
     );
     const allBlogs = await getBlogByAuthorId(currentPage, pageLimit, authorId);
-    console.log(allBlogs);
     return allBlogs;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 

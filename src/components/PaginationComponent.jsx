@@ -1,31 +1,49 @@
+import { Pagination, Stack } from "@mui/material";
+import {  useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {countAllBlogs, countBlogsByAuthorId} from '../services/BlogService';
 
-import {
-    Pagination,
-    Stack,
-  } from "@mui/material";
-  import {
-    useNavigate,
+const PaginationComponent = ({
+  currentPage,
+  setCurrentPage,
+  pageLimit,
+  authorId,
+}) => {
+  const [totalPages, setTotalPages] =  useState(5);
+  let totalBlogs=7;
   
-  } from "react-router-dom";
-const PaginationComponent = ({currentPage,  setCurrentPage, pageLimit }) => {
   const navigateTo = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      if(authorId){
+       totalBlogs = await countBlogsByAuthorId(authorId);
+      }
+      else{
+        totalBlogs = await countAllBlogs();
+      }
 
-     const handlePageChange = (event, page) => {
-      console.log(page);
-      setCurrentPage(page);
+
+        setTotalPages(Math.ceil(totalBlogs/pageLimit));
+      
+    };
+    fetchData();
+  }, []);
+
+  const handlePageChange = (event, page) => {
+    console.log(page);
+    setCurrentPage(page);
     navigateTo(`.?page=${page}&limit=${pageLimit}`);
   };
-   
+
   return (
     <Stack spacing={2}>
-    <Pagination
-      count={5}
-      color="primary"
-      page={parseInt(currentPage)}
-      onChange={handlePageChange}
-    />
-  </Stack>
-
+      <Pagination
+        count={parseInt(totalPages)}
+        color="primary"
+        page={parseInt(currentPage)}
+        onChange={handlePageChange}
+      />
+    </Stack>
   );
 };
 

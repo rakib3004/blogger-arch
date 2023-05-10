@@ -9,20 +9,30 @@ import {
   Avatar,
 } from "@mui/material";
 import "../styles/Users.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../services/UserService";
 import UserCard from "../components/UserCard";
 import ProfileSetting from "../components/ProfileSetting";
 import { AuthContext } from "../context/AuthContext";
 
+
 const User = () => {
   const { authorName } = useParams();
   const [user, setUser] = useState([]);
+  const navigateTo = useNavigate();
+
 const {username } =
     useContext(AuthContext);
     const getUserDetails = async() =>{
-      const response = await getUserByUsername(authorName);
-      setUser(response.user);
+      try{
+        const response = await getUserByUsername(authorName);
+        console.log('No User : ', response);
+        setUser(response.user);
+      }
+      catch(error){
+        navigateTo(`/notfound`);
+      }
+     
     }
   useEffect(() => {
     const fetchData = async () => {
