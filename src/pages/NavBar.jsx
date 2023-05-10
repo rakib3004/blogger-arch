@@ -77,7 +77,7 @@ const NavBar = () => {
 
   const redirectToSignupPage = () => {
     setAnchorElNav(null);
-    nevigateTo("/singup");
+    nevigateTo("/signup");
   };
 
   const redirectToLoginPage = () => {

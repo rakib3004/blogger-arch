@@ -29,7 +29,6 @@ const Blogs = ({
 
   const fetchAllBlogsData = async () => {
 
-   
     if (!authorId) {
       const allBlogs = await getAllBlogs(currentPage, pageLimit);
       setAllBlogs(allBlogs);
@@ -50,36 +49,38 @@ const Blogs = ({
     navigateTo(`/notfound`);
   }
   
+const fetchSearchParams = () =>{
 
-  
+  let pageValue = searchParams.get("page") || currentPage;
+  let limitValue = searchParams.get("limit") || pageLimit;
+
+  if (pageValue && pageValue !== "null") setCurrentPage(pageValue);
+  if (limitValue && limitValue !== "null") setPageLimit(limitValue);
+
+  if (!pageValue) {
+    pageValue = currentPage;
+  }
+
+  if (!limitValue) {
+    limitValue = pageLimit;
+  }
+  console.log("first point", pageValue, limitValue);
+}
 
   useEffect(() => {
-    let pageValue = searchParams.get("page") || currentPage;
-    let limitValue = searchParams.get("limit") || pageLimit;
-
-    if (pageValue && pageValue !== "null") setCurrentPage(pageValue);
-    if (limitValue && limitValue !== "null") setPageLimit(limitValue);
-
-    if (!pageValue) {
-      pageValue = currentPage;
-    }
-
-    if (!limitValue) {
-      limitValue = pageLimit;
-    }
-    console.log("error point", pageValue, limitValue);
-
-    // console.log(pageValue + " " + limitValue);
-    // setCurrentPage(pageValue);
-    // setPageLimit(limitValue);
-
+    fetchSearchParams();
     fetchData();
-  }, []);
+  }, [currentPage,
+    pageLimit,searchParams]);
 
   // combine useeffect
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageLimit]);
+    console.log("second point", currentPage, pageLimit);
+
+  }, [currentPage,
+    pageLimit,
+  ]);
 
   const fetchData = async () => {
     //  fetchQueryParams();
