@@ -26,7 +26,7 @@ import UpdateBlogButton from "./UpdateBlogButton";
 import DeleteBlogButton from "./DeleteBlogButton";
 import '../styles/Blogs.css'
 const BlogCard = ({ blog }) => {
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { username } = useContext(AuthContext);
   const navigateTo = useNavigate();
 
   const showUserDetails = (username) => {

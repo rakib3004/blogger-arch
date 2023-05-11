@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
-  const { setLoggedStatusInLogin, isLoggedIn } = useContext(AuthContext);
+  const { setLoggedStatusInLogin } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,15 +14,6 @@ const Signup = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigateTo = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (isLoggedIn) {
-        navigateTo("/");
-      }
-    };
-    fetchData();
-  }, [isLoggedIn]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

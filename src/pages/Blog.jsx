@@ -11,7 +11,7 @@ import UpdateBlogButton from "../components/UpdateBlogButton";
 import DeleteBlogButton from "../components/DeleteBlogButton";
 
 const Blog = () => {
-  const { isLoggedIn, username } = useContext(AuthContext);
+  const { username } = useContext(AuthContext);
   const { setAllBlogs, blogs } = useContext(BlogContext);
   const { id } = useParams();
   const [blog, setBlog] = useState([]);

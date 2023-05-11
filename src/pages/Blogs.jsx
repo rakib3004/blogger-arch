@@ -1,85 +1,66 @@
+import "../styles/Blogs.css";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { BlogContext } from "../context/BlogContext";
-
+import PaginationComponent from "../components/PaginationComponent";
 import BlogCard from "../components/BlogCard";
 import CreateBlogButton from "../components/CreateBlogButton";
 import { getAllBlogs, getBlogsByAuthorId } from "../services/BlogService";
 import { checkUserExists } from "../services/UserService";
-import "../styles/Blogs.css";
 import NoBlogFound from "./NoBlogFound";
+import LoadingComponent from "../components/LoadingComponent";
 
-const Blogs = ({
-  currentPage,
-  setCurrentPage,
-  pageLimit,
-  setPageLimit,
-  authorId,
-}) => {
-  const { isLoggedIn, username } = useContext(AuthContext);
+const Blogs = ({ authorId }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
+  const { username } = useContext(AuthContext);
   const { setAllBlogs, blogs } = useContext(BlogContext);
   const [blogId, setBlogId] = useState(null);
   const navigateTo = useNavigate();
-
-
   const [searchParams] = useSearchParams();
 
   const fetchAllBlogsData = async () => {
-  
-try{
-  if (!authorId) {
-    const allBlogs = await getAllBlogs(currentPage, pageLimit);
-    setAllBlogs(allBlogs);
-    return;
-  }
+    try {
+      if (!authorId) {
+        const allBlogs = await getAllBlogs(currentPage, pageLimit);
+        setAllBlogs(allBlogs);
+        return;
+      }
+      const allAuthorBlogs = await getBlogsByAuthorId(
+        currentPage,
+        pageLimit,
+        authorId
+      );
+      setAllBlogs(allAuthorBlogs);
+    } catch (error) {
+      console.error("checkUserExists returned error");
+    }
+  };
 
-  
-  const allAuthorBlogs = await getBlogsByAuthorId(
-    currentPage,
-    pageLimit,
-    authorId
-  );
-  setAllBlogs(allAuthorBlogs);
+  const fetchSearchParams = () => {
+    let pageValue = searchParams.get("page") || currentPage;
+    let limitValue = searchParams.get("limit") || pageLimit;
 
-}
-catch(error){
-  console.error('checkUserExists returned error'); // log an error message
-
-}
-    
-  }
-  
-const fetchSearchParams = () =>{
-
-  let pageValue = searchParams.get("page") || currentPage;
-  let limitValue = searchParams.get("limit") || pageLimit;
-
-  if (pageValue && pageValue !== "null") setCurrentPage(pageValue);
-  if (limitValue && limitValue !== "null") setPageLimit(limitValue);
-
-  if (!pageValue) {
-    pageValue = currentPage;
-  }
-
-  if (!limitValue) {
-    limitValue = pageLimit;
-  }
-}
-
+    if (pageValue && pageValue !== "null") setCurrentPage(pageValue);
+    if (limitValue && limitValue !== "null") setPageLimit(limitValue);
+    if (!pageValue) {
+      pageValue = currentPage;
+    }
+    if (!limitValue) {
+      limitValue = pageLimit;
+    }
+  };
   useEffect(() => {
-     fetchSearchParams();
+    fetchSearchParams();
     fetchData();
   }, []);
 
   useEffect(() => {
     fetchData();
-  }, [ currentPage,
-    pageLimit 
-  ]);
+  }, [currentPage, pageLimit]);
 
   const fetchData = async () => {
-
     await fetchAllBlogsData(currentPage, pageLimit);
     if (authorId) {
       navigateTo(
@@ -94,15 +75,24 @@ const fetchSearchParams = () =>{
     navigateTo(`/users/${username}`);
   };
 
+  if (!blogs) {
+    return <LoadingComponent />;
+  }
+
   return (
     <>
-      {isLoggedIn ? <CreateBlogButton /> : null}
+      {username ? <CreateBlogButton /> : null}
 
-      {blogs ? (
+      {blogs.length ? (
         blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
       ) : (
         <NoBlogFound />
       )}
+      <PaginationComponent
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageLimit={pageLimit}
+      />
     </>
   );
 };

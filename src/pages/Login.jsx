@@ -1,27 +1,20 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
 import "../styles/Login.css";
 import { loginUser } from "../services/AuthService";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-  const { setLoggedStatusInLogin, isLoggedIn, username } =
+  const { setLoggedStatusInLogin, username } =
     useContext(AuthContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigateTo = useNavigate();
-  useEffect(() => {
-    const fetchData = async () => {
-      if (isLoggedIn) {
-        navigateTo("/");
-      }
-    };
-    fetchData();
-  }, [isLoggedIn]);
-
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

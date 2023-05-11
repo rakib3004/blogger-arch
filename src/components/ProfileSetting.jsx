@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProfileSetting = () => {
-    const { setLoggedStatusInLogout, username, isLoggedIn } =
+    const { setLoggedStatusInLogout, username } =
     useContext(AuthContext);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);

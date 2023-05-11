@@ -5,7 +5,6 @@ import { createContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 const AuthProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -22,20 +21,17 @@ const AuthProvider = (props) => {
         const decodedToken = jwt_decode(token);
         const loggedInUsername = decodedToken.username;
         setUsername(loggedInUsername);
-        setIsLoggedIn(true);
       } catch (error) {
         console.error("Error:", error);
       }
     } else {
       setUsername("");
-      setIsLoggedIn(false);
     }
   };
 
   const setLoggedStatusInLogout = () => {
     Cookies.remove("jwt");
     setUsername("");
-    setIsLoggedIn(false);
   };
 
   return (
@@ -43,7 +39,6 @@ const AuthProvider = (props) => {
       value={{
         setLoggedStatusInLogin,
         setLoggedStatusInLogout,
-        isLoggedIn,
         username,
       }}
     >

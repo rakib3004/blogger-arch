@@ -23,7 +23,7 @@ const login = "Login";
 const signup = "Signup";
 
 const NavBar = () => {
-  const { isLoggedIn, setLoggedStatusInLogout, username } =
+  const { setLoggedStatusInLogout, username } =
     useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -194,7 +194,7 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={username === "" ? "guest" : username}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {isLoggedIn ? (
+                  {username ? (
                     <Avatar alt="User" src="/user.png" />
                   ) : (
                     <Avatar alt="User" src="/guest.png" />
@@ -221,9 +221,8 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {/* isLoggedIn */}
 
-                {isLoggedIn ? (
+                {username ? (
                   <div>
                     <MenuItem
                       key="profile"
@@ -240,7 +239,7 @@ const NavBar = () => {
                   </div>
                 ) : null}
 
-                {!isLoggedIn ? (
+                {!username ? (
                   <div>
                     <MenuItem
                       key="login"
