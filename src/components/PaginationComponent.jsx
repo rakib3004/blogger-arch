@@ -27,11 +27,8 @@ const PaginationComponent = ({
   }, []);
 
   const handlePageChange = (event, page) => {
-    console.log(page);
     setCurrentPage(page);
     navigateTo(`.?page=${page}&limit=${pageLimit}`);
-    console.log("third point", page, pageLimit);
-
   };
 
   return (

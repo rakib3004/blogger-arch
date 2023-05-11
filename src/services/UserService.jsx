@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000/api/v1";
+import { baseUrl } from "../environments/Url";
 const userRoute = "/users";
 const idRoute = "/id";
 
@@ -32,8 +32,23 @@ export const getUserByUserId = async (userId) => {
   return response.data;
 }
 catch(error){
-  console.log(554544);
   console.log(error);
+}
+};
+
+export const checkUserExists = async (userId) => {
+  try{
+  const response = await axios.get(
+    baseUrl + userRoute + idRoute + `/${userId}`,
+    {
+      withCredentials: true,
+    }
+  );
+    console.log('Erorr in a long time',response)
+  return response.status;
+}
+catch(error){
+console.log(error);
 }
 };
 

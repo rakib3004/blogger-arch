@@ -26,7 +26,6 @@ const {username } =
     const getUserDetails = async() =>{
       try{
         const response = await getUserByUsername(authorName);
-        console.log('No User : ', response);
         setUser(response.user);
       }
       catch(error){

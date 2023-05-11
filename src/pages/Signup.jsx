@@ -38,6 +38,7 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
     }
+    console.log('---first---');
 
     setUsername("");
     setEmail("");
@@ -45,6 +46,8 @@ const Signup = () => {
     setConfirmPassword("");
     setErrorMessage("");
     setLoggedStatusInLogin();
+    console.log('---second---');
+
     navigateTo("/blogs");
   };
 
@@ -99,6 +102,7 @@ const Signup = () => {
           variant="contained"
           color="primary"
           type="submit"
+          
         >
           Sign Up
         </Button>

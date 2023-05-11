@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8000/api/v1";
+import { baseUrl } from "../environments/Url";
 const blogRoute = "/blogs";
 const authorRoute = "/author";
 const countRoute = "/size";
@@ -17,7 +17,6 @@ export const getAllBlogs = async (currentPage, pageLimit) => {
 export const countAllBlogs = async () => {
   try{
     const response = await axios.get(baseUrl + blogRoute + countRoute, );
-    console.log('Total Blogs', response.data.count);
     return response.data.count;
   }
   catch(err){

@@ -9,14 +9,6 @@ const Dashboard = () => {
 
   const navigateTo = useNavigate();
 
-  // useEffect(() => {
-  //   console.log(" dashboard ", currentPage, pageLimit);
-  // const fetchData = async () => {
-  //   //   navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
-  //    };
-  //   fetchData();
-  // }, []);
-
   return (
     <>
       <Blogs

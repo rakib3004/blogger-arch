@@ -26,9 +26,9 @@ return(
 
     <Route exact path="/blogs/:id" Component={Blog} /> 
     <Route exact path="/blogs/author/:authorId" Component={AuthorBlogs} />    
-    <Route exact path="/users/:authorName" Component={User} />    
+    <Route exact path="/users/:authorName" Component={User} />   
+    <Route exact path="/notfound" Component={NotFound} />     
     <Route exact path="/*" Component={NotFound} />    
-    <Route exact path="/notfound" Component={NotFound} />    
 
   </Routes>
       

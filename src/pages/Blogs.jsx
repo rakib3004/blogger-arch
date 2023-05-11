@@ -6,7 +6,7 @@ import { BlogContext } from "../context/BlogContext";
 import BlogCard from "../components/BlogCard";
 import CreateBlogButton from "../components/CreateBlogButton";
 import { getAllBlogs, getBlogsByAuthorId } from "../services/BlogService";
-import { getUserByUserId } from "../services/UserService";
+import { checkUserExists } from "../services/UserService";
 import "../styles/Blogs.css";
 import NoBlogFound from "./NoBlogFound";
 
@@ -19,34 +19,35 @@ const Blogs = ({
 }) => {
   const { isLoggedIn, username } = useContext(AuthContext);
   const { setAllBlogs, blogs } = useContext(BlogContext);
-  // check
   const [blogId, setBlogId] = useState(null);
   const navigateTo = useNavigate();
-  const [queryPage, setQueryPage] = useState(currentPage);
-  const [queryLimit, setQueryLimit] = useState(pageLimit);
+
 
   const [searchParams] = useSearchParams();
 
   const fetchAllBlogsData = async () => {
+  
+try{
+  if (!authorId) {
+    const allBlogs = await getAllBlogs(currentPage, pageLimit);
+    setAllBlogs(allBlogs);
+    return;
+  }
 
-    if (!authorId) {
-      const allBlogs = await getAllBlogs(currentPage, pageLimit);
-      setAllBlogs(allBlogs);
-      return;
-    }
+  
+  const allAuthorBlogs = await getBlogsByAuthorId(
+    currentPage,
+    pageLimit,
+    authorId
+  );
+  setAllBlogs(allAuthorBlogs);
 
-    const authorDetails = await getUserByUserId(authorId);
+}
+catch(error){
+  console.error('checkUserExists returned error'); // log an error message
 
-    if (authorDetails) {
-      const allAuthorBlogs = await getBlogsByAuthorId(
-        currentPage,
-        pageLimit,
-        authorId
-      );
-      setAllBlogs(allAuthorBlogs);
-      return;
-    }
-    navigateTo(`/notfound`);
+}
+    
   }
   
 const fetchSearchParams = () =>{
@@ -64,29 +65,22 @@ const fetchSearchParams = () =>{
   if (!limitValue) {
     limitValue = pageLimit;
   }
-  console.log("first point", pageValue, limitValue);
 }
 
   useEffect(() => {
-    fetchSearchParams();
+     fetchSearchParams();
     fetchData();
-  }, [currentPage,
-    pageLimit,searchParams]);
+  }, []);
 
-  // combine useeffect
   useEffect(() => {
     fetchData();
-    console.log("second point", currentPage, pageLimit);
-
-  }, [currentPage,
-    pageLimit,
+  }, [ currentPage,
+    pageLimit 
   ]);
 
   const fetchData = async () => {
-    //  fetchQueryParams();
 
     await fetchAllBlogsData(currentPage, pageLimit);
-    // navigateTo(`/blogs?page=${currentPage}&limit=${pageLimit}`);
     if (authorId) {
       navigateTo(
         `/blogs/author/${authorId}?page=${currentPage}&limit=${pageLimit}`

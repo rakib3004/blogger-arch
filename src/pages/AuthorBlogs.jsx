@@ -11,12 +11,12 @@ const AuthorBlogs = () => {
 
   const navigateTo = useNavigate();
 
-  useEffect(() => {
-const fetchData = async () => {
-    //   navigateTo(`/blogs/author/${authorId}?page=${currentPage}&limit=${pageLimit}`);
-    };
-    fetchData();
-  },[]);
+//   useEffect(() => {
+// const fetchData = async () => {
+//     //   navigateTo(`/blogs/author/${authorId}?page=${currentPage}&limit=${pageLimit}`);
+//     };
+//     fetchData();
+//   },[]);
 
   return (
     <>
