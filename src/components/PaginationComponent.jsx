@@ -11,13 +11,13 @@ const PaginationComponent = ({
 }) => {
   const [totalPages, setTotalPages] = useState(5);
   let totalBlogs = 7;
-
+  
   const navigateTo = useNavigate();
   const fetchData = async () => {
-    if (authorId) {
-      totalBlogs = await countBlogsByAuthorId(authorId);
-    } else {
+    if (!authorId) {
       totalBlogs = await countAllBlogs();
+    } else {
+  totalBlogs = await countBlogsByAuthorId(authorId);
     }
 
     setTotalPages(Math.ceil(totalBlogs / pageLimit));

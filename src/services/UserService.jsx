@@ -1,17 +1,15 @@
 import axios from "axios";
 import { baseUrl } from "../environments/Url";
-const userRoute = "/users";
-const idRoute = "/id";
 
 export const getAllUsers = async () => {
-  const response = await axios.get(baseUrl + userRoute);
+  const response = await axios.get(baseUrl + '/users');
   console.log(response.data);
   return response.data;
 };
 
 export const getUserByUsername = async (username) => {
   try{
-    const response = await axios.get(baseUrl + userRoute + `/${username}`, {
+    const response = await axios.get(baseUrl + '/users' + `/${username}`, {
       withCredentials: true,
     });
     return response.data;
@@ -24,7 +22,7 @@ catch(error){
 export const getUserByUserId = async (userId) => {
   try{
   const response = await axios.get(
-    baseUrl + userRoute + idRoute + `/${userId}`,
+    baseUrl + '/users' + '/id' + `/${userId}`,
     {
       withCredentials: true,
     }
@@ -39,7 +37,7 @@ catch(error){
 export const checkUserExists = async (userId) => {
   try{
   const response = await axios.get(
-    baseUrl + userRoute + idRoute + `/${userId}`,
+    baseUrl + '/users' + '/id' + `/${userId}`,
     {
       withCredentials: true,
     }
@@ -55,7 +53,7 @@ console.log(error);
 export const updateUserPassword = async (username, password) => {
   try {
     const response = await axios.put(
-      baseUrl + userRoute + `/${username}`,
+      baseUrl + '/users' + `/${username}`,
       { password },
       { withCredentials: true }
     );
@@ -66,7 +64,7 @@ export const updateUserPassword = async (username, password) => {
 };
 
 export const deleteUser = async (username) => {
-  const response = await axios.delete(baseUrl + userRoute + `/${username}`, {
+  const response = await axios.delete(baseUrl + '/users' + `/${username}`, {
     withCredentials: true,
   });
   return response;

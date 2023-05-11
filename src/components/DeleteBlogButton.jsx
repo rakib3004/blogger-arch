@@ -52,9 +52,9 @@ const DeleteBlogButton = ({ blog,  isSingleBlog }) => {
     setDeleteBlogDialogClose(false);
     setDeleteBlogSnackbarOpen(true);
     handleDeleteBlogDialogClose();
-    if(isSingleBlog){
+  
       navigateTo("/blogs");
-    }
+  
   };
 
   const handleDeleteBlogDialogClose = () => {

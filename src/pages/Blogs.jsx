@@ -1,15 +1,14 @@
-import "../styles/Blogs.css";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { BlogContext } from "../context/BlogContext";
-import PaginationComponent from "../components/PaginationComponent";
 import BlogCard from "../components/BlogCard";
 import CreateBlogButton from "../components/CreateBlogButton";
-import { getAllBlogs, getBlogsByAuthorId } from "../services/BlogService";
-import { checkUserExists } from "../services/UserService";
-import NoBlogFound from "./NoBlogFound";
 import LoadingComponent from "../components/LoadingComponent";
+import PaginationComponent from "../components/PaginationComponent";
+import { AuthContext } from "../context/AuthContext";
+import { BlogContext } from "../context/BlogContext";
+import { getAllBlogs, getBlogsByAuthorId } from "../services/BlogService";
+import "../styles/Blogs.css";
+import NoBlogFound from "./NoBlogFound";
 
 const Blogs = ({ authorId }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,15 +83,20 @@ const Blogs = ({ authorId }) => {
       {username ? <CreateBlogButton /> : null}
 
       {blogs.length ? (
-        blogs.map((blog) => <BlogCard key={blog.id} blog={blog} />)
+        <div>
+          {blogs.map((blog) => (
+            <BlogCard key={blog.id} blog={blog} />
+          ))}
+          <PaginationComponent
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            pageLimit={pageLimit}
+            authorId={authorId}
+          />
+        </div>
       ) : (
         <NoBlogFound />
       )}
-      <PaginationComponent
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageLimit={pageLimit}
-      />
     </>
   );
 };

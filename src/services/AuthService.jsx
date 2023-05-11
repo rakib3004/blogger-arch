@@ -1,13 +1,11 @@
 import axios from "axios";
 import { baseUrl } from "../environments/Url";
-const authPath = "/auth";
-const registerPath = "/register";
-const loginPath = "/login";
+
 
 export const registerUser = async (username, email, password) => {
   try {
     const response = await axios.post(
-      baseUrl + authPath + registerPath,
+      baseUrl + '/auth' + '/register',
       {
         username,
         email,
@@ -24,7 +22,7 @@ export const registerUser = async (username, email, password) => {
 export const loginUser = async (username, password) => {
   try {
     const response = await axios.post(
-      baseUrl + authPath + loginPath,
+      baseUrl + '/auth' + '/login',
       {
         username,
         password,

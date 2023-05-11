@@ -9,7 +9,6 @@ import HomePage from "./pages/HomePage";
 import Blog from "./pages/Blog";
 import User from "./pages/User";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 
@@ -30,8 +29,7 @@ function App() {
           element={username ? <Navigate to="/" /> : <Signup />}
         />
         <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/blogs" element={<Dashboard />} />
-
+        <Route exact path="/blogs" element={<Blogs />} />
         <Route exact path="/blogs/:id" element={<Blog />} />
         <Route exact path="/blogs/author/:authorId" element={<AuthorBlogs />} />
         <Route exact path="/users/:authorName" element={<User />} />
