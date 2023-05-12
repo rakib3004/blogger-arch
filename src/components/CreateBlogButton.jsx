@@ -71,6 +71,7 @@ const UpdateBlogButton = ({ blog }) => {
       setCreateBlogDialogClose(false);
       setCreateBlogSnackbarOpen(true);
       handleCreateBlogDialogClose();
+      navigateTo("/blogs");
       return;
     }
     if (!blogTitle.trim()) {

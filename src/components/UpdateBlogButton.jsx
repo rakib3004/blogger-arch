@@ -73,6 +73,7 @@ const UpdateBlogButton = ({ blog, setBlog, isSingleBlog }) => {
       setUpdateBlogDialogClose(false);
       setUpdateBlogSnackbarOpen(true);
       handleUpdateBlogDialogClose();
+      navigateTo("/blogs");
       return;
     }
     if (!blogTitle.trim()) {
