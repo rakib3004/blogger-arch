@@ -49,10 +49,13 @@ const Blog = () => {
           <Typography className="title" variant="h4" color="primary">
             {blog.title}
           </Typography>
+          {/* <Link to={`/users/${authorName}`}><Typography  variant="h6" color="primary" style={{ textDecoration: 'none' }}>
+            @{authorName}
+          </Typography></Link> */}
           <Button
             className="author"
             variant="contained"
-            color="warning"
+            color="primary"
             onClick={() => showUserDetails(authorName)}
           >
             @{authorName}

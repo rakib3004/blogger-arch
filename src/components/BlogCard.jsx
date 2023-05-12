@@ -36,9 +36,12 @@ const BlogCard = ({ blog }) => {
     <>
       <Card key={blog.id} className="card">
         <CardContent>
-          <Typography className="title" variant="h4" color="primary">
+          {/* <Typography className="title" variant="h4" color="primary">
             {blog.title}
-          </Typography>
+          </Typography> */}
+          <Link style={{ textDecoration: 'none' } } to={`/blogs/${blog.id}`}><Typography className="title" variant="h4" color="primary" >
+            {blog.title}
+          </Typography></Link>
           <Button
             className="author"
             variant="contained"

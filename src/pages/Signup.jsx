@@ -21,24 +21,20 @@ const Signup = () => {
       setErrorMessage("Passwords don't match");
       return;
     }
-    try {
+
       const response = await registerUser(username, email, password);
+      console.log(response);
       if (response.status !== 200) {
         setErrorMessage(response.data);
+    return;
       }
-    } catch (error) {
-      console.log(error);
-    }
-    console.log('---first---');
-
+    
     setUsername("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
     setErrorMessage("");
     setLoggedStatusInLogin();
-    console.log('---second---');
-
     navigateTo("/blogs");
   };
 
