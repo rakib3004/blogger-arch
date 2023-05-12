@@ -21,6 +21,7 @@ import {
   Link,
   useSearchParams,
 } from "react-router-dom";
+import { blogPreviewMinimumLength } from "../environments/Url";
 import { AuthContext } from "../context/AuthContext";
 import UpdateBlogButton from "./UpdateBlogButton";
 import DeleteBlogButton from "./DeleteBlogButton";
@@ -53,10 +54,11 @@ const BlogCard = ({ blog }) => {
           <Divider />
 
           <Typography className="description">
-            {blog.description.substring(0, 430)}...
-            <Link className="linkStyle" to={`/blogs/${blog.id}`}>
-              Read more
-            </Link>
+            {blog.description.substring(0, blogPreviewMinimumLength)}
+           {blog.description.length>blogPreviewMinimumLength?<Link className="linkStyle" style={{ textDecoration: 'none' } } to={`/blogs/${blog.id}`}>
+            ...<u>Read more </u> 
+            </Link> : null}
+            
           </Typography>
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}

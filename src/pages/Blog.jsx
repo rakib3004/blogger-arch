@@ -49,9 +49,6 @@ const Blog = () => {
           <Typography className="title" variant="h4" color="primary">
             {blog.title}
           </Typography>
-          {/* <Link to={`/users/${authorName}`}><Typography  variant="h6" color="primary" style={{ textDecoration: 'none' }}>
-            @{authorName}
-          </Typography></Link> */}
           <Button
             className="author"
             variant="contained"
@@ -65,9 +62,11 @@ const Blog = () => {
           <Typography className="description">
             {blog.description}
           </Typography>
-          <Link className="linkStyle" to={`/blogs`}>
+          {/* <Link className="linkStyle" to={`/blogs`}>
               Read Less
-            </Link>
+            </Link> */}
+
+           
 
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
