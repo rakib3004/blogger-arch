@@ -34,21 +34,6 @@ catch(error){
 }
 };
 
-export const checkUserExists = async (userId) => {
-  try{
-  const response = await axios.get(
-    baseUrl + '/users' + '/id' + `/${userId}`,
-    {
-      withCredentials: true,
-    }
-  );
-    console.log('Erorr in a long time',response)
-  return response.status;
-}
-catch(error){
-console.log(error);
-}
-};
 
 export const updateUserPassword = async (username, password) => {
   try {

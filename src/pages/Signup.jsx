@@ -1,9 +1,9 @@
 import { Button, Link, TextField, Typography } from "@mui/material";
-import "../styles/Signup.css";
-import { registerUser } from "../services/AuthService";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { registerUser } from "../services/AuthService";
+import "../styles/Signup.css";
 
 const Signup = () => {
   const { setLoggedStatusInLogin } = useContext(AuthContext);
@@ -22,13 +22,15 @@ const Signup = () => {
       return;
     }
 
-      const response = await registerUser(username, email, password);
-      console.log(response);
-      if (response.status !== 200) {
-        setErrorMessage(response.data);
-    return;
-      }
-    
+    const response = await registerUser(username, email, password);
+    if (response.status !== 201) {
+      const errorData = response.data;
+      setErrorMessage(errorData);
+      return;
+    }
+
+    const responseData = response.data;
+
     setUsername("");
     setEmail("");
     setPassword("");
@@ -44,6 +46,7 @@ const Signup = () => {
         Signup
       </Typography>
       <form className="signup-form" onSubmit={handleSubmit}>
+      
         <div>
           <TextField
             required
@@ -79,17 +82,18 @@ const Signup = () => {
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </div>
+       
         <div>
-          <Typography variant="h6" color="error">
-            {errorMessage}
-          </Typography>
-        </div>
+    <Typography variant="body" color="error">
+      {errorMessage}
+    </Typography>
+  </div>
+       
         <Button
           className="signup-button"
           variant="contained"
           color="primary"
           type="submit"
-          
         >
           Sign Up
         </Button>
@@ -99,6 +103,7 @@ const Signup = () => {
             Login
           </Link>
         </div>
+        
       </form>
     </>
   );

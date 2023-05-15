@@ -34,7 +34,7 @@ const PaginationComponent = ({
   return (
     <Stack spacing={2}>
       <Pagination
-        count={parseInt(totalPages)}
+        count={parseInt(totalPages)||2}
         color="primary"
         page={parseInt(currentPage)}
         onChange={handlePageChange}
