@@ -1,3 +1,5 @@
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
   Avatar,
@@ -11,9 +13,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -88,6 +88,47 @@ const NavBar = () => {
     nevigateTo("/");
   };
 
+  const LoggedInMenuItems = () => {
+    return (
+      <div>
+        <MenuItem
+          key="profile"
+          onClick={(event) => handleCloseUserMenu(event, profile)}
+        >
+          <Typography textAlign="center">{profile}</Typography>
+        </MenuItem>
+        <MenuItem
+          key="logout"
+          onClick={(event) => handleCloseUserMenu(event, logout)}
+        >
+          <Typography textAlign="center">{logout}</Typography>
+        </MenuItem>
+      </div>
+    );
+  };
+
+  const LoggedOutMenuItems = () => {
+    return (
+      <div>
+        <MenuItem
+          key="login"
+          onClick={(event) => handleCloseUserMenu(event, login)}
+        >
+          <Typography textAlign="center">{login}</Typography>
+        </MenuItem>
+        <MenuItem
+          key="signup"
+          onClick={(event) => handleCloseUserMenu(event, signup)}
+        >
+          <Typography textAlign="center">{signup}</Typography>
+        </MenuItem>
+      </div>
+    );
+  };
+
+  const UserBox = () => {
+    return <div sx={{ flexGrow: 0 }}></div>;
+  };
   return (
     <div>
       <AppBar position="static">
@@ -100,15 +141,7 @@ const NavBar = () => {
               variant="h6"
               noWrap
               component="a"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
+            
             >
               Blogger
             </Typography>
@@ -202,7 +235,6 @@ const NavBar = () => {
               <Typography textAlign="center">
                 {username === "" ? "guest" : username}
               </Typography>
-
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -219,37 +251,7 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {username ? (
-                  <div>
-                    <MenuItem
-                      key="profile"
-                      onClick={(event) => handleCloseUserMenu(event, profile)}
-                    >
-                      <Typography textAlign="center">{profile}</Typography>
-                    </MenuItem>
-                    <MenuItem
-                      key="logout"
-                      onClick={(event) => handleCloseUserMenu(event, logout)}
-                    >
-                      <Typography textAlign="center">{logout}</Typography>
-                    </MenuItem>
-                  </div>
-                ) : (
-                  <div>
-                    <MenuItem
-                      key="login"
-                      onClick={(event) => handleCloseUserMenu(event, login)}
-                    >
-                      <Typography textAlign="center">{login}</Typography>
-                    </MenuItem>
-                    <MenuItem
-                      key="signup"
-                      onClick={(event) => handleCloseUserMenu(event, signup)}
-                    >
-                      <Typography textAlign="center">{signup}</Typography>
-                    </MenuItem>
-                  </div>
-                )}
+                {username ? <LoggedInMenuItems /> : <LoggedOutMenuItems />}
               </Menu>
             </Box>
           </Toolbar>

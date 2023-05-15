@@ -14,6 +14,7 @@ import { getUserByUsername } from "../services/UserService";
 import UserCard from "../components/UserCard";
 import ProfileSetting from "../components/ProfileSetting";
 import { AuthContext } from "../context/AuthContext";
+import NotFound from "./NotFound";
 
 
 const User = () => {
@@ -44,8 +45,6 @@ const {username } =
   return (
     <div className="userContent">
       <UserCard user={user} />
-
-
       {username === authorName &&  <ProfileSetting /> }
     </div>
   );

@@ -3,7 +3,6 @@ import { baseUrl } from "../environments/Url";
 
 export const getAllBlogs = async (currentPage, pageLimit) => {
   const response = await axios.get(
-    // baseUrl + '/blogs',
     `${baseUrl}/blogs`,
      {
     params: {
@@ -18,7 +17,6 @@ export const countAllBlogs = async () => {
   try{
     const response = await axios.get(
       `${baseUrl}/blogs/size`,
-      // baseUrl + '/blogs' + '/size',
        );
     return response.data.count;
   }
@@ -31,7 +29,6 @@ export const countAllBlogs = async () => {
 export const getBlogsByAuthorId = async (currentPage, pageLimit, authorId) => {
   try{
   const response = await axios.get(
-    // baseUrl + '/blogs' + '/author' + `/${authorId}`,
     `${baseUrl}/blogs/author/${authorId}`,
     {
       params: {
@@ -49,7 +46,6 @@ catch(error){
 
 export const countBlogsByAuthorId = async ( authorId) => {
   const response = await axios.get(
-    // baseUrl + '/blogs' + '/author' + '/size' + `/${authorId}`,
     `${baseUrl}/blogs/author/size/${authorId}`,
 
     );
@@ -62,7 +58,6 @@ export const countBlogsByAuthorId = async ( authorId) => {
 export const getBlogById = async (blogId) => {
   try{
     const response = await axios.get(
-      // baseUrl + '/blogs' + `/${blogId}`,
       `${baseUrl}/blogs/${blogId}`,
 
     );

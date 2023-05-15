@@ -13,7 +13,6 @@ export const getAllUsers = async () => {
 export const getUserByUsername = async (username) => {
   try{
     const response = await axios.get(
-      // baseUrl + '/users' + `/${username}`, 
       `${baseUrl}/users/${username}`,
       {
       withCredentials: true,
@@ -28,7 +27,6 @@ catch(error){
 export const getUserByUserId = async (userId) => {
   try{
   const response = await axios.get(
-    // baseUrl + '/users' + '/id' + `/${userId}`,
     `${baseUrl}/users/id/${userId}`,
 
     {
@@ -46,7 +44,6 @@ catch(error){
 export const updateUserPassword = async (username, password) => {
   try {
     const response = await axios.put(
-      // baseUrl + '/users' + `/${username}`, 
       `${baseUrl}/users/${username}`,
       { password },
       { withCredentials: true }
@@ -59,7 +56,6 @@ export const updateUserPassword = async (username, password) => {
 
 export const deleteUser = async (username) => {
   const response = await axios.delete(
- // baseUrl + '/users' + `/${username}`, 
  `${baseUrl}/users/${username}`,    {
     withCredentials: true,
   });

@@ -42,6 +42,16 @@ const Blog = () => {
     navigateTo(`/users/${authorName}`);
   };
 
+  const AuthorizedUserButtons = () =>{
+    return (
+      <>
+         <UpdateBlogButton blog={blog} setBlog={setBlog} isSingleBlog={isSingleBlog} />
+           <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog}/>
+      </>
+    );
+
+  }
+
   return (
     <>
       <Card key={blog.id} className="card">
@@ -62,11 +72,7 @@ const Blog = () => {
           <Typography className="description">
             {blog.description}
           </Typography>
-          {/* <Link className="linkStyle" to={`/blogs`}>
-              Read Less
-            </Link> */}
-
-           
+                
 
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
@@ -75,10 +81,8 @@ const Blog = () => {
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
           {username === authorName && (
-            <>
-                <UpdateBlogButton blog={blog} setBlog={setBlog} isSingleBlog={isSingleBlog} />
-                <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog}/>
-            </>
+             <AuthorizedUserButtons/>
+          
           )}
         </CardContent>
       </Card>

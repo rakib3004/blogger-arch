@@ -5,7 +5,6 @@ import { baseUrl } from "../environments/Url";
 export const registerUser = async (username, email, password) => {
   try {
     const response = await axios.post(
-      // baseUrl + '/auth' + '/register',
       `${baseUrl}/auth/register`,
       {
         username,
@@ -23,7 +22,6 @@ export const registerUser = async (username, email, password) => {
 export const loginUser = async (username, password) => {
   try {
     const response = await axios.post(
-      // baseUrl + '/auth' + '/login',
       `${baseUrl}/auth/login`,
       {
         username,

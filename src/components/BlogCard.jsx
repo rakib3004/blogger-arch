@@ -33,13 +33,23 @@ const BlogCard = ({ blog }) => {
   const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
   };
+
+
+  const AuthorizedUserButtons = () =>{
+
+    return (
+      <div style={{display:"flex", margin: '1rem 0 0.5rem 0'}}>
+         <UpdateBlogButton blog={blog} />
+        <DeleteBlogButton blog={blog} />
+        </div>
+    );
+
+  };
+
   return (
     <>
       <Card key={blog.id} className="card">
         <CardContent>
-          {/* <Typography className="title" variant="h4" color="primary">
-            {blog.title}
-          </Typography> */}
           <Link style={{ textDecoration: 'none' } } to={`/blogs/${blog.id}`}><Typography className="title" variant="h4" color="primary" >
             {blog.title}
           </Typography></Link>
@@ -66,14 +76,9 @@ const BlogCard = ({ blog }) => {
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {username === blog.user.username ? (
-        
-            <div style={{display:"flex", margin: '1rem 0 0.5rem 0'}}>
-            <UpdateBlogButton blog={blog} />
-            <DeleteBlogButton blog={blog} />
-            </div>
-           
-          ) : null}
+          {username === blog.user.username && (
+          <AuthorizedUserButtons/>
+          )}
         </CardContent>
       </Card>
     </>
