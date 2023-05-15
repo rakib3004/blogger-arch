@@ -25,7 +25,7 @@ import { blogPreviewMinimumLength } from "../environments/Url";
 import { AuthContext } from "../context/AuthContext";
 import UpdateBlogButton from "./UpdateBlogButton";
 import DeleteBlogButton from "./DeleteBlogButton";
-import '../styles/Blogs.css'
+import "../styles/Blogs.css";
 const BlogCard = ({ blog }) => {
   const { username } = useContext(AuthContext);
   const navigateTo = useNavigate();
@@ -34,25 +34,23 @@ const BlogCard = ({ blog }) => {
     navigateTo(`/users/${username}`);
   };
 
-
-  const AuthorizedUserButtons = () =>{
-
+  const AuthorizedUserButtons = () => {
     return (
-      <div style={{display:"flex", margin: '1rem 0 0.5rem 0'}}>
-         <UpdateBlogButton blog={blog} />
+      <div style={{ display: "flex", margin: "1rem 0 0.5rem 0" }}>
+        <UpdateBlogButton blog={blog} />
         <DeleteBlogButton blog={blog} />
-        </div>
+      </div>
     );
-
   };
-
   return (
     <>
       <Card key={blog.id} className="card">
         <CardContent>
-          <Link style={{ textDecoration: 'none' } } to={`/blogs/${blog.id}`}><Typography className="title" variant="h4" color="primary" >
-            {blog.title}
-          </Typography></Link>
+          <Link style={{ textDecoration: "none" }} to={`/blogs/${blog.id}`}>
+            <Typography className="title" variant="h4" color="primary">
+              {blog.title}
+            </Typography>
+          </Link>
           <Button
             className="author"
             variant="contained"
@@ -65,10 +63,15 @@ const BlogCard = ({ blog }) => {
 
           <Typography className="description">
             {blog.description.substring(0, blogPreviewMinimumLength)}
-           {blog.description.length>blogPreviewMinimumLength?<Link className="linkStyle" style={{ textDecoration: 'none' } } to={`/blogs/${blog.id}`}>
-            ...<u>Read more </u> 
-            </Link> : null}
-            
+            {blog.description.length > blogPreviewMinimumLength ? (
+              <Link
+                className="linkStyle"
+                style={{ textDecoration: "none" }}
+                to={`/blogs/${blog.id}`}
+              >
+                ...<u>Read more </u>
+              </Link>
+            ) : null}
           </Typography>
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
@@ -76,9 +79,7 @@ const BlogCard = ({ blog }) => {
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {username === blog.user.username && (
-          <AuthorizedUserButtons/>
-          )}
+          {username === blog.user.username && <AuthorizedUserButtons />}
         </CardContent>
       </Card>
     </>

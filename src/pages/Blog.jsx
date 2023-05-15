@@ -72,8 +72,6 @@ const Blog = () => {
           <Typography className="description">
             {blog.description}
           </Typography>
-                
-
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
           </Typography>
@@ -82,7 +80,6 @@ const Blog = () => {
           </Typography>
           {username === authorName && (
              <AuthorizedUserButtons/>
-          
           )}
         </CardContent>
       </Card>
