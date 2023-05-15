@@ -23,8 +23,7 @@ const login = "Login";
 const signup = "Signup";
 
 const NavBar = () => {
-  const { setLoggedStatusInLogout, username } =
-    useContext(AuthContext);
+  const { setLoggedStatusInLogout, username } = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -66,8 +65,7 @@ const NavBar = () => {
 
   const redirectToProfilePage = () => {
     setAnchorElNav(null);
-  nevigateTo(`/users/${username}`);
-
+    nevigateTo(`/users/${username}`);
   };
   const handleLogout = () => {
     setAnchorElNav(null);
@@ -221,7 +219,6 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-
                 {username ? (
                   <div>
                     <MenuItem
@@ -237,9 +234,7 @@ const NavBar = () => {
                       <Typography textAlign="center">{logout}</Typography>
                     </MenuItem>
                   </div>
-                ) : null}
-
-                {!username ? (
+                ) : (
                   <div>
                     <MenuItem
                       key="login"
@@ -254,7 +249,7 @@ const NavBar = () => {
                       <Typography textAlign="center">{signup}</Typography>
                     </MenuItem>
                   </div>
-                ) : null}
+                )}
               </Menu>
             </Box>
           </Toolbar>

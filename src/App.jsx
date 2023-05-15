@@ -1,16 +1,15 @@
-import React from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import AuthorBlogs from "./pages/AuthorBlogs";
-import NavBar from "./pages/NavBar";
-import Blogs from "./pages/Blogs";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import HomePage from "./pages/HomePage";
-import Blog from "./pages/Blog";
-import User from "./pages/User";
-import NotFound from "./pages/NotFound";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
+import AuthorBlogs from "./pages/AuthorBlogs";
+import Blog from "./pages/Blog";
+import Blogs from "./pages/Blogs";
+import HomePage from "./pages/HomePage";
+import Login from "./pages/Login";
+import NavBar from "./pages/NavBar";
+import NotFound from "./pages/NotFound";
+import Signup from "./pages/Signup";
+import User from "./pages/User";
 
 function App() {
   const { username } = useContext(AuthContext);

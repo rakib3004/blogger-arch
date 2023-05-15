@@ -33,7 +33,6 @@ const Blogs = ({ authorId }) => {
       );
       setAllBlogs(allAuthorBlogs);
     } catch (error) {
-      console.error("checkUserExists returned error");
     }
   };
 

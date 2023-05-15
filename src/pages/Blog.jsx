@@ -74,14 +74,12 @@ const Blog = () => {
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {username === authorName ? (
+          {username === authorName && (
             <>
-              <>
                 <UpdateBlogButton blog={blog} setBlog={setBlog} isSingleBlog={isSingleBlog} />
                 <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog}/>
-              </>
             </>
-          ) : null}
+          )}
         </CardContent>
       </Card>
     </>

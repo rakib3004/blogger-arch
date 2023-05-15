@@ -46,7 +46,7 @@ const {username } =
       <UserCard user={user} />
 
 
-      {username === authorName?  <ProfileSetting />:null }
+      {username === authorName &&  <ProfileSetting /> }
     </div>
   );
 };
