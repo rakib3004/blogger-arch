@@ -27,30 +27,31 @@ const Blog = () => {
   }, []);
 
   const fetchSingleBlog = async () => {
-    try{
+    try {
       const response = await getBlogById(id);
       setBlog(response);
       const author = await getUserByUserId(response.authorId);
       setAuthorName(author.user.username);
+    } catch (error) {
+      navigateTo(`/notfound`);
     }
-  catch(error){
-    navigateTo(`/notfound`);
-  }
-
   };
   const showUserDetails = (authorName) => {
     navigateTo(`/users/${authorName}`);
   };
 
-  const AuthorizedUserButtons = () =>{
+  const AuthorizedUserButtons = () => {
     return (
       <>
-         <UpdateBlogButton blog={blog} setBlog={setBlog} isSingleBlog={isSingleBlog} />
-           <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog}/>
+        <UpdateBlogButton
+          blog={blog}
+          setBlog={setBlog}
+          isSingleBlog={isSingleBlog}
+        />
+        <DeleteBlogButton blog={blog} isSingleBlog={isSingleBlog} />
       </>
     );
-
-  }
+  };
 
   return (
     <>
@@ -69,18 +70,14 @@ const Blog = () => {
           </Button>
           <Divider />
 
-          <Typography className="description">
-            {blog.description}
-          </Typography>
+          <Typography className="description">{blog.description}</Typography>
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
           </Typography>
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {username === authorName && (
-             <AuthorizedUserButtons/>
-          )}
+          {username === authorName && <AuthorizedUserButtons />}
         </CardContent>
       </Card>
     </>

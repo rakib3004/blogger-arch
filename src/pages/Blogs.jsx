@@ -66,16 +66,18 @@ const Blogs = ({ authorId }) => {
   const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
   };
+  
 
   if (!blogs) {
     return <LoadingComponent />;
   }
+  if(blogs.length==0){
+    <NoBlogFound />
+  }
 
   return (
     <>
-      {username ? <CreateBlogButton /> : null}
-
-      {blogs.length ? (
+      {username&& <CreateBlogButton />}
         <div>
           {blogs.map((blog) => (
             <BlogCard key={blog.id} blog={blog} />
@@ -87,9 +89,6 @@ const Blogs = ({ authorId }) => {
             authorId={authorId}
           />
         </div>
-      ) : (
-        <NoBlogFound />
-      )}
     </>
   );
 };

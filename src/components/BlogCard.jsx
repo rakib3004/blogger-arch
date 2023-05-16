@@ -63,7 +63,7 @@ const BlogCard = ({ blog }) => {
 
           <Typography className="description">
             {blog.description.substring(0, blogPreviewMinimumLength)}
-            {blog.description.length > blogPreviewMinimumLength ? (
+            {blog.description.length > blogPreviewMinimumLength &&
               <Link
                 className="linkStyle"
                 style={{ textDecoration: "none" }}
@@ -71,7 +71,7 @@ const BlogCard = ({ blog }) => {
               >
                 ...<u>Read more </u>
               </Link>
-            ) : null}
+             }
           </Typography>
           <Typography className="time">
             Created at: {new Date(blog.createdAt).toLocaleString()}
