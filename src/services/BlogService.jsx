@@ -5,10 +5,10 @@ export const getAllBlogs = async (currentPage, pageLimit) => {
   const response = await axios.get(
     `${baseUrl}/blogs`,
      {
-    // params: {
-    //   page: currentPage,
-    //   limit: pageLimit,
-    // },
+    params: {
+      page: currentPage,
+      limit: pageLimit,
+    },
   });
   return response.data;
 };
