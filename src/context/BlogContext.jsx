@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const BlogContext = createContext();
 
 const BlogProvider = (props) => {
-    const [blogs, setBlogs] = useState(null);
+    const [blogs, setBlogs] = useState([]);
     const [username, setUsername] = useState("");
 
     const setAllBlogs = (blogs) =>{
