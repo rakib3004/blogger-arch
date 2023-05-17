@@ -77,7 +77,7 @@ const Blog = () => {
           <Typography className="time">
             Updated at: {new Date(blog.updatedAt).toLocaleString()}
           </Typography>
-          {username === authorName && <AuthorizedUserButtons />}
+          {username === authorName && <AuthorizedUserButtons /> }
         </CardContent>
       </Card>
     </>

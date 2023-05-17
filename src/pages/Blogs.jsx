@@ -72,7 +72,7 @@ const Blogs = ({ authorId }) => {
     return <LoadingComponent />;
   }
   if(blogs.length==0){
-    <NoBlogFound />
+ return  <NoBlogFound />
   }
 
   return (
