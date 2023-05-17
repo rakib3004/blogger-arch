@@ -43,8 +43,6 @@ const Blogs = ({ authorId }) => {
     return;
   };
 
-   
-
   useEffect(() => {
     window.scrollTo({ top: 0 });
     fetchData();
@@ -61,34 +59,35 @@ const Blogs = ({ authorId }) => {
     }
   };
 
-
-
   const showUserDetails = (username) => {
     navigateTo(`/users/${username}`);
   };
-  
 
   if (!blogs) {
     return <LoadingComponent />;
   }
-  if(blogs.length==0){
- return  <NoBlogFound />
+  if (blogs.length == 0) {
+    {
+      username && <CreateBlogButton />;
+    }
+
+    return <NoBlogFound />;
   }
 
   return (
     <>
-      {username&& <CreateBlogButton />}
-        <div>
-          {blogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
-          ))}
-          <PaginationComponent
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            pageLimit={pageLimit}
-            authorId={authorId}
-          />
-        </div>
+      {username && <CreateBlogButton />}
+      <div>
+        {blogs.map((blog) => (
+          <BlogCard key={blog.id} blog={blog} />
+        ))}
+        <PaginationComponent
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageLimit={pageLimit}
+          authorId={authorId}
+        />
+      </div>
     </>
   );
 };
