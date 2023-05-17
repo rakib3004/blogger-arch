@@ -63,13 +63,17 @@ const UpdateBlogButton = ({ blog, setBlog, isSingleBlog }) => {
     setTitleErrorStatus("");
     setDescriptionErrorStatus("");
     if (blogTitle.trim() && blogDescription.trim()) {
-      const updatedResponse = await updateBlogById(blogId, blogTitle, blogDescription);
+      const updatedResponse = await updateBlogById(
+        blogId,
+        blogTitle,
+        blogDescription
+      );
       const updatedBlogs = await getAllBlogs();
       setAllBlogs(updatedBlogs);
-      if(isSingleBlog){
+      if (isSingleBlog) {
         setBlog(updatedResponse);
       }
-      
+
       setUpdateBlogDialogClose(false);
       setUpdateBlogSnackbarOpen(true);
       handleUpdateBlogDialogClose();
@@ -115,7 +119,7 @@ const UpdateBlogButton = ({ blog, setBlog, isSingleBlog }) => {
       <Button
         variant="contained"
         color="primary"
-        style={{ marginRight: '0.5rem'}}
+        style={{ marginRight: "0.5rem" }}
         onClick={() => updatingBlogPost(blog)}
       >
         Update Blog

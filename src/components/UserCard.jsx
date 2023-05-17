@@ -12,8 +12,7 @@ import "../styles/Users.css";
 import { useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../services/UserService";
 
-const UserCard = ({user}) => {
-
+const UserCard = ({ user }) => {
   const navigateTo = useNavigate();
 
   const showAuthorAllBlog = (userId) => {
@@ -36,7 +35,8 @@ const UserCard = ({user}) => {
           <Typography className="user-time">
             Last Updated: {new Date(user.updatedAt).toLocaleString()}
           </Typography>
-          <Button className="showBlogsButton"
+          <Button
+            className="showBlogsButton"
             variant="contained"
             color="primary"
             onClick={() => showAuthorAllBlog(user.id)}

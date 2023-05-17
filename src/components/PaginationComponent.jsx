@@ -11,13 +11,13 @@ const PaginationComponent = ({
 }) => {
   const [totalPages, setTotalPages] = useState(5);
   let totalBlogs = 7;
-  
+
   const navigateTo = useNavigate();
   const fetchData = async () => {
     if (!authorId) {
       totalBlogs = await countAllBlogs();
     } else {
-  totalBlogs = await countBlogsByAuthorId(authorId);
+      totalBlogs = await countBlogsByAuthorId(authorId);
     }
 
     setTotalPages(Math.ceil(totalBlogs / pageLimit));
@@ -34,7 +34,7 @@ const PaginationComponent = ({
   return (
     <Stack spacing={2}>
       <Pagination
-        count={parseInt(totalPages)||2}
+        count={parseInt(totalPages) || 2}
         color="primary"
         page={parseInt(currentPage)}
         onChange={handlePageChange}

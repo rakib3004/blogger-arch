@@ -1,7 +1,6 @@
 import axios from "axios";
 import { baseUrl } from "../environments/Url";
 
-
 export const registerUser = async (username, email, password) => {
   try {
     const response = await axios.post(

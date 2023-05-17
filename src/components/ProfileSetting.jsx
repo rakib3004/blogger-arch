@@ -26,8 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProfileSetting = () => {
-    const { setLoggedStatusInLogout, username } =
-    useContext(AuthContext);
+  const { setLoggedStatusInLogout, username } = useContext(AuthContext);
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] =
     useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -76,7 +75,6 @@ const ProfileSetting = () => {
     setNewPassword(event.target.value);
   };
 
-
   const handleConfirmNewPasswordChange = (event) => {
     setConfirmNewPassword(event.target.value);
   };
@@ -114,16 +112,22 @@ const ProfileSetting = () => {
   };
   return (
     <div className="settingButton">
-     <Typography variant="h5" color="primary">Profile Settings</Typography>
-      <Button 
+      <Typography variant="h5" color="primary">
+        Profile Settings
+      </Typography>
+      <Button
         variant="contained"
         color="success"
         onClick={handleUpdatePasswordDialogOpen}
       >
         Update Password
       </Button>
-      <Button className="settingButton"
-       variant="contained" color="error" onClick={deletingUser}>
+      <Button
+        className="settingButton"
+        variant="contained"
+        color="error"
+        onClick={deletingUser}
+      >
         Delete Account
       </Button>
 
@@ -168,9 +172,7 @@ const ProfileSetting = () => {
             </div>
             <DialogActions>
               <Button onClick={handleUpdatePasswordDialogClose}>Cancel</Button>
-              <Button type="submit">
-                Update password
-              </Button>
+              <Button type="submit">Update password</Button>
             </DialogActions>
           </form>
         </DialogContent>
@@ -223,7 +225,6 @@ const ProfileSetting = () => {
           Account Deleted Successfully!
         </Alert>
       </Snackbar>
-
     </div>
   );
 };

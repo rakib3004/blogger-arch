@@ -46,7 +46,6 @@ const Signup = () => {
         Signup
       </Typography>
       <form className="signup-form" onSubmit={handleSubmit}>
-      
         <div>
           <TextField
             required
@@ -82,13 +81,13 @@ const Signup = () => {
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </div>
-       
+
         <div>
-    <Typography variant="body" color="error">
-      {errorMessage}
-    </Typography>
-  </div>
-       
+          <Typography variant="body" color="error">
+            {errorMessage}
+          </Typography>
+        </div>
+
         <Button
           className="signup-button"
           variant="contained"
@@ -103,7 +102,6 @@ const Signup = () => {
             Login
           </Link>
         </div>
-        
       </form>
     </>
   );

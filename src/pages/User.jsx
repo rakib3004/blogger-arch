@@ -16,24 +16,20 @@ import ProfileSetting from "../components/ProfileSetting";
 import { AuthContext } from "../context/AuthContext";
 import NotFound from "./NotFound";
 
-
 const User = () => {
   const { authorName } = useParams();
   const [user, setUser] = useState([]);
   const navigateTo = useNavigate();
 
-const {username } =
-    useContext(AuthContext);
-    const getUserDetails = async() =>{
-      try{
-        const response = await getUserByUsername(authorName);
-        setUser(response.user);
-      }
-      catch(error){
-        navigateTo(`/notfound`);
-      }
-     
+  const { username } = useContext(AuthContext);
+  const getUserDetails = async () => {
+    try {
+      const response = await getUserByUsername(authorName);
+      setUser(response.user);
+    } catch (error) {
+      navigateTo(`/notfound`);
     }
+  };
   useEffect(() => {
     const fetchData = async () => {
       await getUserDetails();
@@ -41,11 +37,10 @@ const {username } =
     fetchData();
   }, [authorName]);
 
-
   return (
     <div className="userContent">
       <UserCard user={user} />
-      {username === authorName &&  <ProfileSetting /> }
+      {username === authorName && <ProfileSetting />}
     </div>
   );
 };

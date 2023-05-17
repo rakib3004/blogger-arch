@@ -7,14 +7,13 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-  const { setLoggedStatusInLogin, username } =
-    useContext(AuthContext);
+  const { setLoggedStatusInLogin, username } = useContext(AuthContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigateTo = useNavigate();
- 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

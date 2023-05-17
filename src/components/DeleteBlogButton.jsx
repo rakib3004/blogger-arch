@@ -31,7 +31,7 @@ import {
 import { useContext } from "react";
 import { BlogContext } from "../context/BlogContext";
 
-const DeleteBlogButton = ({ blog,  isSingleBlog }) => {
+const DeleteBlogButton = ({ blog, isSingleBlog }) => {
   const navigateTo = useNavigate();
   const { setAllBlogs, blogs } = useContext(BlogContext);
   const [blogId, setBlogId] = useState(null);
@@ -53,11 +53,9 @@ const DeleteBlogButton = ({ blog,  isSingleBlog }) => {
     setDeleteBlogSnackbarOpen(true);
     handleDeleteBlogDialogClose();
     navigateTo("/blogs");
-  
   };
 
   const handleDeleteBlogDialogClose = () => {
-
     setDeleteBlogDialogOpen(false);
   };
 
