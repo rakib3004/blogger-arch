@@ -13,13 +13,13 @@ import { useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../services/UserService";
 
 const UserCard = ({ user }) => {
-  const navigateTo = useNavigate();
+  // const navigateTo = useNavigate();
 
-  const showAuthorAllBlog = (userId) => {
-    navigateTo(`/blogs/author/${userId}`);
-  };
+  // const showAuthorAllBlog = (userId) => {
+  //   navigateTo(`/blogs/author/${userId}`);
+  // };
   return (
-    <>
+    <div>
       <Card key={user.id} className="card">
         <CardContent>
           <Divider />
@@ -45,7 +45,7 @@ const UserCard = ({ user }) => {
           </Button>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 };
 
